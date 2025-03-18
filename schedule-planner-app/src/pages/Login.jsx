@@ -64,6 +64,7 @@ const Login = () => {
       const res = await axios.post("http://localhost:4000/api/auth/login", formData);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       localStorage.setItem("userId", res.data.user._id);
+      localStorage.setItem("accessToken", res.data.accessToken); // Save token
 
       // Save credentials if "Remember Me" is checked
       if (rememberMe) {
