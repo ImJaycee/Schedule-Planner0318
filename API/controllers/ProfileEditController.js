@@ -27,6 +27,8 @@ export const UpdateUserDetails = async (req, res) => {
         user.department = department || user.department;
         user.image = image || user.image; // Assign image correctly
 
+        console.log(image)
+
         await user.save();
         res.json({ message: 'User updated successfully' });
     } catch (error) {
