@@ -24,6 +24,28 @@ export const getAnnouncements = async (req, res) => {
   }
 };
 
+// Get all announcements
+export const getActiveAnnouncements = async (req, res) => {
+
+  try {
+    const currentDate = new Date(); // Get the current date
+  
+    const announcements = await Announcement.find({ expiresAt: { $gt: currentDate } }); // Find active announcements
+    
+    // Convert each document to a plain object and remove AdminId
+    const announcementDetails = announcements.map(announcement => {
+      const announcementObj = announcement.toObject(); // Convert to plain object
+      const { AdminId, ...otherDetails } = announcementObj; // Remove AdminId
+      return otherDetails;
+    });
+  
+    res.status(200).json(announcementDetails);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+  
+};
+
 // Update an announcement
 export const updateAnnouncement = async (req, res) => {
   const { id } = req.params;

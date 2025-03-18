@@ -32,7 +32,7 @@ const UserSchema = new mongoose.Schema({
     },  
     image:{
         type: String,
-        default: ''},
+        default: ''},  
     // verificationCode: { type: String }, // 6-digit email verification code
     verificationToken: { type: String }, // Unique verification token
     verificationExpires: { type: Date }, // Expiration time for both    
