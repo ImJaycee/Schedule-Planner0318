@@ -1,0 +1,25 @@
+GET http://localhost:4000/api/announcements
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDJkZmNjZjkyZDk4ZjM3MGNiYzI5MCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MTkyMTcwNn0.0g7jRuPjqzxV7CM92YzRG3WF2fACLzadNEX8WDfe6XI
+
+###
+
+POST http://localhost:4000/api/announcements
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDJkZmNjZjkyZDk4ZjM3MGNiYzI5MCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MTkyMTcwNn0.0g7jRuPjqzxV7CM92YzRG3WF2fACLzadNEX8WDfe6XI
+Content-Type: application/json
+
+{
+    "title": "New123 1",
+    "content": "This is a new announcement",
+    "expiresAt": "2025-03-20T00:00:00.000Z"
+}
+###
+
+put http://localhost:4000/api/announcements/67d39e465f4f1f1e289cb49a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDJkZmNjZjkyZDk4ZjM3MGNiYzI5MCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MTkyMTcwNn0.0g7jRuPjqzxV7CM92YzRG3WF2fACLzadNEX8WDfe6XI
+Content-Type: application/json
+
+{
+    "title": "mer 1",
+    "content": "This is a new announcement",
+    "expiresAt": "2025-03-20T00:00:00.000Z"
+}
