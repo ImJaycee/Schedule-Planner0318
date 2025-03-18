@@ -3,7 +3,7 @@ import axios from "axios";
 import logo from "../assets/a2klogo.png";
 import logoApp from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -19,7 +19,9 @@ const RegisterForm = () => {
 
   const [errors, setErrors] = useState({});
   const [error, setError] = useState("");
-  const[loading, setLoading] =useState(false)
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -32,11 +34,26 @@ const RegisterForm = () => {
 
     if (!formData.firstname) validationErrors.firstname = "First name is required";
     if (!formData.lastname) validationErrors.lastname = "Last name is required";
-    if (!formData.email.includes("@")) validationErrors.email = "Valid email is required";
+    if (!formData.email) {
+      validationErrors.email = "Email is required";
+    } else if (!formData.email.includes("@")) {
+      validationErrors.email = "Valid email is required";
+    }
     if (!formData.department) validationErrors.department = "Department is required";
-    if (formData.password.length < 8) validationErrors.password = "Password must be at least 8 characters";
-    if (formData.password !== formData.confirmPassword)
+  
+    // Password validation
+    if (!formData.password) {
+      validationErrors.password = "Password is required";
+    } else if (formData.password.length < 8) {
+      validationErrors.password = "Password must be at least 8 characters";
+    }
+  
+    // Confirm Password validation
+    if (!formData.confirmPassword) {
+      validationErrors.confirmPassword = "Password is required";
+    } else if (formData.password !== formData.confirmPassword) {
       validationErrors.confirmPassword = "Passwords do not match";
+    }
 
     if (Object.keys(validationErrors).length === 0) {
       setLoading(true)
@@ -61,6 +78,12 @@ const RegisterForm = () => {
     }
   };
 
+  const getInputClasses = (field) => {
+    return `p-2 border rounded w-full ${
+      errors[field] ? "border-red-500 focus:ring-red-300" : "border-gray-300 focus:ring-blue-300"
+    }`;
+  };
+
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-100">
       {/* Left Logo */}
@@ -73,7 +96,8 @@ const RegisterForm = () => {
         <h2 className="text-2xl font-bold mb-2 text-left">Create account</h2>
         <div className="p-8 bg-white rounded-lg shadow-md">
           <form onSubmit={handleSubmit} className="space-y-4">
-          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-medium text-gray-700">Firstname</label>
@@ -83,7 +107,7 @@ const RegisterForm = () => {
                   placeholder="Firstname"
                   value={formData.firstname}
                   onChange={handleChange}
-                  className="p-2 border rounded w-full"
+                  className={getInputClasses("firstname")}
                 />
                 {errors.firstname && <p className="text-red-500 text-sm">{errors.firstname}</p>}
               </div>
@@ -96,7 +120,7 @@ const RegisterForm = () => {
                   placeholder="Lastname"
                   value={formData.lastname}
                   onChange={handleChange}
-                  className="p-2 border rounded w-full"
+                  className={getInputClasses("lastname")}
                 />
                 {errors.lastname && <p className="text-red-500 text-sm">{errors.lastname}</p>}
               </div>
@@ -110,68 +134,79 @@ const RegisterForm = () => {
                 placeholder="Enter Email"
                 value={formData.email}
                 onChange={handleChange}
-                className="p-2 border rounded w-full"
+                className={getInputClasses("email")}
               />
               {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
 
             <div>
-                <label className="text-sm font-medium text-gray-700">Department</label>
-                <select
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  className="p-2 border rounded w-full"
-                >
-                  <option value="">Select Department</option>
-                  <option value="Technical">Technical</option>
-                  <option value=" IT Support">IT Support</option>
-                  <option value="Sales & Marketing">Sales & Marketing</option>
-                  <option value="Research">Research</option>
-                </select>
-                {errors.department && <p className="text-red-500 text-sm">{errors.department}</p>}
-              </div>
+              <label className="text-sm font-medium text-gray-700">Department</label>
+              <select
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+                className={getInputClasses("department")}
+              >
+                <option value="">Select Department</option>
+                <option value="Technical">Technical</option>
+                <option value="IT Support">IT Support</option>
+                <option value="Sales & Marketing">Sales & Marketing</option>
+                <option value="Research">Research</option>
+              </select>
+              {errors.department && <p className="text-red-500 text-sm">{errors.department}</p>}
+            </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div>
+              <div className="relative">
                 <label className="text-sm font-medium text-gray-700">Password</label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="p-2 border rounded w-full"
+                  className={getInputClasses("password")}
                 />
+                <span
+                  className="absolute right-3 top-10 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
                 {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
               </div>
 
-              <div>
+              <div className="relative">
                 <label className="text-sm font-medium text-gray-700">Confirm Password</label>
                 <input
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   name="confirmPassword"
                   placeholder="Confirm Password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  className="p-2 border rounded w-full"
+                  className={getInputClasses("confirmPassword")}
                 />
+                <span
+                  className="absolute right-3 top-10 cursor-pointer"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
                 {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
               </div>
             </div>
 
             <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded flex justify-center items-center"
-                onClick={handleSubmit}
-                disabled={loading} // Disable button when loading
-              >
-                {loading ? (
-                  <span className="animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full"></span>
-                ) : (
-                  "Register"
-                )}
-          </button>
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded flex justify-center items-center"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full"></span>
+              ) : (
+                "Register"
+              )}
+            </button>
           </form>
 
           <p className="text-center text-sm mt-4">
@@ -180,7 +215,6 @@ const RegisterForm = () => {
         </div>
       </div>
     </div>
-
   );
 };
 

@@ -15,6 +15,7 @@ const ProfileEditPage = () => {
     lastname: "",
     email: "",
     department: "",
+    image: "", // Add image URL to the state
   });
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -31,6 +32,7 @@ const ProfileEditPage = () => {
         lastname: response.data.lastname,
         email: response.data.email,
         department: response.data.department,
+        image: response.data.image, // Include image URL
       });
       setIsLoading(false);
     } catch (error) {
@@ -41,7 +43,7 @@ const ProfileEditPage = () => {
 
   const updateUser = async (e) => {
     e.preventDefault();
-    if (!user.firstname || !user.lastname || !user.email || !user.department) {
+    if (!user.firstname || !user.lastname || !user.email || !user.department || !user.image) {
       toast.error("Please fill out all fields.");
       return;
     }
@@ -108,7 +110,27 @@ const ProfileEditPage = () => {
           ) : (
             <>
               <form onSubmit={updateUser}>
-                <div className="space-y-2">
+                <div className="space-y-4">
+                  <div className="text-center">
+                    {user.image && (
+                      <img
+                        src={user.image}
+                        alt="Profile"
+                        className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <label className="text-gray-600 mb-2 block font-semibold">Image URL</label>
+                    <input
+                      type="text"
+                      name="image"
+                      value={user.image}
+                      onChange={handleChange}
+                      className="w-full block border p-3 text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
+                      placeholder="Image URL"
+                    />
+                  </div>
                   <div>
                     <label className="text-gray-600 mb-2 block font-semibold">Firstname</label>
                     <input
@@ -170,7 +192,7 @@ const ProfileEditPage = () => {
 
               <h2 className="font-semibold text-2xl mb-4 block text-center mt-8">Change Password</h2>
               <form onSubmit={updatePassword}>
-                <div className="space-y-2">
+                <div className="space-y-4">
                   <div>
                     <label className="text-gray-600 mb-2 block font-semibold">New Password</label>
                     <input

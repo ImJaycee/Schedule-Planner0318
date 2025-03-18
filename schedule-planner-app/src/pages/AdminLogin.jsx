@@ -4,63 +4,93 @@ import a2kLogo from "../assets/a2klogo.png";  // Top-left logo
 import flexiSchedLogo from "../assets/logo.png";  // Centered above form
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const [error, setError] = useState(null);
+  const [rememberMe, setRememberMe] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
-    
-    const {user, loading, error, dispatch} = useContext(AuthContext)
+  const { user, loading, error, dispatch } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  // Load saved credentials from local storage
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    const savedPassword = localStorage.getItem("rememberedPassword");
+
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setRememberMe(true);
+    }
+  }, []);
 
   // Function to validate form inputs
-  const validateForm = (email, password) => {
-    if (!email.trim() && !password.trim()) {
-      return "Email and Password are required.";
-    }
+  const validateForm = () => {
+    let validationErrors = {};
+
     if (!email.trim()) {
-      return "Email is required.";
+      validationErrors.email = "Email is required.";
+    } else if (!email.includes("@")) {
+      validationErrors.email = "Valid email is required.";
     }
-    if (!email.includes("@")) {
-      return "Valid email is required.";
-    }
+
     if (!password.trim()) {
-      return "Password is required.";
+      validationErrors.password = "Password is required.";
+    } else if (password.length < 8) {
+      validationErrors.password = "Password must be at least 8 characters.";
     }
-    if (password.length < 8) {
-      return "Password must be at least 8 characters.";
-    }
-    return "";
+
+    setErrors(validationErrors);
+    return Object.keys(validationErrors).length === 0;
   };
 
-  const navigate = useNavigate()
-
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch({type: "LOGIN_START"})
-    try {
 
+    if (!validateForm()) return; // Stop submission if errors exist
+
+    dispatch({ type: "LOGIN_START" });
+
+    try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/login/admin", 
+        "http://localhost:4000/api/auth/login/admin",
         { email, password },
         { withCredentials: true } // Ensures the cookie is stored
-    );
+      );
 
-      dispatch({type: "LOGIN_SUCCESS", payload: res.data})
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       localStorage.setItem("accessToken", res.data.accessToken); // Save token
-      navigate("/admin/homepage")
-      localStorage.setItem('userId', res.data.user._id);
+      localStorage.setItem("userId", res.data.user._id);
+
+      // Save credentials if "Remember Me" is checked
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+        localStorage.setItem("rememberedPassword", password);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+        localStorage.removeItem("rememberedPassword");
+      }
+
+      navigate("/admin/homepage");
     } catch (error) {
       const errorMessage = error.response?.data?.message || "Invalid credentials";
       dispatch({ type: "LOGIN_FAILURE", payload: errorMessage });
-      setEmail("")
-      setPassword("")
+      setEmail("");
+      setPassword("");
     }
   };
 
-  
-  useEffect(() => {
-  }, [user]); // Logs user only when it changes
+  // Function to get dynamic input styles based on errors
+  const getInputClasses = (field) => {
+    return `w-full px-4 py-2 mt-2 border rounded-md focus:ring focus:ring-blue-300 focus:outline-none ${
+      errors[field] ? "border-red-500 focus:ring-red-300" : "border-gray-300"
+    }`;
+  };
 
   return (
     <div className="flex min-h-screen bg-white relative">
@@ -89,48 +119,60 @@ const AdminLogin = () => {
                 type="email"
                 id="email"
                 placeholder="Enter Email"
-                className="w-full px-4 py-2 mt-2 border rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                className={getInputClasses("email")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
 
             {/* Password Input */}
-            <div className="mb-4">
+            <div className="mb-4 relative">
               <label htmlFor="password" className="block text-gray-700 font-medium">
                 Password
               </label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 placeholder="***********"
-                className="w-full px-4 py-2 mt-2 border rounded-md focus:ring focus:ring-blue-300 focus:outline-none"
+                className={getInputClasses("password")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <span
+                className="absolute right-3 top-10 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+              {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
             </div>
 
-            {/* Remember Me & Forgot Password */}
+            {/* Remember Me Checkbox */}
             <div className="flex justify-between items-center text-sm mb-4">
               <label className="flex items-center">
-                <input type="checkbox" className="mr-2" />
+                <input 
+                  type="checkbox" 
+                  className="mr-2"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
                 Remember Me
               </label>
             </div>
 
             {/* Login Button */}
             <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded flex justify-center items-center"
-                onClick={handleSubmit}
-                disabled={loading} // Disable button when loading
-              >
-                {loading ? (
-                  <span className="animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full"></span>
-                ) : (
-                  "Login"
-                )}
-          </button>
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded flex justify-center items-center"
+              disabled={loading}
+            >
+              {loading ? (
+                <span className="animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full"></span>
+              ) : (
+                "Login"
+              )}
+            </button>
           </form>
         </div>
       </div>

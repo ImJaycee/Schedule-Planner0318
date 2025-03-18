@@ -15,9 +15,8 @@ const AdminProfileEditPage = () => {
     lastname: "",
     email: "",
     department: "",
+    image: "", // Add image URL to the state
   });
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
 
   // Retrieve user ID from local storage
   const userId = localStorage.getItem('userId');
@@ -31,6 +30,7 @@ const AdminProfileEditPage = () => {
         lastname: response.data.lastname,
         email: response.data.email,
         department: response.data.department,
+        image: response.data.image, // Include image URL
       });
       setIsLoading(false);
     } catch (error) {
@@ -41,7 +41,7 @@ const AdminProfileEditPage = () => {
 
   const updateUser = async (e) => {
     e.preventDefault();
-    if (!user.firstname || !user.lastname || !user.email || !user.department) {
+    if (!user.firstname || !user.lastname || !user.email || !user.department || !user.image) {
       toast.error("Please fill out all fields.");
       return;
     }
@@ -50,28 +50,6 @@ const AdminProfileEditPage = () => {
       await axios.put(`http://localhost:4000/api/edit/${userId}`, user);
       toast.success("Updated user successfully");
       navigate("/admin/profile");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
-  const updatePassword = async (e) => {
-    e.preventDefault();
-    if (!password || !confirmPassword) {
-      toast.error("Please enter and confirm the new password.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
-    try {
-      await axios.put(`http://localhost:4000/api/edit/${userId}/password`, { password });
-      toast.success("Password updated successfully");
-      setPassword("");
-      setConfirmPassword("");
     } catch (error) {
       toast.error(error.message);
     }
@@ -95,7 +73,7 @@ const AdminProfileEditPage = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
       {/* Sidebar */}
       <NavbarAdmin />
 
@@ -108,7 +86,27 @@ const AdminProfileEditPage = () => {
           ) : (
             <>
               <form onSubmit={updateUser}>
-                <div className="space-y-2">
+                <div className="space-y-4">
+                  <div className="text-center">
+                    {user.image && (
+                      <img
+                        src={user.image}
+                        alt="Profile"
+                        className="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <label className="text-gray-600 mb-2 block font-semibold">Image URL</label>
+                    <input
+                      type="text"
+                      name="image"
+                      value={user.image}
+                      onChange={handleChange}
+                      className="w-full block border p-3 text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
+                      placeholder="Image URL"
+                    />
+                  </div>
                   <div>
                     <label className="text-gray-600 mb-2 block font-semibold">Firstname</label>
                     <input
@@ -163,40 +161,6 @@ const AdminProfileEditPage = () => {
                       disabled={isLoading}
                     >
                       {isLoading ? "Updating..." : "Update"}
-                    </button>
-                  </div>
-                </div>
-              </form>
-
-              <h2 className="font-semibold text-2xl mb-4 block text-center mt-8">Change Password</h2>
-              <form onSubmit={updatePassword}>
-                <div className="space-y-2">
-                  <div>
-                    <label className="text-gray-600 mb-2 block font-semibold">New Password</label>
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="w-full block border p-3 text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
-                      placeholder="New Password"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-gray-600 mb-2 block font-semibold">Confirm Password</label>
-                    <input
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full block border p-3 text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
-                      placeholder="Confirm Password"
-                    />
-                  </div>
-                  <div>
-                    <button
-                      className="block w-full mt-6 bg-blue-700 text-white rounded-sm px-4 py-2 font-bold hover:bg-blue-600 hover:cursor-pointer"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Updating..." : "Update Password"}
                     </button>
                   </div>
                 </div>
