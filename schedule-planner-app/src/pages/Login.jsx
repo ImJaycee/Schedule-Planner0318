@@ -21,6 +21,7 @@ const Login = () => {
         password
       });
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
+      localStorage.setItem("accessToken", res.data.accessToken); // Save token
       localStorage.setItem('userId', res.data.user._id); // Store user ID in local storage
       navigate("/homepage");
     } catch (error) {

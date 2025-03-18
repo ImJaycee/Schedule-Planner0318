@@ -42,20 +42,6 @@ const AdminDashboard = () => {
     }
 };
 
-  
-
-// const handleEventClick = (info) => {
-//   setSelectedShift([{
-//     id: info.event.id,
-//     title: info.event.title,
-//     start: info.event.start,
-//     end: info.event.end,
-//     employees: info.event.extendedProps?.employees || "None",
-//     shiftType: info.event.extendedProps?.shiftType || "night", // Ensure shiftType is set
-//     color: info.event.extendedProps?.shiftType === "morning" ? "green" : "red" // Assign color correctly
-//   }]);
-//   setIsModalOpen(true);
-// };
 
   
 
