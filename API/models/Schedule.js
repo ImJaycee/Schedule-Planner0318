@@ -15,11 +15,7 @@ endTime: {
 },
 shiftType: { 
     type: String, 
-<<<<<<< HEAD
-    enum: ["morning", "night"], 
-=======
     enum: ["wfh", "on-site"], 
->>>>>>> origin/request-process
     required: true 
 },
   assignedEmployees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

@@ -175,11 +175,6 @@ const sendVerificationEmail = async (email, token) => {
                 return next(createError(400, "Please verify your email"));
               }
           }
-<<<<<<< HEAD
-
-          if(user.isDeactivated) return next(createError(400, "Account deactivated, contact admin"))
-=======
->>>>>>> origin/request-process
   
           const passwordCorrect = await bcrypt.compare(req.body.password, user.password);
           if(!passwordCorrect) 
@@ -189,11 +184,7 @@ const sendVerificationEmail = async (email, token) => {
           
           const userDetails = user.toObject ? user.toObject() : user;
   
-<<<<<<< HEAD
-          const { password, isAdmin, department, ...otherDetails } = userDetails; 
-=======
           const { password, isAdmin, ...otherDetails } = userDetails; 
->>>>>>> origin/request-process
   
           console.log(otherDetails);
   

@@ -17,17 +17,10 @@ const UserShiftModal = ({ isOpen, onClose, shifts }) => {
             <strong>Time:</strong> {new Date(shift.start).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true })} - 
             {new Date(shift.end).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true })}
           </p>
-<<<<<<< HEAD
-          <p><strong>Office Schedule:</strong> {shift.employees}</p>
-          <p><strong>Type:</strong> Morning</p>
-        </div>
-      ) : null
-=======
           <p><strong>Assigned:</strong> {shift.employees}</p>
           <p><strong>Type:</strong> On-site</p>
         </div>
       ) :  <p>WFH ka idol.</p>
->>>>>>> origin/request-process
     ))
   ) : (
     <p>WFH ka idol.</p>

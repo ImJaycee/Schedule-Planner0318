@@ -1,53 +1,4 @@
-<<<<<<< HEAD
 
-import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction"; // For click & drag events
-import timeGridPlugin from "@fullcalendar/timegrid"; // For week/day views
-import listPlugin from "@fullcalendar/list"; // For list vie
-import useFetch from "../../hooks/useFetch";
-import UserShiftModal from "../userModal/shiftModal";
-import NavbarEmployee from "../../components/NavbarEmployee"
-import { GetAnnouncement } from "../../api/announcemet";
-
-const Dashboard = () => {
-  const { user, dispatch } = useContext(AuthContext);
-
-  const [events, setEvents] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedShift, setSelectedShift] = useState([]);
-
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [hasSchedule, setHasSchedule] = useState(false);
-  const [announcements, setAnnouncement] = useState([]);
-
-  const [isLoading, setisLoading] = useState(false);
-
-
-
-
-  const handleDateClick = (info) => {
-    const clickedDate = info.dateStr;
-    
-    // Get only shifts where the user is assigned
-    const shiftsForDate = events
-      .filter(event => event.start.startsWith(clickedDate) && event.extendedProps?.employees !== "None")
-      .map(event => ({
-        id: event.id,
-        title: event.title,
-        start: event.start,
-        end: event.end,
-        employees: event.extendedProps?.employees || "None",
-        shiftType: event.extendedProps?.shiftType || "night", // Ensure shiftType is set
-        color: event.extendedProps?.shiftType === "morning" ? "green" : "red" // Assign color correctly
-      }));
-
-    if (shiftsForDate.length > 0) {
-      setSelectedShift(shiftsForDate);
-=======
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import FullCalendar from "@fullcalendar/react";
@@ -86,130 +37,14 @@ const RequestShift = () => {
       setSelectedDate(clickedDate)
       setShiftID(shiftsForDate[0].id)
       setAssigned(shiftsForDate[0].title)
->>>>>>> origin/request-process
       setIsModalOpen(true);
     } else {
       alert("No shifts scheduled for you on this date.");
     }
-<<<<<<< HEAD
-};
-
-
-const handleAnnouncement = async (e) => {
-  e.preventDefault();
-
-  try {
-    setisLoading(true);
-      const announcement = await GetAnnouncement();
-      console.log("Fetched Announcement:", announcement);
-  } catch (error) {
-      console.log("Error:", error);
-  } finally {
-    setisLoading(false);
-  }
-};
-
-
-  
-=======
   };
->>>>>>> origin/request-process
-
   const convertTo24Hour = (time12h) => {
     const [time, modifier] = time12h.split(" ");
     let [hours, minutes] = time.split(":");
-<<<<<<< HEAD
-  
-    if (modifier === "PM" && hours !== "12") {
-      hours = String(parseInt(hours) + 12);
-    } else if (modifier === "AM" && hours === "12") {
-      hours = "00";
-    }
-  
-    return `${hours}:${minutes}:00`; // Ensure seconds are included
-  };
-
-  const {data, loading, error} = useFetch(`http://localhost:4000/api/shift/`)
-
-
-  // Transform fetched data to FullCalendar format
-  useEffect(() => {
-    let userHasSchedule = false; 
-  
-    const formattedEvents = data.map((shift) => {
-      // Convert Date String + Time String to ISO DateTime
-      const startDateTime = new Date(`${shift.date.split("T")[0]}T${convertTo24Hour(shift.startTime)}`);
-      const endDateTime = new Date(`${shift.date.split("T")[0]}T${convertTo24Hour(shift.endTime)}`);
-  
-      const userID = localStorage.getItem("userId");
-  
-      // Check if the user is assigned to this shift
-      const checkUser = shift.assignedEmployees
-        .filter(emp => emp._id === userID) // Filter employees with matching userID
-        .map(emp => emp.firstname);
-  
-      // If user is assigned, set flag to true
-      if (checkUser.length > 0) {
-        userHasSchedule = true;
-        return {
-          id: shift._id,
-          title: "",
-          start: startDateTime.toISOString(),
-          end: endDateTime.toISOString(),
-          color: shift.shiftType === "morning" ? "green" : "red",
-          allDay: true,
-          extendedProps: {
-            employees: checkUser,
-            shiftType: shift.shiftType,
-          },
-        };
-      }
-  
-      // If user is NOT assigned, return an empty event with gray color
-      return {
-        id: shift._id,
-        title: "",
-        start: startDateTime.toISOString(),
-        end: endDateTime.toISOString(),
-        color: "gray",
-        allDay: true,
-        extendedProps: {
-          employees: "",
-          shiftType: "morning",
-        },
-      };
-    });
-  
-    // Update state based on whether the user has a schedule
-    setHasSchedule(userHasSchedule);
-  
-    setEvents(formattedEvents);
-  }, [data]);
-  
-
-
-  useEffect(() => {
-    const fetchAnnouncement = async () => {
-      setisLoading(true);
-      try {
-        const announcement = await GetAnnouncement();
-        console.log("Fetched Announcement:", announcement);
-        setAnnouncement(announcement);
-      } catch (error) {
-        console.log("Error fetching announcement:", error);
-      } finally {
-        setisLoading(false);
-      }
-    };
-
-    fetchAnnouncement(); // Call function on mount
-  }, []); // Empty dependency array means it runs once when mounted
-
-  
-
-
-
-=======
     if (modifier === "PM" && hours !== "12") hours = String(parseInt(hours) + 12);
     if (modifier === "AM" && hours === "12") hours = "00";
     return `${hours}:${minutes}:00`;
@@ -280,7 +115,6 @@ const handleAnnouncement = async (e) => {
     }, [reload]); // Empty dependency array means it runs once when mounted
 
     
->>>>>>> origin/request-process
 
 
   return (
@@ -295,10 +129,6 @@ const handleAnnouncement = async (e) => {
             Schedule for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}
           </h3>
 
-<<<<<<< HEAD
-          {/* Announcements & Calendar Grid */}
-          <div className="flex justify-center">
-=======
           {/* Request & Calendar Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
@@ -351,7 +181,6 @@ const handleAnnouncement = async (e) => {
               )}
             </div>
 
->>>>>>> origin/request-process
             {/* Calendar Section (2/3 width) */}
             <div className="bg-white shadow-lg rounded-lg p-3 md:col-span-2">
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Calendar</h2>
@@ -374,21 +203,6 @@ const handleAnnouncement = async (e) => {
             </div>
           </div>
 
-<<<<<<< HEAD
-          {/* User Shift Modal */}
-          <UserShiftModal
-            isOpen={isModalOpen} 
-            onClose={() => setIsModalOpen(false)} 
-            shifts={selectedShift} 
-          />
-        </div>
-      </div>
-
-  );
-};
-
-export default Dashboard;
-=======
         <CreateRequestModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
@@ -403,4 +217,3 @@ export default Dashboard;
 };
 
 export default RequestShift;
->>>>>>> origin/request-process

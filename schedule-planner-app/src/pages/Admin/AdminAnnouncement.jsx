@@ -13,11 +13,7 @@ const AdminAnnouncement = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-<<<<<<< HEAD
-  const announcementsPerPage = 3;
-=======
   const announcementsPerPage = 4;
->>>>>>> origin/request-process
 
   const fetchAnnouncements = async () => {
     try {

@@ -15,18 +15,12 @@ const ProfileEditPage = () => {
     lastname: "",
     email: "",
     department: "",
-<<<<<<< HEAD
-    image: "",
-  });
-
-=======
     image: "", // Add image URL to the state
   });
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
   // Retrieve user ID from local storage
->>>>>>> origin/request-process
   const userId = localStorage.getItem('userId');
 
   const getUser = async () => {
@@ -38,11 +32,7 @@ const ProfileEditPage = () => {
         lastname: response.data.lastname,
         email: response.data.email,
         department: response.data.department,
-<<<<<<< HEAD
-        image: response.data.image,
-=======
         image: response.data.image, // Include image URL
->>>>>>> origin/request-process
       });
       setIsLoading(false);
     } catch (error) {
@@ -67,8 +57,6 @@ const ProfileEditPage = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
   const updatePassword = async (e) => {
     e.preventDefault();
     if (!password || !confirmPassword) {
@@ -91,7 +79,6 @@ const ProfileEditPage = () => {
     }
   };
 
->>>>>>> origin/request-process
   useEffect(() => {
     if (userId) {
       getUser();
@@ -99,11 +86,7 @@ const ProfileEditPage = () => {
       toast.error("User ID not found in local storage.");
       navigate("/login");
     }
-<<<<<<< HEAD
-  }, [userId]);
-=======
   }, [userId]); // Ensure it runs when `userId` changes
->>>>>>> origin/request-process
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -115,96 +98,6 @@ const ProfileEditPage = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-<<<<<<< HEAD
-      <NavbarEmployee />
-
-      <div className="flex-10 p-8 flex justify-center items-center">
-        <div className="max-w-sm w-3/4 bg-white shadow-lg p-4 rounded mt-4">
-          <h2 className="font-semibold text-lg mb-3 text-center">Edit Profile</h2>
-          {isLoading ? (
-            "Loading..."
-          ) : (
-            <form onSubmit={updateUser}>
-              <div className="space-y-3">
-                <div className="text-center">
-                  {user.image && (
-                    <img
-                      src={user.image}
-                      alt="Profile"
-                      className="w-20 h-20 rounded-full mx-auto mb-3 object-cover"
-                    />
-                  )}
-                </div>
-                <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Image URL</label>
-                  <input
-                    type="text"
-                    name="image"
-                    value={user.image}
-                    onChange={handleChange}
-                    className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
-                    placeholder="Image URL"
-                  />
-                </div>
-                <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Firstname</label>
-                  <input
-                    type="text"
-                    name="firstname"
-                    value={user.firstname}
-                    onChange={handleChange}
-                    className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
-                    placeholder="Firstname"
-                  />
-                </div>
-                <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Lastname</label>
-                  <input
-                    type="text"
-                    name="lastname"
-                    value={user.lastname}
-                    onChange={handleChange}
-                    className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
-                    placeholder="Lastname"
-                  />
-                </div>
-                <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={user.email}
-                    onChange={handleChange}
-                    className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
-                    placeholder="Email"
-                  />
-                </div>
-                <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Department</label>
-                  <select
-                    name="department"
-                    value={user.department}
-                    onChange={handleChange}
-                    className="p-2 border rounded w-full text-sm text-gray-600 focus:outline-none focus:shadow-outline focus:border-blue-200"
-                  >
-                    <option value="">Select Department</option>
-                    <option value="Technical">Technical</option>
-                    <option value="IT Support">IT Support</option>
-                    <option value="Sales & Marketing">Sales & Marketing</option>
-                    <option value="Research">Research</option>
-                  </select>
-                </div>
-                <div>
-                  <button
-                    className="block w-full mt-4 bg-blue-700 text-white rounded-sm px-3 py-1 text-sm font-bold hover:bg-blue-600 hover:cursor-pointer"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Updating..." : "Update"}
-                  </button>
-                </div>
-              </div>
-            </form>
-=======
       {/* Sidebar */}
       <NavbarEmployee />
 
@@ -331,7 +224,6 @@ const ProfileEditPage = () => {
                 </div>
               </form>
             </>
->>>>>>> origin/request-process
           )}
         </div>
       </div>
@@ -339,8 +231,4 @@ const ProfileEditPage = () => {
   );
 };
 
-<<<<<<< HEAD
 export default ProfileEditPage;
-=======
-export default ProfileEditPage;
->>>>>>> origin/request-process

@@ -178,13 +178,8 @@ const handleChange = (e) => {
                       className="w-full p-2 border rounded"
                     >
                       <option value="">Select Shift</option>
-<<<<<<< HEAD
-                      <option value="morning">Morning</option>
-                      <option value="night">Night</option>
-=======
                       <option value="on-site">On-site</option>
                       <option value="wfh">Work From Home</option>
->>>>>>> origin/request-process
                     </select>
                   </div>
 

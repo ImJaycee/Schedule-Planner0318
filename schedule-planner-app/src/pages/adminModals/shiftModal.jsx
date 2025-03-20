@@ -16,13 +16,8 @@ const ShiftModal = ({ isOpen, onClose, shifts }) => {
                 <strong>Time:</strong> {new Date(shift.start).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true })} - 
                 {new Date(shift.end).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true })}
               </p>
-<<<<<<< HEAD
-              <p><strong>Office Schedule</strong> {shift.employees}</p>
-              <p><strong>Type:</strong> {shift.color === "green" ? "Morning" : "Night"}</p>
-=======
               <p><strong>Assigned</strong> {shift.employees}</p>
               <p><strong>Type:</strong> {shift.color === "green" ? "On-site" : "WFH"}</p>
->>>>>>> origin/request-process
 
             </div>
           ))

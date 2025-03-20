@@ -1,13 +1,4 @@
-<<<<<<< HEAD
 
-
-import NavbarAdmin from '../../components/NavbarAdmin';
-
-
-
-
-const AdminRequest = () => {
-=======
 import { useEffect, useState } from "react";
 import NavbarAdmin from "../../components/NavbarAdmin";
 import { GetAllRequest } from "../../api/requestDB";
@@ -86,23 +77,11 @@ const AdminRequests = () => {
     );
   });
   
-  
->>>>>>> origin/request-process
 
   return (
     <div className="flex h-screen bg-gray-100">
       <NavbarAdmin />
       <div className="flex-1 p-6">
-<<<<<<< HEAD
-        <h3>reeq</h3>
-      </div>
-      
-    </div>
-  )
-}
-
-export default AdminRequest
-=======
         <h3 className="text-lg font-semibold mb-4">Requests</h3>
 
         {/* Search and Filter */}
@@ -211,4 +190,3 @@ export default AdminRequest
 };
 
 export default AdminRequests;
->>>>>>> origin/request-process
