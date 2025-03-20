@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 import cron from 'node-cron';
 import profileEditRoute from './routes/profileEditRoute.js';
 import requestShift from './routes/requestRoute.js'
+import userManageRoute from './routes/userManageRoute.js';
 
 
 const app = express();
@@ -40,6 +41,7 @@ app.use("/api/shift", shiftRoute);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/edit', profileEditRoute);
 app.use('/api/request-shift', requestShift);
+app.use('/api/user-manage', userManageRoute);
 
 app.use((err, req, res, next) =>{
     const errorStatus = err.status || 500

@@ -30,6 +30,10 @@ const UserSchema = new mongoose.Schema({
         type: Boolean, 
         default: false 
     },  
+    isDeactivated: { 
+        type: Boolean, 
+        default: false 
+    },
     image:{
         type: String,
         default: ""},  
