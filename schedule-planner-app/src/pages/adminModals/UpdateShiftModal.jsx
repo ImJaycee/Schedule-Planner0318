@@ -178,8 +178,8 @@ const handleChange = (e) => {
                       className="w-full p-2 border rounded"
                     >
                       <option value="">Select Shift</option>
-                      <option value="morning">Morning</option>
-                      <option value="night">Night</option>
+                      <option value="on-site">On-site</option>
+                      <option value="wfh">Work From Home</option>
                     </select>
                   </div>
 

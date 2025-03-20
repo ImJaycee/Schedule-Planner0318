@@ -11,7 +11,7 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ResetPassword from './pages/ResetPassword';
 import ForgotPassword from './pages/ForgotPassword';
-import ReqShift from './pages/Employee/ReqShift';
+import RequestShift from './pages/Employee/ReqShift';
 import Profile from './pages/Employee/Profile';
 import AdminAnnouncement from './pages/Admin/AdminAnnouncement';
 import AdminManageShift from './pages/Admin/AdminManageShift';
@@ -40,7 +40,7 @@ function App() {
             {/* Protected Routes */}
             <Route element={<ProtectedRoutes />}>
               <Route path="/homepage" element={<Dashboard />} />
-              <Route path="/request-shift" element={<ReqShift />} />
+              <Route path="/request-shift" element={<RequestShift />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile-edit" element={<ProfileEditPage />} />
             </Route>

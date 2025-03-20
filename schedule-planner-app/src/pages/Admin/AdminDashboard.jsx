@@ -31,7 +31,7 @@ const AdminDashboard = () => {
         end: event.end,
         employees: event.extendedProps?.employees || "None",
         shiftType: event.extendedProps?.shiftType || "night", // Ensure shiftType is set
-        color: event.extendedProps?.shiftType === "morning" ? "green" : "red" // Assign color correctly
+        color: event.extendedProps?.shiftType === "on-site" ? "green" : "red" // Assign color correctly
       }));
 
     if (shiftsForDate.length > 0) {
@@ -69,10 +69,10 @@ const AdminDashboard = () => {
     
       return {
         id: shift._id,
-        title: "View Schedule",
+        title: "",
         start: startDateTime.toISOString(), // Ensure proper format
         end: endDateTime.toISOString(),
-        color: shift.shiftType === "morning" ? "green" : "red",
+        color: shift.shiftType === "on-site" ? "green" : "red",
         allDay: true,
         extendedProps: {
           employees: shift.assignedEmployees.map(emp => emp.firstname).join(", "),

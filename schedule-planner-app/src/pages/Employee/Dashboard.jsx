@@ -41,8 +41,8 @@ const Dashboard = () => {
         start: event.start,
         end: event.end,
         employees: event.extendedProps?.employees || "None",
-        shiftType: event.extendedProps?.shiftType || "night", // Ensure shiftType is set
-        color: event.extendedProps?.shiftType === "morning" ? "green" : "red" // Assign color correctly
+        shiftType: event.extendedProps?.shiftType || "wfh", // Ensure shiftType is set
+        color: event.extendedProps?.shiftType === "on-site" ? "green" : "gray" // Assign color correctly
       }));
 
     if (shiftsForDate.length > 0) {
@@ -111,10 +111,10 @@ const handleAnnouncement = async (e) => {
           title: "",
           start: startDateTime.toISOString(),
           end: endDateTime.toISOString(),
-          color: shift.shiftType === "morning" ? "green" : "red",
+          color: shift.shiftType === "on-site" ? "green" : "gray",
           allDay: true,
           extendedProps: {
-            employees: checkUser,
+            employees: shift.assignedEmployees.map(emp => emp.firstname).join(", "),
             shiftType: shift.shiftType,
           },
         };
@@ -130,7 +130,7 @@ const handleAnnouncement = async (e) => {
         allDay: true,
         extendedProps: {
           employees: "",
-          shiftType: "morning",
+          shiftType: "wfh",
         },
       };
     });
