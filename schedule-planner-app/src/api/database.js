@@ -12,9 +12,11 @@ const CreateShift = async (shiftData) => {
 
     if (response.status === 200) {
       console.log("Shift Created:", shiftData);
+      return response.data;
     }
   } catch (error) {
     console.error("Error creating shift:", error.response?.data?.message || error.message);
+    throw error; 
   }
 };
 
