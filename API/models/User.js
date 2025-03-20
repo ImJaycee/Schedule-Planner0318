@@ -29,6 +29,7 @@ const UserSchema = new mongoose.Schema({
     isVerified: { 
         type: Boolean, 
         default: false 
+<<<<<<< HEAD
     },isDeactivated: { 
         type: Boolean, 
         default: false 
@@ -37,6 +38,12 @@ const UserSchema = new mongoose.Schema({
     image:{
         type: String,
         default: ''},  
+=======
+    },  
+    image:{
+        type: String,
+        default: ""},  
+>>>>>>> origin/request-process
     // verificationCode: { type: String }, // 6-digit email verification code
     verificationToken: { type: String }, // Unique verification token
     verificationExpires: { type: Date }, // Expiration time for both    

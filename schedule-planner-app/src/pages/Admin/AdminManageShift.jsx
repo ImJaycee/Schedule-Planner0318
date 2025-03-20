@@ -47,7 +47,11 @@ const AdminManageShift = () => {
         employees: event.extendedProps?.employees || "None",
         userId: event.extendedProps?.userId || "None",
         shiftType: event.extendedProps?.shiftType || "night",
+<<<<<<< HEAD
         color: event.extendedProps?.shiftType === "morning" ? "green" : "red",
+=======
+        color: event.extendedProps?.shiftType === "on-site" ? "green" : "red",
+>>>>>>> origin/request-process
       }));
 
     setSelectedDate(clickedDate);
@@ -95,7 +99,11 @@ const AdminManageShift = () => {
         title: "View Schedule",
         start: startDateTime.toISOString(), // Ensure proper format
         end: endDateTime.toISOString(),
+<<<<<<< HEAD
         color: shift.shiftType === "morning" ? "green" : "red",
+=======
+        color: shift.shiftType === "on-site" ? "green" : "red",
+>>>>>>> origin/request-process
         allDay: true,
         extendedProps: {
           employees: shift.assignedEmployees.map(emp => emp.firstname).join(", "),

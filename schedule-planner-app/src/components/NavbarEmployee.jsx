@@ -1,15 +1,24 @@
 import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { FaSignOutAlt, FaHome, FaUser, FaBars, FaTimes, FaClipboardList, FaChevronDown } from "react-icons/fa";
 import { AuthContext } from '../context/AuthContext';
 
 import flexiSchedLogo from "../assets/flexi-no-name.png"; 
 
+=======
+import { FaSignOutAlt, FaHome, FaUser, FaBars, FaTimes, FaClipboardList } from "react-icons/fa";
+import { AuthContext } from '../context/AuthContext';
+
+>>>>>>> origin/request-process
 const NavbarEmployee = () => {
   const { user, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+<<<<<<< HEAD
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+=======
+>>>>>>> origin/request-process
   const [title, setTitle] = useState('Dashboard');
   const location = useLocation();
   const navlinks = [
@@ -32,6 +41,7 @@ const NavbarEmployee = () => {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <div
+<<<<<<< HEAD
         className={`fixed md:relative top-0 left-0 w-64 h-full bg-white shadow-xl p-4 flex flex-col justify-between transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-300 ease-in-out`}
@@ -87,6 +97,43 @@ const NavbarEmployee = () => {
             </button>
           </div>
         </div>
+=======
+        className={`fixed md:relative top-0 left-0 w-64 h-full bg-white shadow-xl p-4 transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 transition-transform duration-300 ease-in-out`}
+      >
+        {/* Close Button (Mobile) */}
+        <button
+          className="md:hidden absolute top-4 right-4 text-gray-600"
+          onClick={() => setIsSidebarOpen(false)}
+        >
+          <FaTimes size={24} />
+        </button>
+
+        <h5 className="text-xl font-semibold text-gray-900 mb-4">
+          {location.pathname === "/homepage" ? "Home" : location.pathname === "/request-shift" ? "Request Shift" : location.pathname === "/profile" ? "Profile" : title}
+        </h5>
+
+        <nav className="flex flex-col gap-2">
+          {navlinks.map((navlink) => (
+            <button
+              key={navlink.link}
+              className="flex items-center p-3 rounded-lg hover:bg-blue-50 transition"
+              onClick={() => handleRoutes(navlink.link, navlink.label)}
+            >
+              {navlink.icon}
+              {navlink.label}
+            </button>
+          ))}
+          <button
+            onClick={handleLogout}
+            className="flex items-center p-3 rounded-lg text-red-600 hover:bg-red-50 transition"
+          >
+            <FaSignOutAlt className="mr-3" />
+            Logout
+          </button>
+        </nav>
+>>>>>>> origin/request-process
       </div>
 
       {/* Main Content */}

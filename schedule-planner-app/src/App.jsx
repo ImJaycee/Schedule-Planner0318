@@ -11,7 +11,11 @@ import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import ResetPassword from './pages/ResetPassword';
 import ForgotPassword from './pages/ForgotPassword';
+<<<<<<< HEAD
 import ReqShift from './pages/Employee/ReqShift';
+=======
+import RequestShift from './pages/Employee/ReqShift';
+>>>>>>> origin/request-process
 import Profile from './pages/Employee/Profile';
 import AdminAnnouncement from './pages/Admin/AdminAnnouncement';
 import AdminManageShift from './pages/Admin/AdminManageShift';
@@ -21,9 +25,12 @@ import ProfileEditPage from './pages/Employee/ProfileEditPage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AdminProfileEditPage from './pages/Admin/AdminProfileEditPage';
+<<<<<<< HEAD
 import UserAccs from './pages/Admin/AdminUserAccs';
 import ChangePwd from './pages/Employee/ChangePwd';
 import AdminChangePwd from './pages/Admin/AdminChangePwd';
+=======
+>>>>>>> origin/request-process
 
 function App() {  
   return (
@@ -43,10 +50,16 @@ function App() {
             {/* Protected Routes */}
             <Route element={<ProtectedRoutes />}>
               <Route path="/homepage" element={<Dashboard />} />
+<<<<<<< HEAD
               <Route path="/request-shift" element={<ReqShift />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile-edit" element={<ProfileEditPage />} />
               <Route path="/change-password" element={<ChangePwd />} />
+=======
+              <Route path="/request-shift" element={<RequestShift />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile-edit" element={<ProfileEditPage />} />
+>>>>>>> origin/request-process
             </Route>
 
             <Route element={<ProtectedRoutesAdmin />}>
@@ -56,8 +69,11 @@ function App() {
               <Route path="/admin/profile" element={<AdminProfile />} />
               <Route path="/admin/homepage" element={<AdminDashboard />} />
               <Route path="/admin/profile-edit" element={<AdminProfileEditPage />} />
+<<<<<<< HEAD
               <Route path="/admin/user-accounts" element={<UserAccs />} />
               <Route path="/admin/change-password" element={<AdminChangePwd />} />
+=======
+>>>>>>> origin/request-process
             </Route>
           </Routes>
           <ToastContainer />

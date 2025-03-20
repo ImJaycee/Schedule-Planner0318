@@ -27,6 +27,11 @@ export const UpdateUserDetails = async (req, res) => {
         user.department = department || user.department;
         user.image = image || user.image; // Assign image correctly
 
+<<<<<<< HEAD
+=======
+        console.log(image)
+
+>>>>>>> origin/request-process
         await user.save();
         res.json({ message: 'User updated successfully' });
     } catch (error) {
@@ -34,14 +39,19 @@ export const UpdateUserDetails = async (req, res) => {
     }
 };
 
+<<<<<<< HEAD
 
 
 export const UpdateUserPassword = async (req, res) => {
     console.log('UpdateUserPassword function called');
+=======
+export const UpdateUserPassword = async (req, res) => {
+>>>>>>> origin/request-process
     const { password, confirmPassword } = req.body;
     try {
         const user = await User.findById(req.params.id);
         if (!user) {
+<<<<<<< HEAD
             console.log('User not found');
             return res.status(404).json({ message: 'User not found' });
         }
@@ -51,10 +61,18 @@ export const UpdateUserPassword = async (req, res) => {
         if (password && confirmPassword) {
             if (password !== confirmPassword) {
                 console.log('Passwords do not match');
+=======
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (password && confirmPassword) {
+            if (password !== confirmPassword) {
+>>>>>>> origin/request-process
                 return res.status(400).json({ message: 'Passwords do not match' });
             }
             const salt = await bcrypt.genSalt(10);
             user.password = await bcrypt.hash(password, salt);
+<<<<<<< HEAD
         } else {
             console.log('Password and Confirm Password are required');
             return res.status(400).json({ message: 'Password and Confirm Password are required' });
@@ -66,6 +84,13 @@ export const UpdateUserPassword = async (req, res) => {
         res.json({ message: 'Password updated successfully' });
     } catch (error) {
         console.error('Error updating password:', error);
+=======
+        }
+
+        await user.save();
+        res.json({ message: 'Password updated successfully' });
+    } catch (error) {
+>>>>>>> origin/request-process
         res.status(500).json({ message: error.message });
     }
 };

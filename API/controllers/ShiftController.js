@@ -46,9 +46,12 @@ export const CreateShift = async (req, res, next) => {
     }
 };
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> origin/request-process
  // update a Shift
  export const updateShift = async (req, res, next) => {
     const id = req.params.id; // Extract ID from URL
