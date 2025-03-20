@@ -9,11 +9,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import cron from 'node-cron';
 import profileEditRoute from './routes/profileEditRoute.js';
-<<<<<<< HEAD
-import userManageRoute from './routes/userManageRoute.js';
-=======
 import requestShift from './routes/requestRoute.js'
->>>>>>> origin/request-process
 
 
 const app = express();
@@ -43,13 +39,7 @@ app.use("/api/user", userRoute);
 app.use("/api/shift", shiftRoute);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/edit', profileEditRoute);
-<<<<<<< HEAD
-app.use('/api/user-manage', userManageRoute);
-
-
-=======
 app.use('/api/request-shift', requestShift);
->>>>>>> origin/request-process
 
 app.use((err, req, res, next) =>{
     const errorStatus = err.status || 500
