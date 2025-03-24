@@ -1,6 +1,6 @@
 
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+
 import { useNavigate } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -16,7 +16,7 @@ import NavbarAdmin from "../../components/NavbarAdmin"
 
 
 const AdminManageShift = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState([]);
@@ -79,7 +79,7 @@ const AdminManageShift = () => {
     return `${hours}:${minutes}:00`; // Ensure seconds are included
   };
 
-  const {data, loading, error, refetch} = useFetch("http://localhost:4000/api/shift/")
+  const {data, loading, error, refetch} = useFetch("http://localhost:4000/api/shift/");
   const [events, setEvents] = useState([]);
 
   // Transform fetched data to FullCalendar format
@@ -89,6 +89,7 @@ const AdminManageShift = () => {
       // Convert Date String + Time String to ISO DateTime
       const startDateTime = new Date(`${shift.date.split("T")[0]}T${convertTo24Hour(shift.startTime)}`);
       const endDateTime = new Date(`${shift.date.split("T")[0]}T${convertTo24Hour(shift.endTime)}`);
+      
     
       return {
         id: shift._id,
@@ -102,6 +103,7 @@ const AdminManageShift = () => {
           userId: shift.assignedEmployees?.map(emp => emp._id).join(", "),
           shiftType: shift.shiftType,
         },
+
       };
     });
     

@@ -18,6 +18,10 @@ shiftType: {
     enum: ["wfh", "on-site"], 
     required: true 
 },
+department: { 
+    type: String
+    // required: true,
+},
   assignedEmployees: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 }, { timestamps: true });
 

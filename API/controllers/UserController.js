@@ -73,3 +73,22 @@ export const getAllUser = async(req, res, next) => {
         }
 };
 
+
+
+
+// get all User with speific department
+export const getAllUserByDept = async(req, res, next) => { 
+    try {   
+            const getAll_User = await User.find({department: req.params.department});
+            console.log(req.params.department);
+            
+            if (getAll_User.length === 0) {
+                return res.status(404).json({ message: "Empty" });
+            }
+            
+            return res.send(getAll_User);
+            
+        } catch (error) {
+            next(error);
+        }
+};

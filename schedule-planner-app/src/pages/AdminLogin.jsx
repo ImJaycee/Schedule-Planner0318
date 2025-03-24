@@ -66,7 +66,7 @@ const AdminLogin = () => {
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       localStorage.setItem("accessToken", res.data.accessToken); // Save token
       localStorage.setItem("userId", res.data.user._id);
-
+      localStorage.setItem("department", res.data.user.department);
       // Save credentials if "Remember Me" is checked
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", email);

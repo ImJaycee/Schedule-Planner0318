@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import useFetch from "../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 import { CreateShift } from "../../api/database";
+
+
 
 const CreateShiftModal = ({ isOpen, onClose, shiftDate, onShiftAdded }) => {
   if (!isOpen) return null;
@@ -11,6 +13,7 @@ const CreateShiftModal = ({ isOpen, onClose, shiftDate, onShiftAdded }) => {
 
   const [assignedEmployees, setSelectedUsers] = useState([]);
   const [isLoading, setisLoading] = useState(false);
+  const department = localStorage.getItem("department");
 
   const [formData, setFormData] = useState({
     date: shiftDate,
@@ -71,8 +74,8 @@ const CreateShiftModal = ({ isOpen, onClose, shiftDate, onShiftAdded }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const { data, loading, error } = useFetch("http://localhost:4000/api/user/");
-
+  const { data, loading, error } = useFetch(`http://localhost:4000/api/user/all/${department}`);
+  console.log(data)
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">

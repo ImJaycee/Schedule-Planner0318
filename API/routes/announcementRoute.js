@@ -1,7 +1,7 @@
 import express from "express";
 
 import { createAnnouncement, getAnnouncements, updateAnnouncement, deleteAnnouncement, getActiveAnnouncements } from "../controllers/announcementController.js";
-import { verifyToken } from "../middleware/middlewareForId.js";
+
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
 
 const router = express.Router();
