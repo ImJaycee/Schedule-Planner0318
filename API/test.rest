@@ -1,0 +1,61 @@
+GET http://localhost:4000/api/announcements
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDJkZmNjZjkyZDk4ZjM3MGNiYzI5MCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MTkyMTcwNn0.0g7jRuPjqzxV7CM92YzRG3WF2fACLzadNEX8WDfe6XI
+
+###
+
+POST http://localhost:4000/api/announcements
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDJkZmNjZjkyZDk4ZjM3MGNiYzI5MCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MTkyMTcwNn0.0g7jRuPjqzxV7CM92YzRG3WF2fACLzadNEX8WDfe6XI
+Content-Type: application/json
+
+{
+    "title": "New123 1",
+    "content": "This is a new announcement",
+    "expiresAt": "2025-03-20T00:00:00.000Z"
+}
+###
+
+put http://localhost:4000/api/announcements/67d39e465f4f1f1e289cb49a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDJkZmNjZjkyZDk4ZjM3MGNiYzI5MCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MTkyMTcwNn0.0g7jRuPjqzxV7CM92YzRG3WF2fACLzadNEX8WDfe6XI
+Content-Type: application/json
+
+{
+    "title": "mer 1",
+    "content": "This is a new announcement",
+    "expiresAt": "2025-03-20T00:00:00.000Z"
+}
+
+###
+put http://localhost:4000/api/edit/67d7cc0cb090fdc7dcdb3c00/password
+Content-Type: application/json
+
+{
+    "password": "123456789",
+    "confirmPassword" : "123456789"
+}
+
+
+###
+
+
+get http://localhost:4000/api/user-manage/users?department="technical"
+Authorization :  bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDdjYzBjYjA5MGZkYzdkY2RiM2MwMCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MjQ0ODkyOX0.Yz_oBFxgZgeolKNmOfWo1431bIW7rvQTdxR2d42V4pU
+
+
+###
+
+
+POST http://localhost:4000/api/auth/login/admin
+Content-Type: application/json
+
+{
+    
+    "email": "castrosalmer0604@gmail.com",
+    "password": "mercastro"
+    
+    }
+
+
+
+###
+
+get http://localhost:4000/api/user/all/Technical
