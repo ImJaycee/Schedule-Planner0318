@@ -17,7 +17,7 @@ const UserShiftModal = ({ isOpen, onClose, shifts }) => {
             <strong>Time:</strong> {new Date(shift.start).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true })} - 
             {new Date(shift.end).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true })}
           </p>
-          <p><strong>Assigned:</strong> {shift.employees}</p>
+          <p><strong>Assigned On-Site:</strong> {shift.employees}</p>
           <p><strong>Type:</strong> On-site</p>
         </div>
       ) :  <p>WFH ka idol.</p>

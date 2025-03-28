@@ -43,7 +43,6 @@ export const CreateShiftRequest = async (req, res, next) => {
                     name,
                     shiftId,
                     userMessage,
-                    adminMessage //for admin only
                 });
                 await existingRequest.save();
             

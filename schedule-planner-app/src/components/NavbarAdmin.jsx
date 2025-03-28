@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FaSignOutAlt, FaHome, FaBullhorn, FaUser, FaBars, FaTimes, FaClipboardList, FaRegCalendar, FaUserFriends, FaChevronDown } from "react-icons/fa";
+import { FaSignOutAlt, FaHome, FaBullhorn, FaUser, FaBars, FaTimes, FaClipboardList,FaExchangeAlt , FaRegCalendar, FaUserFriends, FaChevronDown } from "react-icons/fa";
 import { AuthContext } from '../context/AuthContext';
 
 import flexiSchedLogo from "../assets/flexi-no-name.png"; 
@@ -17,6 +17,7 @@ const NavbarAdmin = () => {
     { link: "/admin/homepage", label: "Home", icon: <FaHome className="mr-3 text-blue-900" /> },
     { link: "/admin/manage-shift", label: "Manage Shift", icon: <FaRegCalendar className="mr-3 text-blue-900" /> },
     { link: "/admin/request-shift", label: "Requests", icon: <FaClipboardList className="mr-3 text-blue-900" /> },
+    { link: "/admin/request-shift/swaps", label: "Shift Swap", icon: <FaExchangeAlt  className="mr-3 text-blue-900" /> },
     { link: "/admin/announcement", label: "Announcement", icon: <FaBullhorn className="mr-3 text-blue-900" /> },
     { link: "/admin/profile", label: "Profile", icon: <FaUser className="mr-3 text-blue-900" /> },
     { link: "/admin/user-accounts", label: "User Accounts", icon: <FaUserFriends className="mr-3 text-blue-900" /> }
@@ -33,10 +34,10 @@ const NavbarAdmin = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen">
       {/* Sidebar */}
       <div
-        className={`fixed md:relative top-0 left-0 w-64 h-full bg-white shadow-xl p-4 flex flex-col justify-between transform ${
+        className={` z-10 fixed md:relative top-0 left-0 w-64 h-full bg-white shadow-xl p-4 flex flex-col justify-between transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-300 ease-in-out`}
       >
@@ -50,6 +51,7 @@ const NavbarAdmin = () => {
             {location.pathname === "/admin/homepage" ? "Home" : 
              location.pathname === "/admin/manage-shift" ? "Manage Shift" : 
              location.pathname === "/admin/request-shift" ? "Requests" : 
+             location.pathname === "/admin/request-shift/swaps" ? "Shift Swap" : 
              location.pathname === "/admin/announcement" ? "Announcement" : 
              location.pathname === "/admin/profile" ? "Profile" : 
              location.pathname === "/admin/user-accounts" ? "User Accounts" : title}

@@ -25,6 +25,7 @@ const Dashboard = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
+
   const handleDateClick = (info) => {
     const clickedDate = info.dateStr;
 
@@ -37,8 +38,8 @@ const Dashboard = () => {
         start: event.start,
         end: event.end,
         employees: event.extendedProps?.employees || "None",
-        shiftType: event.extendedProps?.shiftType || "night", // Ensure shiftType is set
-        color: event.extendedProps?.shiftType === "morning" ? "green" : "red" // Assign color correctly
+        shiftType: event.extendedProps?.shiftType || "wfh", // Ensure shiftType is set
+        color: event.extendedProps?.shiftType === "on-site" ? "green" : "red" // Assign color correctly
       }));
 
     if (shiftsForDate.length > 0) {
@@ -89,27 +90,26 @@ const Dashboard = () => {
 
       const userID = localStorage.getItem("userId");
 
-      // Check if the user is assigned to this shift
-      const checkUser = shift.assignedEmployees
-        .filter(emp => emp._id === userID) // Filter employees with matching userID
-        .map(emp => emp.firstname);
+// Check if the user is assigned to this shift
+const checkUser = shift.assignedEmployees.map(emp => emp.firstname).join(", ");
+const checkId = shift.assignedEmployees.map(emp => emp._id);
 
-      // If user is assigned, set flag to true
-      if (checkUser.length > 0) {
-        userHasSchedule = true;
-        return {
-          id: shift._id,
-          title: "",
-          start: startDateTime.toISOString(),
-          end: endDateTime.toISOString(),
-          color: shift.shiftType === "morning" ? "green" : "red",
-          allDay: true,
-          extendedProps: {
-            employees: checkUser,
-            shiftType: shift.shiftType,
-          },
-        };
-      }
+// If user is assigned, set flag to true
+if (checkUser.length > 0) {
+  userHasSchedule = true;
+  return {
+    id: shift._id,
+    title: checkId.includes(userID) ? "On-Site" : "WFH",
+    start: startDateTime.toISOString(),
+    end: endDateTime.toISOString(),
+    color: shift.shiftType === "on-site" ? "green" : "red",
+    allDay: true,
+    extendedProps: {
+      employees: checkUser,
+      shiftType: shift.shiftType,
+    },
+  };
+}
 
       // If user is NOT assigned, return an empty event with gray color
       return {
@@ -121,7 +121,7 @@ const Dashboard = () => {
         allDay: true,
         extendedProps: {
           employees: "",
-          shiftType: "morning",
+          shiftType: "on-site",
         },
       };
     });
@@ -138,7 +138,7 @@ const Dashboard = () => {
       try {
         const announcement = await GetAnnouncement();
         console.log("Fetched Announcement:", announcement);
-        setAnnouncements(announcement.slice(0, 4)); // Limit to 4 announcements
+        setAnnouncements(announcement); 
       } catch (error) {
         console.log("Error fetching announcement:", error);
       } finally {
@@ -150,7 +150,7 @@ const Dashboard = () => {
   }, []); // Empty dependency array means it runs once when mounted
 
   return (
-    <div className="flex flex-col md:flex-row max-h-full bg-gray-100">
+    <div className="flex flex-col md:flex-row max-h-screen bg-gray-100">
       {/* Sidebar */}
       <NavbarEmployee isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
@@ -169,7 +169,7 @@ const Dashboard = () => {
             {isLoading ? (
               <p className="text-gray-500">Loading announcements...</p>
             ) : announcements.length > 0 ? (
-              <ul className="space-y-4 max-h-96 overflow-y-auto">
+              <ul className="space-y-4 max-h-140 overflow-y-auto">
                 {announcements.map((announcement, index) => (
                   <li
                     key={index}

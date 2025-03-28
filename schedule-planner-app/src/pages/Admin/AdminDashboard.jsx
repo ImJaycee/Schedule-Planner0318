@@ -90,12 +90,12 @@ const AdminDashboard = () => {
 
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <NavbarAdmin isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col p-4 overflow-auto">
+      <div className="flex flex-col p-4 mx-auto">
         {/* Page Title */}
         <h3 className="text-xl text-center font-semibold mb-4">
           Schedule for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}

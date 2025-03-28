@@ -8,7 +8,6 @@ import interactionPlugin from "@fullcalendar/interaction"; // For click & drag e
 import timeGridPlugin from "@fullcalendar/timegrid"; // For week/day views
 import listPlugin from "@fullcalendar/list"; // For list vie
 import useFetch from "../../hooks/useFetch";
-import Modal from "../adminModals/shiftModal";
 import CreateShiftModal from "../adminModals/CreateShiftModal";
 import UpdateShiftModal from "../adminModals/UpdateShiftModal";
 import NavbarAdmin from "../../components/NavbarAdmin"
