@@ -73,3 +73,19 @@ export const getAllUser = async(req, res, next) => {
         }
 };
 
+// get all User
+export const getAllUserSwap = async(req, res, next) => { 
+    try {
+            const getAll_User = await User.find();
+    
+            if (getAll_User.length === 0) {
+                return res.status(404).json({ message: "Empty" });
+            }
+            
+            return res.send(getAll_User);
+            
+        } catch (error) {
+            next(error);
+        }
+};
+

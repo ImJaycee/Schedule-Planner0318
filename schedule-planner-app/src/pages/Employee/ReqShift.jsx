@@ -74,26 +74,7 @@ const RequestShift = () => {
     });
     setEvents(formattedEvents);
   }, [data]);
-
-  // useEffect(() => {
-  //   const userId = localStorage.getItem("userId");
   
-  //   const fetchRequest = async () => {
-  //     setisLoading(true);
-  //     try {
-  //       const request = await GetRequest(userId);
-  //       setRequest(request || []); 
-  //     } catch (error) {
-  //       console.error("Error fetching request:", error);
-  //     } finally {
-  //       setisLoading(false);
-  //     }
-  //   };
-  
-  //   fetchRequest(); 
-  
-  // }, []); 
-
     useEffect(() => {
       const userId = localStorage.getItem("userId");
   

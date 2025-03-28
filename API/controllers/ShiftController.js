@@ -8,13 +8,14 @@ import { createError } from '../utils/error.js';
 
 export const CreateShift = async (req, res, next) => {
     try {
-        const { date, startTime, endTime, shiftType, assignedEmployees } = req.body;
+        const { date, startTime, endTime, department, shiftType, assignedEmployees } = req.body;
 
         // Convert date to ensure consistency
         const shiftDate = new Date(date).toISOString().split("T")[0];
+       
 
         // Check if a shift with the same date, start & end time, and shift type exists
-        let existingShift = await Shift.findOne({ date: shiftDate, startTime, endTime, shiftType });
+        let existingShift = await Shift.findOne({ date: shiftDate, startTime, endTime, department, shiftType });
 
         if (existingShift) {
             // Use MongoDB `$addToSet` to prevent duplicate employees
@@ -28,6 +29,7 @@ export const CreateShift = async (req, res, next) => {
                 date: shiftDate,
                 startTime,
                 endTime,
+                department,
                 shiftType,
                 assignedEmployees
             });
@@ -134,9 +136,10 @@ export const getShift = async(req, res, next) => {
 
 // get all shift
 export const getAllShift = async(req, res, next) => { 
+    
     try {
-        const shifts = await Shift.find().populate("assignedEmployees", "firstname email _id"); // Fetch users
-       
+
+        const shifts = await Shift.find().populate("assignedEmployees", "firstname email _id"); // Fetch users       
     
             if (shifts.length === 0) {
                 return res.status(404).json({ message: "Empty" });

@@ -12,11 +12,12 @@ const CreateShiftModal = ({ isOpen, onClose, shiftDate, onShiftAdded }) => {
   const [assignedEmployees, setSelectedUsers] = useState([]);
   const [isLoading, setisLoading] = useState(false);
 
+
   const [formData, setFormData] = useState({
     date: shiftDate,
     startTime: "",
     endTime: "",
-    department: "",
+    department: localStorage.getItem("department")?.replace(/^"(.*)"$/, "$1"),
     shiftType: "",
     assignedEmployees: [],
   });
@@ -72,6 +73,10 @@ const CreateShiftModal = ({ isOpen, onClose, shiftDate, onShiftAdded }) => {
   };
 
   const { data, loading, error } = useFetch("http://localhost:4000/api/user/");
+
+  useEffect(()=>{
+    console.log(localStorage.getItem("department"))
+  })
 
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
