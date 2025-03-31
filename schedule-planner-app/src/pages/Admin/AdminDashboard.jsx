@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction"; // For click & drag events
@@ -9,9 +8,9 @@ import listPlugin from "@fullcalendar/list"; // For list vie
 import useFetch from "../../hooks/useFetch";
 import Modal from "../adminModals/shiftModal";
 import NavbarAdmin from "../../components/NavbarAdmin"
+import convertTo24Hour from "../../utils/utils";
 
 const AdminDashboard = () => {
-  const { user, dispatch } = useContext(AuthContext);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState([]);
@@ -43,21 +42,9 @@ const AdminDashboard = () => {
 };
  
 
-  const convertTo24Hour = (time12h) => {
-    const [time, modifier] = time12h.split(" ");
-    let [hours, minutes] = time.split(":");
-  
-    if (modifier === "PM" && hours !== "12") {
-      hours = String(parseInt(hours) + 12);
-    } else if (modifier === "AM" && hours === "12") {
-      hours = "00";
-    }
-  
-    return `${hours}:${minutes}:00`; // Ensure seconds are included
-  };
-
-  const {data, loading, error} = useFetch("http://localhost:4000/api/shift/")
+  const {data} = useFetch("http://localhost:4000/api/shift/")
   const [events, setEvents] = useState([]);
+
 
   // Transform fetched data to FullCalendar format
   useEffect(() => {
@@ -66,7 +53,8 @@ const AdminDashboard = () => {
       // Convert Date String + Time String to ISO DateTime
       const startDateTime = new Date(`${shift.date.split("T")[0]}T${convertTo24Hour(shift.startTime)}`);
       const endDateTime = new Date(`${shift.date.split("T")[0]}T${convertTo24Hour(shift.endTime)}`);
-    
+
+      const employee = shift.assignedEmployees.map(emp => emp.firstname).join(", ");
       return {
         id: shift._id,
         title: "",
@@ -75,7 +63,7 @@ const AdminDashboard = () => {
         color: shift.shiftType === "on-site" ? "green" : "red",
         allDay: true,
         extendedProps: {
-          employees: shift.assignedEmployees.map(emp => emp.firstname).join(", "),
+          employees: employee,
           shiftType: shift.shiftType,
         },
       };
