@@ -179,6 +179,7 @@ export const getAllShift = async(req, res, next) => {
 export const getAllSpecificDataShiftForUpdate = async (req, res, next) => {
     try {
         const { id, department } = req.params;
+        
 
         // Fetch the shift by ID and department
         const get_Shift = await Shift.findOne({ _id: id, department });
@@ -206,6 +207,7 @@ export const getAllSpecificDataShiftForUpdate = async (req, res, next) => {
 
 // get all User with speific department create
 export const getAllUserByDept = async(req, res, next) => { 
+    console.log("Back-end here: ",req.params.department)
     try {   
             const getAll_User = await User.find({department: req.params.department});
             console.log(req.params.department);
@@ -213,10 +215,12 @@ export const getAllUserByDept = async(req, res, next) => {
             if (getAll_User.length === 0) {
                 return res.status(404).json({ message: "Empty" });
             }
-            
+            console.log(getAll_User)
             return res.send(getAll_User);
             
         } catch (error) {
+            console.log("Error at controller",error)
             next(error);
+            
         }
 };
