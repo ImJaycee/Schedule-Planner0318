@@ -23,6 +23,9 @@ Content-Type: application/json
     "content": "This is a new announcement",
     "expiresAt": "2025-03-20T00:00:00.000Z"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/cloudinary-profile
 }
 
 ###
@@ -40,6 +43,40 @@ Content-Type: application/json
 
 get http://localhost:4000/api/user-manage/users?department="technical"
 Authorization :  bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDdjYzBjYjA5MGZkYzdkY2RiM2MwMCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MjQ0ODkyOX0.Yz_oBFxgZgeolKNmOfWo1431bIW7rvQTdxR2d42V4pU
+<<<<<<< HEAD
 =======
 }
 >>>>>>> origin/request-process
+=======
+
+
+###
+
+
+POST http://localhost:4000/api/auth/login/admin
+Content-Type: application/json
+
+{
+    
+    "email": "castrosalmer0604@gmail.com",
+    "password": "mercastro"
+    
+    }
+
+
+
+###
+
+get http://localhost:4000/api/user/all/Technical
+
+
+###
+
+put http://localhost:4000/api/edit/67d7cc0cb090fdc7dcdb3c00
+Content-Type: application/json
+
+{
+    "firstname": "Mer",
+    "lastname": "Castro"
+}
+>>>>>>> origin/cloudinary-profile

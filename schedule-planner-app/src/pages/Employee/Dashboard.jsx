@@ -16,8 +16,10 @@ const Dashboard = () => {
   const { user, dispatch } = useContext(AuthContext);
 
   const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState([]);
+  const [selectedDepartment, setSelectedDepartment] = useState(""); // State for selected department
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [hasSchedule, setHasSchedule] = useState(false);
@@ -25,12 +27,11 @@ const Dashboard = () => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-
   const handleDateClick = (info) => {
     const clickedDate = info.dateStr;
 
     // Get only shifts where the user is assigned
-    const shiftsForDate = events
+    const shiftsForDate = filteredEvents
       .filter(event => event.start.startsWith(clickedDate) && event.extendedProps?.employees !== "None")
       .map(event => ({
         id: event.id,
@@ -90,26 +91,28 @@ const Dashboard = () => {
 
       const userID = localStorage.getItem("userId");
 
-// Check if the user is assigned to this shift
-const checkUser = shift.assignedEmployees.map(emp => emp.firstname).join(", ");
-const checkId = shift.assignedEmployees.map(emp => emp._id);
+      // Check if the user is assigned to this shift
+      const checkUser = shift.assignedEmployees
+        .filter(emp => emp._id === userID) // Filter employees with matching userID
+        .map(emp => emp.firstname);
 
-// If user is assigned, set flag to true
-if (checkUser.length > 0) {
-  userHasSchedule = true;
-  return {
-    id: shift._id,
-    title: checkId.includes(userID) ? "On-Site" : "WFH",
-    start: startDateTime.toISOString(),
-    end: endDateTime.toISOString(),
-    color: shift.shiftType === "on-site" ? "green" : "red",
-    allDay: true,
-    extendedProps: {
-      employees: checkUser,
-      shiftType: shift.shiftType,
-    },
-  };
-}
+      // If user is assigned, set flag to true
+      if (checkUser.length > 0) {
+        userHasSchedule = true;
+        return {
+          id: shift._id,
+          title: "",
+          start: startDateTime.toISOString(),
+          end: endDateTime.toISOString(),
+          color: shift.shiftType === "on-site" ? "green" : "red",
+          allDay: true,
+          extendedProps: {
+            employees: checkUser,
+            shiftType: shift.shiftType,
+            department: shift.department, // Include department
+          },
+        };
+      }
 
       // If user is NOT assigned, return an empty event with gray color
       return {
@@ -122,6 +125,7 @@ if (checkUser.length > 0) {
         extendedProps: {
           employees: "",
           shiftType: "on-site",
+          department: shift.department, // Include department
         },
       };
     });
@@ -130,7 +134,18 @@ if (checkUser.length > 0) {
     setHasSchedule(userHasSchedule);
 
     setEvents(formattedEvents);
+    setFilteredEvents(formattedEvents); // Initially show all events
   }, [data]);
+
+  // Filter events based on selected department
+  useEffect(() => {
+    if (selectedDepartment) {
+      const filtered = events.filter(event => event.extendedProps.department === selectedDepartment);
+      setFilteredEvents(filtered);
+    } else {
+      setFilteredEvents(events); // Show all events if no department is selected
+    }
+  }, [selectedDepartment, events]);
 
   useEffect(() => {
     const fetchAnnouncement = async () => {
@@ -138,7 +153,7 @@ if (checkUser.length > 0) {
       try {
         const announcement = await GetAnnouncement();
         console.log("Fetched Announcement:", announcement);
-        setAnnouncements(announcement); 
+        setAnnouncements(announcement); // Limit to 4 announcements
       } catch (error) {
         console.log("Error fetching announcement:", error);
       } finally {
@@ -155,21 +170,16 @@ if (checkUser.length > 0) {
       <NavbarEmployee isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col p-3 overflow-auto">
-        {/* Page Title */}
-        <h3 className="text-2xl text-center font-semibold mb-2">
-          Schedule for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}
-        </h3>
-
+      <div className="flex-1 flex flex-col p-3 mt-5">
         {/* Announcements & Calendar Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Announcements Section */}
-          <div className="bg-white shadow-lg rounded-lg p-6 md:col-span-1">
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">Announcements</h2>
+          <div className="bg-white shadow-lg rounded-lg p-3 md:col-span-1">
+            <h2 className="text-xl font-semibold text-gray-700 flex flex-col items-center mb-4">Announcements</h2>
             {isLoading ? (
               <p className="text-gray-500">Loading announcements...</p>
             ) : announcements.length > 0 ? (
-              <ul className="space-y-4 max-h-140 overflow-y-auto">
+              <ul className="grid grid-cols-1 gap-6 max-h-140 overflow-y-auto">
                 {announcements.map((announcement, index) => (
                   <li
                     key={index}
@@ -193,8 +203,26 @@ if (checkUser.length > 0) {
           </div>
 
           {/* Calendar Section (2/3 width) */}
-          <div className="bg-white shadow-lg rounded-lg p-3 md:col-span-2">
-            <h2 className="text-xl font-semibold text-gray-700 mb-2">Calendar</h2>
+          <div className="bg-white shadow-lg rounded-lg p-3 md:col-span-2 relative">
+            {/* Filter Dropdown */}
+            <div className="absolute top-3 right-3">
+              <label className="block text-sm font-medium text-gray-700">Filter</label>
+              <select
+                value={selectedDepartment}
+                onChange={(e) => setSelectedDepartment(e.target.value)}
+                className="p-2 border rounded"
+              >
+                <option value="">All Departments</option>
+                <option value="Technical">Technical</option>
+                <option value="IT Support">IT Support</option>
+                <option value="Sales & Marketing">Sales & Marketing</option>
+                <option value="Research">Research</option>
+              </select>
+            </div>
+
+            <h2 className="flex flex-col items-center text-xl font-semibold text-gray-700 mb-2">
+              Schedule for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}
+            </h2>
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
               initialView="dayGridMonth"
@@ -208,7 +236,7 @@ if (checkUser.length > 0) {
               slotMinTime="07:30:00"
               slotMaxTime="20:00:00"
               dateClick={handleDateClick}
-              events={events}
+              events={filteredEvents} // Use filtered events
               eventClick={false}
             />
           </div>

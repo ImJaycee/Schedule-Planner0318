@@ -175,6 +175,8 @@ const sendVerificationEmail = async (email, token) => {
                 return next(createError(400, "Please verify your email"));
               }
           }
+
+          if(user.isDeactivated) return next(createError(400, "Account deactivated, contact admin"))
   
           const passwordCorrect = await bcrypt.compare(req.body.password, user.password);
           if(!passwordCorrect) 

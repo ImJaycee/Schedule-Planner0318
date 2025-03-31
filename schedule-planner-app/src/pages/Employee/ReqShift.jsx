@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import FullCalendar from "@fullcalendar/react";
@@ -49,7 +48,6 @@ const RequestShift = () => {
     if (modifier === "AM" && hours === "12") hours = "00";
     return `${hours}:${minutes}:00`;
   };
-
 
   const { data, loading, error, refetch } = useFetch(`http://localhost:4000/api/shift/`);
 
