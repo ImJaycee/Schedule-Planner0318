@@ -17,8 +17,9 @@ const ProfileEditPage = () => {
     department: "",
     image: "",
   });
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
 
   const getUser = async () => {
     setIsLoading(true);
@@ -38,21 +39,50 @@ const ProfileEditPage = () => {
     }
   };
 
+  const uploadImageToCloudinary = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "jm-employ"); // Replace with Cloudinary upload preset
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dxofaxn5o", // Replace 'your-cloud-name'
+        formData
+      );
+      return response.data.secure_url; // Return the image URL
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      toast.error("Image upload failed");
+      return null;
+    }
+  };
+
   const updateUser = async (e) => {
     e.preventDefault();
-    if (!user.firstname || !user.lastname || !user.email || !user.department || !user.image) {
-      toast.error("Please fill out all fields.");
-      return;
+    setIsLoading(true);
+
+    const formData = new FormData();
+    formData.append('firstname', user.firstname);
+    formData.append('lastname', user.lastname);
+    formData.append('email', user.email);
+    formData.append('department', user.department);
+    if (selectedImage) {
+        formData.append('image', selectedImage); // Append the image file
     }
 
     try {
-      await axios.put(`http://localhost:4000/api/edit/${userId}`, user);
-      toast.success("Updated user successfully");
-      navigate("/profile");
+        await axios.put(`http://localhost:4000/api/edit/${userId}`, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        toast.success('Updated user successfully');
+        navigate('/profile');
     } catch (error) {
-      toast.error(error.message);
+        toast.error(error.response?.data?.message || error.message);
+    } finally {
+        setIsLoading(false);
     }
-  };
+};
 
   useEffect(() => {
     if (userId) {
@@ -69,6 +99,10 @@ const ProfileEditPage = () => {
       ...prevUser,
       [name]: value,
     }));
+  };
+
+  const handleImageChange = (e) => {
+    setSelectedImage(e.target.files[0]);
   };
 
   return (
@@ -93,14 +127,12 @@ const ProfileEditPage = () => {
                   )}
                 </div>
                 <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Image URL</label>
+                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Profile Image</label>
                   <input
-                    type="text"
-                    name="image"
-                    value={user.image}
-                    onChange={handleChange}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
                     className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
-                    placeholder="Image URL"
                   />
                 </div>
                 <div>
@@ -169,3 +201,4 @@ const ProfileEditPage = () => {
 };
 
 export default ProfileEditPage;
+

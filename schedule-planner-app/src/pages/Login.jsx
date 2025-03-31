@@ -66,7 +66,6 @@ const Login = () => {
       localStorage.setItem("userId", res.data.user._id);
       localStorage.setItem("userTemp", JSON.stringify(res.data.user)); 
       localStorage.setItem("accessToken", res.data.accessToken); // Save token
-
       // Save credentials if "Remember Me" is checked
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", formData.email);

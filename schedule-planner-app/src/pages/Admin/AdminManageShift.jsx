@@ -8,14 +8,16 @@ import interactionPlugin from "@fullcalendar/interaction"; // For click & drag e
 import timeGridPlugin from "@fullcalendar/timegrid"; // For week/day views
 import listPlugin from "@fullcalendar/list"; // For list vie
 import useFetch from "../../hooks/useFetch";
+import Modal from "../adminModals/shiftModal";
 import CreateShiftModal from "../adminModals/CreateShiftModal";
 import UpdateShiftModal from "../adminModals/UpdateShiftModal";
 import NavbarAdmin from "../../components/NavbarAdmin"
 
-
+const AdminId = localStorage.getItem("userId");
+const department = localStorage.getItem("department");
 
 const AdminManageShift = () => {
-  const { user, dispatch } = useContext(AuthContext);
+  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState([]);
@@ -78,7 +80,7 @@ const AdminManageShift = () => {
     return `${hours}:${minutes}:00`; // Ensure seconds are included
   };
 
-  const {data, loading, error, refetch} = useFetch("http://localhost:4000/api/shift/")
+  const {data, loading, error, refetch} = useFetch(`http://localhost:4000/api/shift/manage/${department}`);
   const [events, setEvents] = useState([]);
 
   // Transform fetched data to FullCalendar format
@@ -88,10 +90,11 @@ const AdminManageShift = () => {
       // Convert Date String + Time String to ISO DateTime
       const startDateTime = new Date(`${shift.date.split("T")[0]}T${convertTo24Hour(shift.startTime)}`);
       const endDateTime = new Date(`${shift.date.split("T")[0]}T${convertTo24Hour(shift.endTime)}`);
+      
     
       return {
         id: shift._id,
-        title: "View Schedule",
+        title: `Created by: ${shift.CreatedBy?.firstname || "Unknown"}`,
         start: startDateTime.toISOString(), // Ensure proper format
         end: endDateTime.toISOString(),
         color: shift.shiftType === "on-site" ? "green" : "red",

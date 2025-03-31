@@ -8,14 +8,13 @@ import { createError } from '../utils/error.js';
 
 export const CreateShift = async (req, res, next) => {
     try {
-        const { date, startTime, endTime, department, shiftType, assignedEmployees } = req.body;
+        const { date, startTime, endTime, shiftType, assignedEmployees, department, CreatedBy } = req.body;
 
         // Convert date to ensure consistency
         const shiftDate = new Date(date).toISOString().split("T")[0];
-       
 
         // Check if a shift with the same date, start & end time, and shift type exists
-        let existingShift = await Shift.findOne({ date: shiftDate, startTime, endTime, department, shiftType });
+        let existingShift = await Shift.findOne({ date: shiftDate, startTime, endTime, shiftType });
 
         if (existingShift) {
             // Use MongoDB `$addToSet` to prevent duplicate employees
@@ -29,9 +28,10 @@ export const CreateShift = async (req, res, next) => {
                 date: shiftDate,
                 startTime,
                 endTime,
-                department,
                 shiftType,
-                assignedEmployees
+                assignedEmployees,
+                department, // Ensure department is set
+                CreatedBy
             });
             await existingShift.save();
         }
@@ -134,21 +134,89 @@ export const getShift = async(req, res, next) => {
 };
 
 
+
+
+export const getShiftonManageShift = async (req, res, next) => { 
+    try {
+        // Find all shifts where DEPARTMENT matches DEPARTMENT
+        const shifts = await Shift.find({
+            department: req.params.department 
+        }).populate("CreatedBy", "firstname");
+
+        if (shifts.length === 0) {
+            return res.status(404).json({ message: "No shifts found for this Admin" });
+        }
+
+        res.status(200).json(shifts);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+
+
 // get all shift
 export const getAllShift = async(req, res, next) => { 
-    
     try {
-
-        const shifts = await Shift.find().populate("assignedEmployees", "firstname email _id"); // Fetch users       
+        const shifts = await Shift.find()
+            .populate("assignedEmployees", "firstname email _id") // Fetch users
+            
     
-            if (shifts.length === 0) {
+        if (shifts.length === 0) {
+            return res.status(404).json({ message: "Empty" });
+        }
+        res.status(200).json(shifts);
+        
+        console.log(shifts);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const getAllSpecificDataShiftForUpdate = async (req, res, next) => {
+    try {
+        const { id, department } = req.params;
+
+        // Fetch the shift by ID and department
+        const get_Shift = await Shift.findOne({ _id: id, department });
+        if (!get_Shift) {
+            return res.status(404).json({ message: "Shift not found" });
+        }
+
+        // Fetch all users in the same department
+        const usersInDepartment = await User.find({ department });
+
+        if (usersInDepartment.length === 0) {
+            return res.status(404).json({ message: "No users found in this department" });
+        }
+
+        // Return both the shift and the users in the same department
+        res.status(200).json({
+            shift: get_Shift,
+            users: usersInDepartment,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+// get all User with speific department create
+export const getAllUserByDept = async(req, res, next) => { 
+    try {   
+            const getAll_User = await User.find({department: req.params.department});
+            console.log(req.params.department);
+            
+            if (getAll_User.length === 0) {
                 return res.status(404).json({ message: "Empty" });
             }
-            res.status(200).json(shifts);
+            
+            return res.send(getAll_User);
             
         } catch (error) {
             next(error);
         }
 };
-
-

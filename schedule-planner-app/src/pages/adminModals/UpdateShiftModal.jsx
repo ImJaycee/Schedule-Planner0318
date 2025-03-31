@@ -11,12 +11,13 @@ const UpdateShiftModal = ({ isOpen, onClose, shiftDate, onShiftUpdated, shiftId 
 
   const [assignedEmployees, setSelectedUsers] = useState([]);
   const [isLoading, setisLoading] = useState(false);
+  const department = localStorage.getItem("department");
 
   const [formData, setFormData] = useState({
     date: shiftDate || "",
     startTime: "",
     endTime: "",
-    department: localStorage.getItem("department"),
+    department: "",
     shiftType: "",
     assignedEmployees: [],
   });
@@ -102,19 +103,25 @@ const UpdateShiftModal = ({ isOpen, onClose, shiftDate, onShiftUpdated, shiftId 
   };
 
 
-  const { data, loading, error } = useFetch(`http://localhost:4000/api/shift/${shiftId}`);
+  const { data, loading, error } = useFetch(
+    `http://localhost:4000/api/shift/update/${shiftId}/${department}`
+  );
   useEffect(() => {
     if (data) {
+      // Set form data with shift details
       setFormData({
-        date: data.date || "",
-        startTime: data.startTime || "",
-        endTime: data.endTime || "",
-        department: localStorage.getItem("department") || "",
-        shiftType: data.shiftType || "",
-        assignedEmployees: data.assignedEmployees || [],
+        date: data.shift.date || "",
+        startTime: data.shift.startTime || "",
+        endTime: data.shift.endTime || "",
+        department: department,
+        shiftType: data.shift.shiftType || "",
+        assignedEmployees: data.shift.assignedEmployees || [],
       });
-      setSelectedUsers(data.assignedEmployees || []);
-      setisLoading(false)
+  
+      // Set employees with users in the same department
+      setEmployees(data.users || []);
+      setSelectedUsers(data.shift.assignedEmployees || []);
+      setisLoading(false);
     }
   }, [data]);
 
@@ -150,7 +157,7 @@ const handleChange = (e) => {
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">
-            <h2 className="text-xl font-semibold mb-4">Send Schedule</h2>
+            <h2 className="text-xl font-semibold mb-4">Update Schedule</h2>
 
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-3 gap-4">
