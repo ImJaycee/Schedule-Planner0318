@@ -16,7 +16,7 @@ const UpdateShiftModal = ({ isOpen, onClose, shiftDate, onShiftUpdated, shiftId 
     date: shiftDate || "",
     startTime: "",
     endTime: "",
-    department: "",
+    department: localStorage.getItem("department"),
     shiftType: "",
     assignedEmployees: [],
   });
@@ -51,6 +51,7 @@ const UpdateShiftModal = ({ isOpen, onClose, shiftDate, onShiftUpdated, shiftId 
   
     if (result.isConfirmed) {
       try {
+        console.log(formData)
         setisLoading(true)
           const updatedShift = await UpdateShift(formData, shiftId); 
 
@@ -108,7 +109,7 @@ const UpdateShiftModal = ({ isOpen, onClose, shiftDate, onShiftUpdated, shiftId 
         date: data.date || "",
         startTime: data.startTime || "",
         endTime: data.endTime || "",
-        department: data.department || "",
+        department: localStorage.getItem("department") || "",
         shiftType: data.shiftType || "",
         assignedEmployees: data.assignedEmployees || [],
       });
@@ -149,7 +150,7 @@ const handleChange = (e) => {
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">
-            <h2 className="text-xl font-semibold mb-4">Update Schedule</h2>
+            <h2 className="text-xl font-semibold mb-4">Send Schedule</h2>
 
             <form onSubmit={handleSubmit}>
               <div className="grid grid-cols-3 gap-4">

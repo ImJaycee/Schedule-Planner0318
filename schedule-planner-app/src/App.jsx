@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
 import ProtectedRoutes from './utils/ProtectedRoutes';
@@ -16,14 +15,15 @@ import Profile from './pages/Employee/Profile';
 import AdminAnnouncement from './pages/Admin/AdminAnnouncement';
 import AdminManageShift from './pages/Admin/AdminManageShift';
 import AdminRequest from './pages/Admin/AdminRequest';
+import AdminRequestsSwap from "./pages/Admin/AdminRequestSwap";
 import AdminProfile from './pages/Admin/AdminProfile';
 import ProfileEditPage from './pages/Employee/ProfileEditPage';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import AdminProfileEditPage from './pages/Admin/AdminProfileEditPage';
 import UserAccs from './pages/Admin/AdminUserAccs';
 import ChangePwd from './pages/Employee/ChangePwd';
 import AdminChangePwd from './pages/Admin/AdminChangePwd';
+import ReqSwap from './pages/Employee/ReqSwap';
 
 function App() {  
   return (
@@ -44,6 +44,7 @@ function App() {
             <Route element={<ProtectedRoutes />}>
               <Route path="/homepage" element={<Dashboard />} />
               <Route path="/request-shift" element={<ReqShift />} />
+              <Route path="/request-shift-swap" element={<ReqSwap />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile-edit" element={<ProfileEditPage />} />
               <Route path="/change-password" element={<ChangePwd />} />
@@ -53,6 +54,7 @@ function App() {
               <Route path="/admin/announcement" element={<AdminAnnouncement />} />
               <Route path="/admin/manage-shift" element={<AdminManageShift />} />
               <Route path="/admin/request-shift" element={<AdminRequest />} />
+              <Route path="/admin/request-shift/swaps" element={<AdminRequestsSwap />} />
               <Route path="/admin/profile" element={<AdminProfile />} />
               <Route path="/admin/homepage" element={<AdminDashboard />} />
               <Route path="/admin/profile-edit" element={<AdminProfileEditPage />} />

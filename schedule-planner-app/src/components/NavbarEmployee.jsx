@@ -15,6 +15,7 @@ const NavbarEmployee = () => {
   const navlinks = [
     { link: "/homepage", label: "Home", icon: <FaHome className="mr-3 text-blue-900" /> },
     { link: "/request-shift", label: "Request Shift", icon: <FaClipboardList className="mr-3 text-blue-900" /> },
+    { link: "/request-shift-swap", label: "Request Swap", icon: <FaClipboardList className="mr-3 text-blue-900" /> },
     { link: "/profile", label: "Profile", icon: <FaUser className="mr-3 text-blue-900" /> }
   ];
 
@@ -46,7 +47,7 @@ const NavbarEmployee = () => {
           </button>
 
           <h5 className="text-xl font-semibold text-gray-900 mb-4">
-            {location.pathname === "/homepage" ? "Home" : location.pathname === "/request-shift" ? "Request Shift" : location.pathname === "/profile" ? "Profile" : title}
+            {location.pathname === "/homepage" ? "Home" : location.pathname === "/request-shift" ? "Request Shift" : location.pathname === "/request-shift-swap" ? "Request Swap" : location.pathname === "/profile" ? "Profile" : title}
           </h5>
 
           <nav className="flex flex-col gap-2">
