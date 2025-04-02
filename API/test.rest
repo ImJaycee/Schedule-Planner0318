@@ -67,7 +67,9 @@ Content-Type: application/json
 
 ###
 
-get http://localhost:4000/api/user/all/Technical
+get http://localhost:4000/api/shift/create/Technical
+Authorization :  bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZDdjYzBjYjA5MGZkYzdkY2RiM2MwMCIsImlzQWRtaW4iOnRydWUsImlhdCI6MTc0MjQ0ODkyOX0.Yz_oBFxgZgeolKNmOfWo1431bIW7rvQTdxR2d42V4pU
+
 
 
 ###

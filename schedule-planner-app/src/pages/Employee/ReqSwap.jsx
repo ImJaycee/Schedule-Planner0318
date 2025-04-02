@@ -28,6 +28,8 @@ const RequestShiftSwap = () => {
   const [requestedToUser, setRequestToUser] = useState([]);
   const [reload, setReload] = useState(false);
 
+  const department = localStorage.getItem("department");
+
     const [formData, setFormData] = useState({
       date: "",
       RecipientST: "",
