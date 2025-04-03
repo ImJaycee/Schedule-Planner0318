@@ -91,7 +91,7 @@ const NavbarEmployee = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
+      <div className=" md:hidden flex-1 p-6">
         {/* Hamburger Menu Button (Mobile) */}
         <button className="md:hidden mb-4 text-gray-600" onClick={() => setIsSidebarOpen(true)}>
           <FaBars size={24} />

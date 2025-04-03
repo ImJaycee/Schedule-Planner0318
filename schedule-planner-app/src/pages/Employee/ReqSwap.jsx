@@ -277,7 +277,7 @@ const RequestShiftSwap = () => {
   
 
   return (
-<div className="flex flex-col md:flex-row max-h-full bg-gray-100 min-h-screen">
+<div className="flex flex-col md:flex-row max-h-full bg-gray-100 min-h-screen h-screen">
   <NavbarEmployee />
   <div className="flex-1 flex flex-col p-3 overflow-auto">
     <h3 className="text-2xl text-center font-semibold mb-2">Shift Swap Requests</h3>
