@@ -3,7 +3,15 @@ import axios from "axios";
 const CreateShiftRequest = async (shiftData) => {
   try {
     const token = localStorage.getItem("accessToken");
-    const response = await axios.post("http://localhost:4000/api/request-shift/create-request", shiftData, {
+    const department = localStorage.getItem("department");
+
+    // Add department to shiftData
+    const requestData = {
+      ...shiftData,
+      department, // Include department in the payload
+    };
+
+    const response = await axios.post(`http://localhost:4000/api/request-shift/create-request`, requestData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -11,7 +19,7 @@ const CreateShiftRequest = async (shiftData) => {
     });
 
     if (response.status === 200) {
-      console.log("Request Created:", shiftData);
+      console.log("Request Created:", requestData);
       return response.data; 
     }
   } catch (error) {
@@ -85,6 +93,12 @@ const GetRequest = async (userId) => {
   return null;
 };
 
+
+
+
+
+
+
 const GetAllRequest = async (userId) => {
   try {
     const token = localStorage.getItem("accessToken");
@@ -108,6 +122,7 @@ const GetAllRequest = async (userId) => {
   }
   return null;
 };
+
 
 
 

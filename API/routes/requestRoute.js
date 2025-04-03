@@ -1,7 +1,7 @@
 import express from 'express';
 import { verifyAdmin, verifyToken, verifyUser } from '../utils/verifyToken.js';
 import { CreateShiftRequest, RejectedRequestShift, getRequestShift, getAllRequest, ApprovedRequestShift } from '../controllers/RequestController.js';
-import { AcceptSwapRequestShift, CreateShiftSwapRequest, DeclineSwapRequestShift, getReceivedRequestShift, getSendRequestShift,getAllSwapRequest,ApprovedSwapRequestAdmin, DeclineSwapAdmin } from '../controllers/ShiftSwapController.js';
+import { AcceptSwapRequestShift, CreateShiftSwapRequest, DeclineSwapRequestShift, getReceivedRequestShift, getSendRequestShift,getAllSwapRequest,ApprovedSwapRequestAdmin, DeclineSwapAdmin, getAllUserByDepartmentReqSwap } from '../controllers/ShiftSwapController.js';
 
 
 const router = express.Router();
@@ -23,9 +23,16 @@ router.put("/swap-shift/accept", verifyUser, AcceptSwapRequestShift) //approved 
 router.put("/swap-shift/decline", verifyUser, DeclineSwapRequestShift) //decline request
 
 
+
 //swap Router ---- Admin
 router.get("/swap-shift/all/request", verifyAdmin, getAllSwapRequest) //get all
 router.put("/swap-shift/accept/admin", verifyAdmin, ApprovedSwapRequestAdmin) //approved Swap Admin
 router.put("/swap-shift/decline/admin", verifyAdmin, DeclineSwapAdmin) //decline request admin
+
+
+//getUserByDepartment 
+
+router.get("/get-user/all/:department", verifyUser, getAllUserByDepartmentReqSwap) //get all
+
 
 export default router
