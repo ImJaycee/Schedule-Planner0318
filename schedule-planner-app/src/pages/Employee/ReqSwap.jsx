@@ -549,26 +549,26 @@ const RequestShiftSwap = () => {
 
                               {/* Buttons */}
                               <div className="flex justify-end mt-2">
-                              <button
-  type="submit"
-  className={`bg-green-600 text-white text-xs px-3 py-1 rounded-md hover:bg-green-700 transition duration-200 mr-2 ${
-    loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
-  }`}
-  disabled={loadingRequestId === request._id}
->
-  {loadingRequestId === request._id ? "Accepting..." : "Accept"}
-</button>
-                                
-<button
-  type="button"
-  onClick={(event) => handleDecline(event, request._id)}
-  className={`bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600 transition duration-200 ${
-    loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
-  }`}
-  disabled={loadingRequestId === request._id}
->
-  {loadingRequestId === request._id ? "Declining..." : "Decline"}
-</button>
+                                  <button
+                                    type="submit"
+                                    className={`bg-green-600 text-white text-xs px-3 py-1 rounded-md hover:bg-green-700 transition duration-200 mr-2 ${
+                                      loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
+                                    }`}
+                                    disabled={loadingRequestId === request._id}
+                                  >
+                                    {loadingRequestId === request._id ? "Accepting..." : "Accept"}
+                                  </button>
+                                                                  
+                                  <button
+                                    type="button"
+                                    onClick={(event) => handleDecline(event, request._id)}
+                                    className={`bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600 transition duration-200 ${
+                                      loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
+                                    }`}
+                                    disabled={loadingRequestId === request._id}
+                                  >
+                                    {loadingRequestId === request._id ? "Declining..." : "Decline"}
+                                  </button>
                               </div>
                             </form>
                         ) : request.status === "rejected" ? (
