@@ -4,75 +4,114 @@ import Shift from '../models/Schedule.js';
 import Request from '../models/Request.js';
 import RequestSwap from '../models/RequestSwap.js';
 import { createError } from '../utils/error.js';
-
-
-
+import { sendEmail } from '../utils/employee-emailNotification.js';
 
 export const CreateShiftSwapRequest = async (req, res, next) => {
     try {
-        const {date, RecipientST, RequesterST, requestedBy, requestedTo, requesterName, requestingShiftId, requesterShiftId, requesterMessage} = req.body;
-
+        const { date, RecipientST, RequesterST, requestedBy, requestedTo, requesterName, requestingShiftId, requesterShiftId, requesterMessage } = req.body;
 
         let existingRequest = await RequestSwap.find({ status: "pending", date, requestingShiftId, requesterShiftId, requestedBy, requestedTo });
 
-        if(requesterName === "Unknown Unknown")return next(createError(400, "Invalid request"));
+        if (requesterName === "Unknown Unknown") return next(createError(400, "Invalid request"));
+
         const requestShift = await Shift.findById(requestingShiftId);
         if (requestShift) {
             const isRequestedByIncluded = requestShift.assignedEmployees.includes(requestedBy);
             const isRequestedToIncluded = requestShift.assignedEmployees.includes(requestedTo);
-        
+
             if (isRequestedByIncluded && isRequestedToIncluded) {
                 return next(createError(400, "You cannot request a swap when both employees are already on the same schedule."));
             }
-        
+
             if (!isRequestedByIncluded && !isRequestedToIncluded) {
                 return next(createError(400, "Both employees are WFH on this shift. No swap is needed."));
             }
         }
-        
+
         const offerShift = await Shift.findById(requesterShiftId);
         if (offerShift) {
             const isRequestedByIncluded = offerShift.assignedEmployees.includes(requestedBy);
             const isRequestedToIncluded = offerShift.assignedEmployees.includes(requestedTo);
-        
+
             if (isRequestedByIncluded && isRequestedToIncluded) {
                 return next(createError(400, "Your offered shift already includes both employees. You cannot send a request for the same schedule."));
             }
-        
+
             if (!isRequestedByIncluded && !isRequestedToIncluded) {
                 return next(createError(400, "Both employees are WFH on this shift. No swap is needed."));
             }
         }
 
-        if (existingRequest.length > 0) {  
+        if (existingRequest.length > 0) {
             return next(createError(400, "A request for this shift already exists! Please wait for the approval"));
-        }
-        else {
-            let shift_Id = await Shift.findById(requestingShiftId?.toString()); 
-            console.log("Test",shift_Id)
-            if (!shift_Id) {  
+        } else {
+            let shift_Id = await Shift.findById(requestingShiftId?.toString());
+            if (!shift_Id) {
                 return next(createError(404, "Shift not existing!"));
             }
-            
-            if (shift_Id.shiftType.toLowerCase() === "wfh") {  
-                    return next(createError(400, "There is no office schedule on selected date!"));
+
+            if (shift_Id.shiftType.toLowerCase() === "wfh") {
+                return next(createError(400, "There is no office schedule on selected date!"));
             }
-                existingRequest = new RequestSwap({
-                    date,
-                    RecipientST,
-                    RequesterST,
-                    requestedBy,
-                    requestedTo,
-                    requesterName,
-                    requestingShiftId,
-                    requesterShiftId,
-                    requesterMessage,
-                });
-                 await existingRequest.save();
-                
+
+            existingRequest = new RequestSwap({
+                date,
+                RecipientST,
+                RequesterST,
+                requestedBy,
+                requestedTo,
+                requesterName,
+                requestingShiftId,
+                requesterShiftId,
+                requesterMessage,
+            });
+            await existingRequest.save();
+
+            // Fetch emails of requestedBy and requestedTo
+            const requester = await User.findById(requestedBy);
+            const recipient = await User.findById(requestedTo);
+
+            if (!requester || !recipient) {
+                return next(createError(404, "Requester or Recipient not found!"));
+            }
+
+            const requesterEmail = requester.email;
+            const recipientEmail = recipient.email;
+
+            // Prepare email content
+            const subject = 'Shift Swap Request Notification';
+            const htmlContent = `
+                        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                            <h2 style="color: #007BFF;">New Shift Swap Request Created</h2>
+                            <p>A new shift swap request has been created.</p>
+                            <p><strong>Details:</strong></p>
+                            <ul>
+                            <li><strong>Requester:</strong> ${requester.firstname} ${requester.lastname} </li>
+                            <li><strong>Recipient:</strong> ${recipient.firstname} ${recipient.lastname} </li>
+                            <li><strong>Date:</strong> ${new Date(date).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                            })}</li>
+                            <li><strong>Requester Message:</strong> ${requesterMessage || 'No message provided'}</li>
+                            </ul>
+                            <p>Click the link below to review the request:</p>
+                            <a href="http://localhost:5173/login" style="display: inline-block; padding: 10px 15px; background-color: #007BFF; color: #fff; text-decoration: none; border-radius: 5px;">Review Request</a>
+                            <p style="margin-top: 20px;">Thank you!</p>
+                        </div>
+                        `;
+
+            // Send email to both requester and recipient
+            try {
+                await sendEmail(requesterEmail, subject, htmlContent);
+                await sendEmail(recipientEmail, subject, htmlContent);
+                console.log('Emails sent successfully');
+            } catch (emailError) {
+                console.error('Error sending emails:', emailError);
+            }
         }
 
-         res.status(200).json({ message: "Request sent successfully", requestSwapShift: existingRequest });
+        res.status(200).json({ message: "Request sent successfully and email notifications sent", requestSwapShift: existingRequest });
     } catch (error) {
         next(error);
     }
@@ -80,9 +119,7 @@ export const CreateShiftSwapRequest = async (req, res, next) => {
 
 
 
-
- // Accept a Swap RequestApprovedSwapRequestAdmin
-export const AcceptSwapRequestShift = async (req, res, next) => {
+ export const AcceptSwapRequestShift = async (req, res, next) => {
     try {
         const { requestSwapId, recipientMessage } = req.body;
 
@@ -110,8 +147,90 @@ export const AcceptSwapRequestShift = async (req, res, next) => {
         );
 
         if (requestAccept) {
+            // Fetch requester and recipient details
+            const requester = await User.findById(request.requestedBy);
+            const recipient = await User.findById(request.requestedTo);
+
+            if (!requester || !recipient) {
+                return next(createError(404, "Requester or Recipient not found!"));
+            }
+
+            const requesterEmail = requester.email;
+            const recipientEmail = recipient.email;
+
+            // Fetch admin(s) of the same department, excluding the recipient
+            const departmentAdmins = await User.find({
+                department: recipient.department,
+                isAdmin: true,
+                email: { $ne: recipientEmail }, // Exclude recipient's email
+            });
+            const adminEmails = departmentAdmins.map(admin => admin.email);
+
+            // Prepare email content
+            let subject = 'Shift Swap Request Accepted';
+            let htmlContent = `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                    <h2 style="color: #007BFF;">Shift Swap Request Accepted</h2>
+                    <p>The shift swap request has been accepted.</p>
+                    <p><strong>Details:</strong></p>
+                    <ul>
+                        <li><strong>Requester:</strong> ${requester.firstname} ${requester.lastname}</li>
+                        <li><strong>Recipient:</strong> ${recipient.firstname} ${recipient.lastname}</li>
+                        <li><strong>Date:</strong> ${new Date(request.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })}</li>
+                        <li><strong>Recipient Message:</strong> ${recipientMessage || 'No message provided'}</li>
+                    </ul>
+                    <p>Thank you!</p>
+                </div>
+            `;
+
+            // If the recipient is an admin, modify the email content
+            if (recipient.isAdmin) {
+                subject = 'Admin Notification: Shift Swap Request Accepted';
+                htmlContent = `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                        <h2 style="color: #007BFF;">Admin Notification: Shift Swap Request Accepted</h2>
+                        <p>A shift swap request has been accepted in your department.</p>
+                        <p><strong>Details:</strong></p>
+                        <ul>
+                            <li><strong>Requester:</strong> ${requester.firstname} ${requester.lastname}</li>
+                            <li><strong>Recipient:</strong> ${recipient.firstname} ${recipient.lastname}</li>
+                            <li><strong>Date:</strong> ${new Date(request.date).toLocaleDateString("en-US", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                            })}</li>
+                            <li><strong>Recipient Message:</strong> ${recipientMessage || 'No message provided'}</li>
+                        </ul>
+                        <p>Please review the request and take any necessary actions.</p>
+                        <p>Thank you!</p>
+                    </div>
+                `;
+            }
+
+            // Send email to requester, recipient, and admins
+            try {
+                // Send email to requester
+                await sendEmail(requesterEmail, subject, htmlContent);
+
+                // Send email to recipient
+                await sendEmail(recipientEmail, subject, htmlContent);
+
+                // Send email to all admins in the department (excluding recipient)
+                for (const adminEmail of adminEmails) {
+                    await sendEmail(adminEmail, subject, htmlContent);
+                }
+
+                console.log('Emails sent successfully to requester, recipient, and admins');
+            } catch (emailError) {
+                console.error('Error sending emails:', emailError);
+            }
+
             return res.status(200).json({
-                message: "Request accepted! Shift updated successfully",
+                message: "Request accepted! Shift updated successfully and email notifications sent.",
                 data: requestAccept
             });
         } else {
@@ -143,7 +262,7 @@ export const AcceptSwapRequestShift = async (req, res, next) => {
             return res.status(404).json({ message: "Invalid request. Shift not found." });
         }
 
-        // Update recipientStatus to "accepted"
+        // Update recipientStatus to "rejected"
         const requestDecline = await RequestSwap.findByIdAndUpdate(
             requestSwapId,
             { recipientStatus: "rejected", status: "rejected", recipientMessage },
@@ -151,8 +270,49 @@ export const AcceptSwapRequestShift = async (req, res, next) => {
         );
 
         if (requestDecline) {
+            // Fetch requester and recipient details
+            const requester = await User.findById(request.requestedBy);
+            const recipient = await User.findById(request.requestedTo);
+
+            if (!requester || !recipient) {
+                return next(createError(404, "Requester or Recipient not found!"));
+            }
+
+            const requesterEmail = requester.email;
+            const recipientEmail = recipient.email;
+
+            // Prepare email content
+            const subject = 'Shift Swap Request Declined';
+            const htmlContent = `
+                <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+                    <h2 style="color: #FF0000;">Shift Swap Request Declined</h2>
+                    <p>The shift swap request has been declined.</p>
+                    <p><strong>Details:</strong></p>
+                    <ul>
+                        <li><strong>Requester:</strong> ${requester.firstname} ${requester.lastname} </li>
+                        <li><strong>Recipient:</strong> ${recipient.firstname} ${recipient.lastname} </li>
+                        <li><strong>Date:</strong> ${new Date(request.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })}</li>
+                        <li><strong>Recipient Message:</strong> ${recipientMessage || 'No message provided'}</li>
+                    </ul>
+                    <p>Thank you!</p>
+                </div>
+            `;
+
+            // Send email to both requester and recipient
+            try {
+                await sendEmail(requesterEmail, subject, htmlContent);
+                await sendEmail(recipientEmail, subject, htmlContent);
+                console.log('Emails sent successfully');
+            } catch (emailError) {
+                console.error('Error sending emails:', emailError);
+            }
+
             return res.status(200).json({
-                message: "Request declined! Shift updated successfully",
+                message: "Request declined! Shift updated successfully and email notifications sent.",
                 data: requestDecline
             });
         } else {
@@ -356,4 +516,21 @@ export const getAllSwapRequest = async (req, res, next) => {
 };
 
 
+export const getAllUserByDepartmentReqSwap = async(req, res, next) => { 
+    try {   
+        const getAll_User = await User.find({department: req.params.department});
+        console.log(req.params.department);
+        
+        if (getAll_User.length === 0) {
+            return res.status(404).json({ message: "Empty" });
+        }
+        console.log(getAll_User)
+        return res.send(getAll_User);
+        
+    } catch (error) {
+        console.log("Error at controller",error)
+        next(error);
+        
+    }
+};
 
