@@ -164,55 +164,127 @@ const UserAccs = () => {
     <div className="flex h-screen bg-gray-100">
       <NavbarAdmin />
       <div className="flex-1 p-6 flex flex-col md:flex-row gap-6">
-        <div className="md:w-1/2 bg-white p-4 rounded shadow-md">
-          <h3 className="text-2xl font-bold mb-4">{formMode === 'create' ? 'Create User' : 'Update User'}</h3>
-          <form onSubmit={handleFormSubmit} className="mb-4 space-y-4">
-            <input
-              type="text"
-              placeholder="First Name"
-              className={`input mb-2 p-2 border rounded w-full ${errors.firstname ? 'border-red-500' : ''}`}
-              value={formData.firstname}
-              onChange={(e) => setFormData({ ...formData, firstname: e.target.value })}
-            />
-            {errors.firstname && <p className="text-red-500 text-xs italic">{errors.firstname}</p>}
-            <input
-              type="text"
-              placeholder="Last Name"
-              className={`input mb-2 p-2 border rounded w-full ${errors.lastname ? 'border-red-500' : ''}`}
-              value={formData.lastname}
-              onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
-            />
-            {errors.lastname && <p className="text-red-500 text-xs italic">{errors.lastname}</p>}
-            <input
-              type="email"
-              placeholder="Email"
-              className={`input mb-2 p-2 border rounded w-full ${errors.email ? 'border-red-500' : ''}`}
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            />
-            {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
-            <div className="relative mb-2">
-              <input
-                type={showPassword ? "text" : "password"}
-                placeholder="Password"
-                className={`input p-2 border rounded w-full ${errors.password ? 'border-red-500' : ''}`}
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              />
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                <button type="button" onClick={togglePasswordVisibility} className="focus:outline-none">
-                  {showPassword ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              </div>
-            </div>
-            {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
-            <div className="flex space-x-2">
-              <button type="submit" className="btn bg-blue-500 text-white p-2 rounded">{formMode === 'create' ? 'Create' : 'Update'}</button>
-              {formMode === 'update' && <button type="button" className="btn bg-gray-500 text-white p-2 rounded" onClick={handleCancel}>Cancel</button>}
-            </div>
-          </form>
-        </div>
-        <div className="md:w-1/2 bg-white p-4 rounded shadow-md">
+        {/* Create/Update User Section */}
+<div className="md:w-1/3 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+  <h3 className="text-3xl font-bold text-blue-600 mb-6 flex items-center">
+    {formMode === 'create' ? (
+      <>
+        <span className="mr-2">➕</span> Create User
+      </>
+    ) : (
+      <>
+        <span className="mr-2">✏️</span> Update User
+      </>
+    )}
+  </h3>
+  <form onSubmit={handleFormSubmit} className="space-y-6">
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+    <input
+      type="text"
+      placeholder="Enter first name"
+      className={`input mb-2 p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
+        errors.firstname ? 'border-red-500' : 'border-gray-300'
+      }`}
+      value={formData.firstname}
+      onChange={(e) => {
+        setFormData({ ...formData, firstname: e.target.value });
+        if (errors.firstname) {
+          setErrors((prevErrors) => ({ ...prevErrors, firstname: null })); // Clear the error for "firstname"
+        }
+      }}
+    />
+    {errors.firstname && <p className="text-red-500 text-xs italic">{errors.firstname}</p>}
+  </div>
+
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+    <input
+      type="text"
+      placeholder="Enter last name"
+      className={`input mb-2 p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
+        errors.lastname ? 'border-red-500' : 'border-gray-300'
+      }`}
+      value={formData.lastname}
+      onChange={(e) => {
+        setFormData({ ...formData, lastname: e.target.value });
+        if (errors.lastname) {
+          setErrors((prevErrors) => ({ ...prevErrors, lastname: null })); // Clear the error for "lastname"
+        }
+      }}
+    />
+    {errors.lastname && <p className="text-red-500 text-xs italic">{errors.lastname}</p>}
+  </div>
+
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+    <input
+      type="email"
+      placeholder="Enter email"
+      className={`input mb-2 p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
+        errors.email ? 'border-red-500' : 'border-gray-300'
+      }`}
+      value={formData.email}
+      onChange={(e) => {
+        setFormData({ ...formData, email: e.target.value });
+        if (errors.email) {
+          setErrors((prevErrors) => ({ ...prevErrors, email: null })); // Clear the error for "email"
+        }
+      }}
+    />
+    {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
+  </div>
+
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+    <div className="relative">
+      <input
+        type={showPassword ? 'text' : 'password'}
+        placeholder="Enter password"
+        className={`input p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
+          errors.password ? 'border-red-500' : 'border-gray-300'
+        }`}
+        value={formData.password}
+        onChange={(e) => {
+          setFormData({ ...formData, password: e.target.value });
+          if (errors.password) {
+            setErrors((prevErrors) => ({ ...prevErrors, password: null })); // Clear the error for "password"
+          }
+        }}
+      />
+      <button
+        type="button"
+        onClick={togglePasswordVisibility}
+        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+      >
+        {showPassword ? <FaEyeSlash /> : <FaEye />}
+      </button>
+    </div>
+    {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+  </div>
+
+  <div className="flex justify-between items-center">
+    <button
+      type="submit"
+      className="btn bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
+    >
+      {formMode === 'create' ? 'Create' : 'Update'}
+    </button>
+    {formMode === 'update' && (
+      <button
+        type="button"
+        className="btn bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
+        onClick={handleCancel}
+      >
+        Cancel
+      </button>
+    )}
+  </div>
+</form>
+</div>
+  
+        {/* All Users Section */}
+        <div className="md:w-2/3 bg-white p-4 rounded shadow-md"> {/* Increased width */}
           <h3 className="text-2xl font-bold mb-4">All Users</h3>
           <input
             type="text"

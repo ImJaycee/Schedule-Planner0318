@@ -277,7 +277,7 @@ const RequestShiftSwap = () => {
   
 
   return (
-<div className="flex flex-col md:flex-row max-h-full bg-gray-100 min-h-screen">
+<div className="flex flex-col md:flex-row max-h-full bg-gray-100 min-h-screen h-screen">
   <NavbarEmployee />
   <div className="flex-1 flex flex-col p-3 overflow-auto">
     <h3 className="text-2xl text-center font-semibold mb-2">Shift Swap Requests</h3>
@@ -549,26 +549,26 @@ const RequestShiftSwap = () => {
 
                               {/* Buttons */}
                               <div className="flex justify-end mt-2">
-                              <button
-  type="submit"
-  className={`bg-green-600 text-white text-xs px-3 py-1 rounded-md hover:bg-green-700 transition duration-200 mr-2 ${
-    loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
-  }`}
-  disabled={loadingRequestId === request._id}
->
-  {loadingRequestId === request._id ? "Accepting..." : "Accept"}
-</button>
-                                
-<button
-  type="button"
-  onClick={(event) => handleDecline(event, request._id)}
-  className={`bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600 transition duration-200 ${
-    loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
-  }`}
-  disabled={loadingRequestId === request._id}
->
-  {loadingRequestId === request._id ? "Declining..." : "Decline"}
-</button>
+                                  <button
+                                    type="submit"
+                                    className={`bg-green-600 text-white text-xs px-3 py-1 rounded-md hover:bg-green-700 transition duration-200 mr-2 ${
+                                      loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
+                                    }`}
+                                    disabled={loadingRequestId === request._id}
+                                  >
+                                    {loadingRequestId === request._id ? "Accepting..." : "Accept"}
+                                  </button>
+                                                                  
+                                  <button
+                                    type="button"
+                                    onClick={(event) => handleDecline(event, request._id)}
+                                    className={`bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600 transition duration-200 ${
+                                      loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
+                                    }`}
+                                    disabled={loadingRequestId === request._id}
+                                  >
+                                    {loadingRequestId === request._id ? "Declining..." : "Decline"}
+                                  </button>
                               </div>
                             </form>
                         ) : request.status === "rejected" ? (
