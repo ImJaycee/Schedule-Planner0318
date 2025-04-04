@@ -27,6 +27,8 @@ const RequestShiftSwap = () => {
   const [requests, setRequest] = useState([]);
   const [requestedToUser, setRequestToUser] = useState([]);
   const [reload, setReload] = useState(false);
+  const [loadingRequestId, setLoadingRequestId] = useState(null);
+  const department = localStorage.getItem("department");
 
     const [formData, setFormData] = useState({
       date: "",
@@ -51,7 +53,7 @@ const RequestShiftSwap = () => {
 
     const fetchAllUsers = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/api/user`, {
+        const response = await axios.get(`http://localhost:4000/api/request-shift/get-user/all/${department}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -147,9 +149,6 @@ const RequestShiftSwap = () => {
     e.preventDefault();
     if (!selectedEmployee || !offerDate || !selectedShiftType || OfferDateErr) return;
   
-
-    console.log("Submitting Form Data:", formData); // Debugging log
-  
     const result = await Swal.fire({
       title: `Confirm Swap Request`,
       text: `Are you sure you want to send request to ${RequestFor}?`,
@@ -158,21 +157,20 @@ const RequestShiftSwap = () => {
       confirmButtonColor: "#3d3",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, send it!",
-  });
-
-  if (result.isConfirmed) {
+    });
+  
+    if (result.isConfirmed) {
       try {
-          setIsLoading(true);
-          await CreateShiftSwapRequest(formData);
-        
-          Swal.fire("Success!", "The shift request has been sent.", "success");
-          navigate("/homepage");
+        setIsLoading(true); // Start loading
+        await CreateShiftSwapRequest(formData);
+        Swal.fire("Success!", "The shift request has been sent.", "success");
+        navigate("/homepage");
       } catch (error) {
-          Swal.fire("Error", error.response?.data?.message || "An error occurred", "error");
+        Swal.fire("Error", error.response?.data?.message || "An error occurred", "error");
       } finally {
-          setIsLoading(false);
+        setIsLoading(false); // Stop loading
       }
-  }
+    }
   };
 
   useEffect(() => {
@@ -227,57 +225,52 @@ const RequestShiftSwap = () => {
     setReload(false)
   }, [reload]);
 
-  const handleAccept = async(event) => {
-    event.preventDefault(); // Prevent page reload
-  
-    // Get form data directly from the event
+  const handleAccept = async (event) => {
+    event.preventDefault();
     const requestSwapId = event.target.requestSwapId.value;
-    const recipientMessageValue = recipientMessage; // Get latest state value
   
-    
     const AcceptformData = {
       requestSwapId: requestSwapId,
-      recipientMessage: recipientMessageValue,
+      recipientMessage,
     };
-
+  
     try {
+      setLoadingRequestId(requestSwapId); // Start loading for this request
       const accept = await AcceptRequest(AcceptformData);
-      if(accept){
-       toast.success("Request Accepted successfully")
-       setReload(true)
-       navigate("/request-shift-swap")
-       
+      if (accept) {
+        toast.success("Request Accepted successfully");
+        setReload(true);
+        navigate("/request-shift-swap");
       }
     } catch (error) {
-      toast.error(error)
-      setReload(true)
-      navigate("/request-shift-swap")
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoadingRequestId(null); // Stop loading
     }
-  
   };
   
   const handleDecline = async (event, requestSwapId) => {
-    event.preventDefault(); // Prevent page reload
-
-    // Prepare data
+    event.preventDefault();
+  
     const DeclineformData = {
-        requestSwapId,
-        recipientMessage, // Use state directly
+      requestSwapId,
+      recipientMessage,
     };
-
+  
     try {
-        const decline = await DeclineRequest(DeclineformData);
-        if (decline) {
-            toast.success("Request declined successfully");
-            setReload(true);
-            navigate("/request-shift-swap");
-        }
-    } catch (error) {
-        toast.error(error.message || "Something went wrong");
+      setLoadingRequestId(requestSwapId); // Start loading for this request
+      const decline = await DeclineRequest(DeclineformData);
+      if (decline) {
+        toast.success("Request declined successfully");
         setReload(true);
         navigate("/request-shift-swap");
+      }
+    } catch (error) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setLoadingRequestId(null); // Stop loading
     }
-};
+  };
 
   
   
@@ -373,16 +366,42 @@ const RequestShiftSwap = () => {
           <label className="block font-semibold text-red-800">{OfferDateErr} </label>
 
           <button
-            type="submit"
-            className={`mt-4 px-4 py-2 rounded text-white w-full sm:w-auto ${
-              selectedEmployee && offerDate && selectedShiftType && !OfferDateErr
-                ? "bg-blue-500 hover:bg-blue-600"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
-            disabled={!selectedEmployee || !offerDate || !selectedShiftType || OfferDateErr}
-          >
-            Request Swap
-          </button>
+  type="submit"
+  className={`mt-4 px-4 py-2 rounded text-white w-full sm:w-auto ${
+    selectedEmployee && offerDate && selectedShiftType && !OfferDateErr && !isLoading
+      ? "bg-blue-500 hover:bg-blue-600"
+      : "bg-gray-400 cursor-not-allowed"
+  }`}
+  disabled={!selectedEmployee || !offerDate || !selectedShiftType || OfferDateErr || isLoading}
+>
+  {isLoading ? (
+    <span className="flex items-center">
+      <svg
+        className="animate-spin h-5 w-5 mr-2 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v8H4z"
+        ></path>
+      </svg>
+      Submitting...
+    </span>
+  ) : (
+    "Request Swap"
+  )}
+</button>
         </form>
       </div>
 
@@ -530,20 +549,26 @@ const RequestShiftSwap = () => {
 
                               {/* Buttons */}
                               <div className="flex justify-end mt-2">
-                                <button
-                                  type="submit"
-                                  className="bg-green-600 text-white text-xs px-3 py-1 rounded-md hover:bg-green-700 transition duration-200 mr-2"
-                                >
-                                  Accept
-                                </button>
+                              <button
+  type="submit"
+  className={`bg-green-600 text-white text-xs px-3 py-1 rounded-md hover:bg-green-700 transition duration-200 mr-2 ${
+    loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
+  }`}
+  disabled={loadingRequestId === request._id}
+>
+  {loadingRequestId === request._id ? "Accepting..." : "Accept"}
+</button>
                                 
-                                <button
-                                  type="button"
-                                  onClick={(event) => handleDecline(event, request._id)}
-                                  className="bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600 transition duration-200"
-                                >
-                                  Decline
-                                </button>
+<button
+  type="button"
+  onClick={(event) => handleDecline(event, request._id)}
+  className={`bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600 transition duration-200 ${
+    loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
+  }`}
+  disabled={loadingRequestId === request._id}
+>
+  {loadingRequestId === request._id ? "Declining..." : "Decline"}
+</button>
                               </div>
                             </form>
                         ) : request.status === "rejected" ? (
