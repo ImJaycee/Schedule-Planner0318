@@ -57,7 +57,7 @@ const CreateShiftModal = ({ isOpen, onClose, shiftDate, onShiftAdded }) => {
     if (result.isConfirmed) {
       try {
         setisLoading(true);
-        const createShift = await CreateShift(formData);
+        await CreateShift(formData);
         Swal.fire("Added!", "The shift has been Added.", "success");
         onShiftAdded();
         onClose();

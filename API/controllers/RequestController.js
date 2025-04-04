@@ -3,6 +3,7 @@ import User from '../models/User.js';
 import Shift from '../models/Schedule.js';
 import Request from '../models/Request.js';
 import { createError } from '../utils/error.js';
+import { sendNotificationEmailAdmin } from '../utils/adminEmailNotification.js';
 
 import { sendEmail } from '../utils/employee-emailNotification.js';
 
@@ -97,58 +98,65 @@ export const CreateShiftRequest = async (req, res, next) => {
 
 
  // update a Request
-export const ApprovedRequestShift = async (req, res, next) => {
+ export const ApprovedRequestShift = async (req, res, next) => {
     try {
-        const { requestId, adminMessage} = req.body;
-
-        console.log(req.body)
+        const { requestId, adminMessage } = req.body;
+        console.log(req.body);
 
         // Find the request
         const request = await Request.findById(requestId);
         if (!request) return next(createError(400, "Request not found!"));
 
-        const shiftDate = new Date(request.date).toISOString().split("T")[0];
+        const shiftDate = new Date(request.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+        
         const shiftType = request.shiftType;
         const shiftId = request.shiftId;
+
+        // Find user email
+        const userFind = await User.findById(request.requestedBy);
+        const EmployeeEmail = userFind ? userFind.email : null;
 
         // Find the corresponding shift
         const existingShift = await Shift.findById(shiftId);
         if (!existingShift) return res.status(404).json({ message: "Shift not found" });
 
         // Update assigned employees
-        let approved;
-            if (shiftType === "on-site") {
-                approved = await Shift.updateOne(
-                    { _id: existingShift._id },
-                    { $addToSet: { assignedEmployees: request.requestedBy } } // Push a single ID, avoiding duplicates
-                );
-            } else {
-                approved = await Shift.updateOne(
-                    { _id: existingShift._id },
-                    { $pull: { assignedEmployees: request.requestedBy } } // Remove a single ID
-                );
+        let updateQuery = shiftType === "on-site" 
+            ? { $addToSet: { assignedEmployees: request.requestedBy } }
+            : { $pull: { assignedEmployees: request.requestedBy } };
+
+        const approved = await Shift.updateOne({ _id: shiftId }, updateQuery);
+
+        // Check if update was acknowledged
+        if (approved && approved.acknowledged) {
+            const updatedRequest = await Request.findByIdAndUpdate(
+                requestId,
+                { status: "approved", adminMessage },
+                { new: true, runValidators: true }
+            );
+
+            // Send email if EmployeeEmail exists
+            if (EmployeeEmail) {
+                sendNotificationEmailAdmin(EmployeeEmail, "approved", shiftType, shiftDate);
             }
 
-        // If shift update was successful, update request status
-            if (approved.modifiedCount > 0) {
-                const updatedRequest = await Request.findByIdAndUpdate(
-                    requestId,
-                    { status: "approved", adminMessage: adminMessage },
-                    { new: true, runValidators: true }
-                );
-
-                return res.status(200).json({
-                    message: "Request approved and shift updated successfully",
-                    shift: existingShift,
-                    request: updatedRequest
-                });
-            } else {
-                return res.status(400).json({ message: "No modifications made to shift" });
-            }
+            return res.status(200).json({
+                message: "Request approved and shift updated successfully",
+                shift: existingShift,
+                request: updatedRequest,
+            });
+        } else {
+            return res.status(400).json({ message: "No modifications made to shift" });
+        }
     } catch (error) {
         next(error);
     }
 };
+
 
 
 
@@ -158,11 +166,32 @@ export const RejectedRequestShift = async (req, res, next) => {
     try {
         const { requestId, adminMessage} = req.body;
 
+         // Find the request
+         const request = await Request.findById(requestId);
+         if (!request) return next(createError(400, "Request not found!"));
+ 
+         const shiftDate = new Date(request.date).toLocaleDateString("en-US", {
+             year: "numeric",
+             month: "long",
+             day: "numeric",
+         });
+         
+         const shiftType = request.shiftType;
+         const shiftId = request.shiftId;
+ 
+         // Find user email
+         const userFind = await User.findById(request.requestedBy);
+         const EmployeeEmail = userFind ? userFind.email : null;
+
             const updatedRequest = await Request.findByIdAndUpdate(
                 requestId,
                 { status: "rejected", adminMessage: adminMessage },
                 { new: true, runValidators: true }
             );
+             // Send email if EmployeeEmail exists
+             if (EmployeeEmail) {
+                sendNotificationEmailAdmin(EmployeeEmail, "rejected", shiftType, shiftDate);
+            }
             if(updatedRequest){
                 return res.status(200).json({ message: "Request rejected! Shift updated successfully",});
             }else{

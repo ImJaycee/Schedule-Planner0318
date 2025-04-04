@@ -147,7 +147,8 @@ const AdminRequests = () => {
                         <p className="text-red-500">Rejected</p>
                       )}
                     </td>
-                    <td className="border border-gray-300 px-4 py-2">{request.userMessage}</td>
+                    <td className="border border-gray-300 px-4 py-2 text-justify break-words min-h-[30px] h-auto">{request.userMessage}</td>
+
                     <td className="border border-gray-300 px-4 py-2">
                       {request.status === "rejected" ? ( 
                         <button disabled
