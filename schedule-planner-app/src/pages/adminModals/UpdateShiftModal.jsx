@@ -169,7 +169,7 @@ const handleChange = (e) => {
                     readOnly
                       type="date"
                       name="date"
-                      value={data?.date ? new Date(data.date).toISOString().split("T")[0] : ""}
+                      value={formData?.date ? new Date(formData.date).toISOString().split("T")[0] : ""}
                       onChange={handleChange}
                       className="w-full p-2 border rounded"
                       disabled

@@ -4,6 +4,7 @@ import Shift from '../models/Schedule.js';
 import Request from '../models/Request.js';
 import RequestSwap from '../models/RequestSwap.js';
 import { createError } from '../utils/error.js';
+import { sendNotificationEmailAdmin, sendNotificationSwapRecipient, sendNotificationSwapSender } from '../utils/adminEmailNotification.js';
 
 
 
@@ -214,7 +215,9 @@ export const ApprovedSwapRequestAdmin = async (req, res, next) => {
         console.log("Incoming Data:", req.body);
 
         // Find the request
-        const request = await RequestSwap.findById(requestSwapId);
+        const request = await RequestSwap.findById(requestSwapId)
+                                                                .populate("requestedBy", "email firstname")  // Fetch only the email field from the User model
+                                                                .populate("requestedTo", "email firstname lastname");
         if (!request) return next(createError(400, "Request not found!"));
 
         const { requestingShiftId, requesterShiftId, requestedTo, requestedBy, RecipientST, RequesterST } = request;
@@ -226,38 +229,58 @@ export const ApprovedSwapRequestAdmin = async (req, res, next) => {
             return res.status(404).json({ message: "Invalid request. Shift not found." });
         }
 
+        
+        const requesterEmail = request.requestedBy.email
+        const recipientEmail = request.requestedTo.email
+        const requesterName = request.requesterName
+        const recipientName = request.requestedTo.firstname + " " + request.requestedTo.lastname
+        const RequestshiftDate = new Date(existingRequestShift.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+        const OffershiftDate = new Date(existingOfferShift.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+        
+
+       
+
+
         // Handle swap conditions
         if (RecipientST === "on-site") {
             // Remove requestedTo from requested shift first
             await Shift.updateOne(
                 { _id: existingRequestShift._id },
-                { $pull: { assignedEmployees: requestedTo } }
+                { $pull: { assignedEmployees: requestedTo._id } }
             );
             
             // Then add requestedBy to requested shift
             await Shift.updateOne(
                 { _id: existingRequestShift._id },
-                { $addToSet: { assignedEmployees: requestedBy } }
+                { $addToSet: { assignedEmployees: requestedBy._id } }
             );
 
             if (RequesterST === "on-site") {
                 // Remove requestedBy from offered shift first
                 await Shift.updateOne(
                     { _id: existingOfferShift._id },
-                    { $pull: { assignedEmployees: requestedBy } }
+                    { $pull: { assignedEmployees: requestedBy._id } }
                 );
 
                 // Then add requestedTo to the offered shift
                 await Shift.updateOne(
                     { _id: existingOfferShift._id },
-                    { $addToSet: { assignedEmployees: requestedTo } }
+                    { $addToSet: { assignedEmployees: requestedTo._id } }
                 );
             }
             if (RequesterST === "wfh") {
                 // Remove requestedTo from offered shift first
                 await Shift.updateOne(
                     { _id: existingOfferShift._id },
-                    { $pull: { assignedEmployees: requestedTo } }
+                    { $pull: { assignedEmployees: requestedTo._id } }
                 );
             }
         } 
@@ -265,13 +288,13 @@ export const ApprovedSwapRequestAdmin = async (req, res, next) => {
             // Remove requestedBy from offered shift first
             await Shift.updateOne(
                 { _id: existingOfferShift._id },
-                { $pull: { assignedEmployees: requestedBy } }
+                { $pull: { assignedEmployees: requestedBy._id } }
             );
 
             // Then add requestedTo to the offered shift
             await Shift.updateOne(
                 { _id: existingOfferShift._id },
-                { $addToSet: { assignedEmployees: requestedTo } }
+                { $addToSet: { assignedEmployees: requestedTo._id } }
             );
         } 
         else if (RecipientST === "wfh" && RequesterST === "wfh") {
@@ -282,10 +305,15 @@ export const ApprovedSwapRequestAdmin = async (req, res, next) => {
             return res.status(200).json({ message: "Both employees are on WFH schedule; no update needed." });
         }
 
-        await RequestSwap.updateOne(
+        const approved = await RequestSwap.updateOne(
             {_id: requestSwapId},
             {status: "approved", adminMessage: adminMessage}
         );
+
+        if(approved && recipientEmail && requesterEmail){
+            sendNotificationSwapSender(requesterEmail, "approved", recipientName, RequesterST, RecipientST, RequestshiftDate, OffershiftDate);
+            sendNotificationSwapRecipient(recipientEmail, "approved", requesterName, RequesterST, RecipientST, RequestshiftDate, OffershiftDate);
+        }
 
         return res.status(200).json({ message: "Swap Approved", data: request });
 
@@ -302,7 +330,9 @@ export const ApprovedSwapRequestAdmin = async (req, res, next) => {
         const { requestSwapId, adminMessage } = req.body;
 
         // Find the request
-        const request = await RequestSwap.findById(requestSwapId);
+        const request = await RequestSwap.findById(requestSwapId)
+                                                                .populate("requestedBy", "email firstname")  // Fetch only the email field from the User model
+                                                                .populate("requestedTo", "email firstname lastname");
         if (!request) return next(createError(400, "Request not found!"));
 
         const RequestingshiftId = request.requestingShiftId;
@@ -315,6 +345,21 @@ export const ApprovedSwapRequestAdmin = async (req, res, next) => {
             return res.status(404).json({ message: "Invalid request. Shift not found." });
         }
 
+        const requesterEmail = request.requestedBy.email
+        const recipientEmail = request.requestedTo.email
+        const requesterName = request.requesterName
+        const recipientName = request.requestedTo.firstname + " " + request.requestedTo.lastname
+        const RequestshiftDate = new Date(existingRequestShift.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+        const OffershiftDate = new Date(existingOfferShift.date).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        });
+
         // Update recipientStatus to "accepted"
         const requestDecline = await RequestSwap.findByIdAndUpdate(
             requestSwapId,
@@ -323,6 +368,10 @@ export const ApprovedSwapRequestAdmin = async (req, res, next) => {
         );
 
         if (requestDecline) {
+            if(requesterEmail && recipientEmail){
+                sendNotificationSwapSender(requesterEmail, "rejected", recipientName, request.RequesterST, request.RecipientST, RequestshiftDate, OffershiftDate);
+                sendNotificationSwapRecipient(recipientEmail, "rejected", requesterName, request.RequesterST, request.RecipientST, RequestshiftDate, OffershiftDate);
+            }
             return res.status(200).json({
                 message: "Request accepted! Shift updated successfully",
                 data: requestDecline

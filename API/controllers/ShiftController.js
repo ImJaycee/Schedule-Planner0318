@@ -3,8 +3,7 @@ import User from '../models/User.js';
 import Shift from '../models/Schedule.js';
 import { createError } from '../utils/error.js';
 
-
-
+import { sendNotificationNewShift, sendNotificationRemovedToShift } from '../utils/adminEmailNotification.js';
 
 export const CreateShift = async (req, res, next) => {
     try {
@@ -36,58 +35,101 @@ export const CreateShift = async (req, res, next) => {
             await existingShift.save();
         }
 
+        // Fetch emails of assigned employees
+        const employees = await User.find({ _id: { $in: assignedEmployees } }, "email");
+        const emails = employees.map(emp => emp.email);
+
         // Update assigned employees' shift lists
         await User.updateMany(
             { _id: { $in: assignedEmployees } },
             { $addToSet: { shifts: existingShift._id } } // Prevent duplicate shift assignments for users
         );
 
-        res.status(200).json({ message: "Shift added successfully", shift: existingShift });
+        // Send emails to all assigned employees
+        sendNotificationNewShift(emails, shiftType, shiftDate);
+
+        res.status(200).json({ message: "Shift added successfully and emails sent", shift: existingShift });
     } catch (error) {
         next(error);
     }
 };
 
- // update a Shift
- export const updateShift = async (req, res, next) => {
-    const id = req.params.id; // Extract ID from URL
+
+ // Update a Shift
+export const updateShift = async (req, res, next) => {
+    const id = req.params.id; // Extract shift ID from URL
     const updateData = req.body;
 
     try {
+        // Fetch the existing shift before updating
+        const existingShift = await Shift.findById(id);
+
+        if (!existingShift) {
+            return res.status(404).json({ message: "Shift not found" });
+        }
+
+        // Extract old assigned employees before update
+        const previousAssignedEmployees = new Set(existingShift.assignedEmployees.map(emp => emp.toString()));
+
         // Ensure no duplicate employees in the update
         if (updateData.assignedEmployees) {
             updateData.assignedEmployees = [...new Set(updateData.assignedEmployees)];
         }
 
         // Find and update the shift
-        const update_Shift = await Shift.findByIdAndUpdate(id, updateData, {
+        const updatedShift = await Shift.findByIdAndUpdate(id, updateData, {
             new: true, // Return updated document
             runValidators: true, // Ensure model validation
         });
 
-        if (!update_Shift) {
-            return res.status(404).json({ message: "Shift not found" });
-        }
+        const shiftDate = new Date(updatedShift.date).toISOString().split("T")[0];
 
-        // Update user shift references if assigned employees change
+        // If assigned employees changed, process the differences
         if (updateData.assignedEmployees) {
-            // Remove shift ID from all users
+            const newAssignedEmployees = new Set(updateData.assignedEmployees.map(emp => emp.toString()));
+
+            // Identify newly added employees
+            const addedEmployees = [...newAssignedEmployees].filter(emp => !previousAssignedEmployees.has(emp));
+
+            // Identify removed employees
+            const removedEmployees = [...previousAssignedEmployees].filter(emp => !newAssignedEmployees.has(emp));
+
+            // Fetch emails for added and removed employees
+            const addedEmployeeEmails = await getEmployeeEmails(addedEmployees);
+            const removedEmployeeEmails = await getEmployeeEmails(removedEmployees);
+
+            // Remove shift ID from removed employees
             await User.updateMany(
-                { shifts: id },
+                { _id: { $in: removedEmployees } },
                 { $pull: { shifts: id } }
             );
 
             // Add shift ID to newly assigned employees
             await User.updateMany(
-                { _id: { $in: updateData.assignedEmployees } },
+                { _id: { $in: addedEmployees } },
                 { $push: { shifts: id } }
             );
+
+            // Send notifications
+            if (addedEmployeeEmails.length > 0) {
+                 sendNotificationNewShift(addedEmployeeEmails, updatedShift.shiftType, shiftDate);
+            }
+            if (removedEmployeeEmails.length > 0) {
+                 sendNotificationRemovedToShift(removedEmployeeEmails, updatedShift.shiftType, shiftDate);
+            }
         }
 
-        res.status(200).json({ message: "Shift updated successfully", update_shift: update_Shift});
+        res.status(200).json({ message: "Shift updated successfully", updatedShift });
     } catch (error) {
         next(error);
     }
+};
+
+// Fetch employee emails
+const getEmployeeEmails = async (employeeIds) => {
+    if (!employeeIds.length) return [];
+    const employees = await User.find({ _id: { $in: employeeIds } }, "email");
+    return employees.map(emp => emp.email);
 };
 
 
