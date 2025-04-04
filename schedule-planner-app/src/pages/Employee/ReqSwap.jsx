@@ -29,7 +29,11 @@ const RequestShiftSwap = () => {
   const [reload, setReload] = useState(false);
   const [loadingRequestId, setLoadingRequestId] = useState(null);
   const department = localStorage.getItem("department");
+  const [viewMode, setViewMode] = useState("sent");
 
+
+
+  
     const [formData, setFormData] = useState({
       date: "",
       RecipientST: "",
@@ -280,8 +284,9 @@ const RequestShiftSwap = () => {
 <div className="flex flex-col md:flex-row max-h-full bg-gray-100 min-h-screen h-screen">
   <NavbarEmployee />
   <div className="flex-1 flex flex-col p-3 overflow-auto">
-    <h3 className="text-2xl text-center font-semibold mb-2">Shift Swap Requests</h3>
-
+      <div>
+      <h3 className="text-2xl text-center font-semibold mb-6 mt-5">Shift Swap Requests</h3> {/* Added mb-4 */}
+    </div>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Left Side - Send Request */}
       <div className="bg-white shadow-lg rounded-lg p-6">
@@ -405,198 +410,210 @@ const RequestShiftSwap = () => {
         </form>
       </div>
 
-      {/* Right Side - View Requests (Temporary Static Content) */}
-      <div className="bg-white shadow-lg rounded-lg p-6">
+      {/* Right Side - View Requests */}
+<div className="bg-white shadow-lg rounded-lg p-6">
+  {/* Buttons to toggle between sent and received requests */}
+  <div className="flex justify-center mb-4">
+    <button
+      className={`px-4 py-2 rounded-l-md ${
+        viewMode === "received" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
+      }`}
+      onClick={() => setViewMode("received")}
+    >
+      View Received Requests
+    </button>
+    <button
+      className={`px-4 py-2 rounded-r-md ${
+        viewMode === "sent" ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
+      }`}
+      onClick={() => setViewMode("sent")}
+    >
+      View Sent Requests
+    </button>
+  </div>
 
-        <div>
-          <h3 className="text-md font-semibold text-gray-800">Sent Requests</h3>
-          {isLoading ? (
-                <p className="text-gray-500">Loading requests...</p>
-              ) : requests.length > 0 ? (
-                <ul className="space-y-2">
-                  {requests.map((request, index) => ( 
-                    <li
-                      key={index}
-                      className="bg-gray-50 p-2 rounded-lg border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <p className="text-green-800 mb-1 font-semibold text-sm">
-                            Sent to {request.requestedTo.firstname}
-                          </p>
-                        <h3 className="text-md font-bold text-gray-800 mb-1">
-                          Your Schedule: 
-                          {request.date
-                            ? new Date(request.date).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })
-                            : "N/A"}
-                          {request.RequesterST === "on-site" ? " (On-Site)" : " (Remote)"}
-                        </h3>
-
-                        <h3 className="text-md font-bold text-gray-800 mb-1">
-                          Requesting For: 
-                          {request.requestingShiftId?.date
-                            ? new Date(request.requestingShiftId.date).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })
-                            : "N/A"}
-                          {request.RecipientST === "on-site" ? " (On-Site)" : " (Remote)"}
-                        </h3>
-                        {request.status === "approved" ? (
-                          <p className="text-green-600 mb-1 font-semibold text-sm">
-                            Approved
-                          </p>
-                        ) : request.status === "pending" && request.recipientStatus === "accepted" ? (
-                          <p className="text-yellow-600 mb-1 font-semibold text-sm">
-                            Pending - admin approval
-                          </p>
-                        ) : request.status === "pending" && request.recipientStatus === "pending" ? (
-                          <p className="text-yellow-400 mb-1 font-semibold text-sm">
-                            Pending - waiting for {request.requestedTo.firstname} to accept
-                          </p>
-                        ) : request.status === "rejected" ? (
-                          <p className="text-red-600 mb-1 font-semibold text-sm">
-                            Rejected
-                          </p>
-                        ) : (
-                          <p className="text-gray-600 mb-1">No status available.</p>
-                        )}
-                      <p className="text-gray-600 mb-1">
-                      <span className="text-gray-900">Admin</span> - 
-                        {request.adminMessage || "No message available."}
-                      </p>
-                      <p className="text-gray-600 mb-1">
-                        <span className="text-gray-900">{request.requestedTo.firstname}</span> - 
-                        {request.recipientMessage || " No message available."}
-                      </p>
-                      <span className="text-sm text-gray-500 block">
-                        Requested on: {new Date(request.createdAt).toLocaleDateString()}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+  {/* Conditional rendering based on viewMode */}
+  {viewMode === "sent" ? (
+    <div>
+      <h3 className="text-md font-semibold text-gray-800">Sent Requests</h3>
+      {isLoading ? (
+        <p className="text-gray-500">Loading requests...</p>
+      ) : requests.length > 0 ? (
+        <ul className="space-y-2 max-h-160 overflow-y-auto"> {/* Adjusted height */}
+          {requests.map((request, index) => (
+            <li
+              key={index}
+              className="bg-gray-50 p-2 rounded-lg border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow"
+            >
+              <p className="text-green-800 mb-1 font-semibold text-sm">
+                Sent to {request.requestedTo?.firstname || "Unknown"}
+              </p>
+              <h3 className="text-md font-bold text-gray-800 mb-1">
+                Your Schedule:{" "}
+                {request.date
+                  ? new Date(request.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "N/A"}{" "}
+                {request.RequesterST === "on-site" ? " (On-Site)" : " (Remote)"}
+              </h3>
+              <h3 className="text-md font-bold text-gray-800 mb-1">
+                Requesting For:{" "}
+                {request.requestingShiftId?.date
+                  ? new Date(request.requestingShiftId.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
+                  : "N/A"}{" "}
+                {request.RecipientST === "on-site" ? " (On-Site)" : " (Remote)"}
+              </h3>
+              {request.status === "approved" ? (
+                <p className="text-green-600 mb-1 font-semibold text-sm">Approved</p>
+              ) : request.status === "pending" && request.recipientStatus === "accepted" ? (
+                <p className="text-yellow-600 mb-1 font-semibold text-sm">
+                  Pending - admin approval
+                </p>
+              ) : request.status === "pending" && request.recipientStatus === "pending" ? (
+                <p className="text-yellow-400 mb-1 font-semibold text-sm">
+                  Pending - waiting for {request.requestedTo?.firstname || "Unknown"} to accept
+                </p>
+              ) : request.status === "rejected" ? (
+                <p className="text-red-600 mb-1 font-semibold text-sm">Rejected</p>
               ) : (
-                <p className="text-gray-500">No sent request.</p>
+                <p className="text-gray-600 mb-1">No status available.</p>
               )}
-        </div>
-
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold text-gray-800">Received Requests</h3>
-          {isLoading ? (
-                <p className="text-gray-500">Loading requests...</p>
-              ) : requestedToUser.length > 0 ? (
-                <ul className="space-y-2">
-                  {requestedToUser.map((request, index) => ( 
-                    <li
-                      key={index}
-                      className="bg-gray-50 p-2 rounded-lg border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <p className="text-green-800 mb-1 font-semibold text-sm">
-                            Request from {request.requestedBy.firstname}
-                          </p>
-                        <h3 className="text-md font-bold text-gray-800 mb-1">
-                          Your Schedule: 
-                          {request.requestingShiftId.date
-                            ? new Date(request.requestingShiftId.date).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })
-                            : "N/A"}
-                          {request.RecipientST === "on-site" ? " (On-Site)" : " (Remote)"}
-                        </h3>
-
-                        <h3 className="text-md font-bold text-gray-800 mb-1">
-                          Sender Schedule: 
-                          {request.requesterShiftId.date
-                            ? new Date(request.requesterShiftId.date).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })
-                            : "N/A"}
-                          {request.RequesterST === "on-site" ? " (On-Site)" : " (Remote)"}
-                        </h3>
-                        {request.status === "approved" ? (
-                          <p className="text-green-600 mb-1 font-semibold text-sm">
-                            Approved
-                          </p>
-                        ) : request.status === "pending" && request.recipientStatus === "accepted" ? (
-                          <p className="text-yellow-600 mb-1 font-semibold text-sm">
-                            Pending - admin approval
-                          </p>
-                        ) : request.status === "pending" && request.recipientStatus === "pending" ? (
-                            <form onSubmit={handleAccept} className="bg-white p-2 rounded-md shadow-sm max-w-full mx-auto">
-
-                              {/* Recipient Message */}
-                              <label htmlFor="recipientMessage" className="block text-gray-600 text-xs font-medium mb-1">
-                                Message (Optional):
-                              </label>
-                              <textarea
-                                id="recipientMessage"
-                                name="recipientMessage"
-                                className="w-full px-2 py-1 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
-                                placeholder="Add a note..."
-                                rows="1"
-                                onChange={(e) => setRecipientMessage(e.target.value)}
-                              ></textarea>
-
-                              {/* Hidden Input for Request ID */}
-                              <input type="hidden" name="requestSwapId" value={request._id} readOnly />
-
-                              {/* Buttons */}
-                              <div className="flex justify-end mt-2">
-                                  <button
-                                    type="submit"
-                                    className={`bg-green-600 text-white text-xs px-3 py-1 rounded-md hover:bg-green-700 transition duration-200 mr-2 ${
-                                      loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
-                                    }`}
-                                    disabled={loadingRequestId === request._id}
-                                  >
-                                    {loadingRequestId === request._id ? "Accepting..." : "Accept"}
-                                  </button>
-                                                                  
-                                  <button
-                                    type="button"
-                                    onClick={(event) => handleDecline(event, request._id)}
-                                    className={`bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600 transition duration-200 ${
-                                      loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
-                                    }`}
-                                    disabled={loadingRequestId === request._id}
-                                  >
-                                    {loadingRequestId === request._id ? "Declining..." : "Decline"}
-                                  </button>
-                              </div>
-                            </form>
-                        ) : request.status === "rejected" ? (
-                          <p className="text-red-600 mb-1 font-semibold text-sm">
-                            Rejected
-                          </p>
-                        ) : (
-                          <p className="text-gray-600 mb-1">No status available.</p>
-                        )}
-                      <p className="text-gray-600 mb-1">
-                      <span className="text-gray-900">Admin</span> - 
-                        {request.adminMessage || "No message available."}
-                      </p>
-                      <p className="text-gray-600 mb-1">
-                        <span className="text-gray-900">{request.requestedBy.firstname}</span> - 
-                        {request.requesterMessage || " No message available."}
-                      </p>
-                      <span className="text-sm text-gray-500 block">
-                        Requested on: {new Date(request.createdAt).toLocaleDateString()}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-500">No sent request.</p>
-              )}
-        </div>
-      </div>
+              <p className="text-gray-600 mb-1">
+                <span className="text-gray-900">Admin</span> -{" "}
+                {request.adminMessage || "No message available."}
+              </p>
+              <p className="text-gray-600 mb-1">
+                <span className="text-gray-900">{request.requestedTo?.firstname || "Unknown"}</span>{" "}
+                - {request.recipientMessage || "No message available."}
+              </p>
+              <span className="text-sm text-gray-500 block">
+                Requested on: {new Date(request.createdAt).toLocaleDateString()}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="text-gray-500">No sent requests.</p>
+      )}
+    </div>
+  ) : (
+    <div>
+    <h3 className="text-lg font-semibold text-gray-800">Received Requests</h3>
+    {isLoading ? (
+      <p className="text-gray-500">Loading requests...</p>
+    ) : requestedToUser.length > 0 ? (
+      <ul className="space-y-2 max-h-160 overflow-y-auto"> {/* Adjusted height to fit 3 items */}
+        {requestedToUser.map((request, index) => (
+          <li
+            key={index}
+            className="bg-gray-50 p-2 rounded-lg border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow"
+          >
+            <p className="text-green-800 mb-1 font-semibold text-sm">
+              Request from {request.requestedBy?.firstname || "Unknown"}
+            </p>
+            <h3 className="text-md font-bold text-gray-800 mb-1">
+              Your Schedule:{" "}
+              {request.requestingShiftId?.date
+                ? new Date(request.requestingShiftId.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                : "N/A"}{" "}
+              {request.RecipientST === "on-site" ? " (On-Site)" : " (Remote)"}
+            </h3>
+            <h3 className="text-md font-bold text-gray-800 mb-1">
+              Sender Schedule:{" "}
+              {request.requesterShiftId?.date
+                ? new Date(request.requesterShiftId.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })
+                : "N/A"}{" "}
+              {request.RequesterST === "on-site" ? " (On-Site)" : " (Remote)"}
+            </h3>
+            {request.status === "approved" ? (
+              <p className="text-green-600 mb-1 font-semibold text-sm">Approved</p>
+            ) : request.status === "pending" && request.recipientStatus === "accepted" ? (
+              <p className="text-yellow-600 mb-1 font-semibold text-sm">
+                Pending - admin approval
+              </p>
+            ) : request.status === "pending" && request.recipientStatus === "pending" ? (
+              <form
+                onSubmit={handleAccept}
+                className="bg-white p-2 rounded-md shadow-sm max-w-full mx-auto"
+              >
+                <label
+                  htmlFor="recipientMessage"
+                  className="block text-gray-600 text-xs font-medium mb-1"
+                >
+                  Message (Optional):
+                </label>
+                <textarea
+                  id="recipientMessage"
+                  name="recipientMessage"
+                  className="w-full px-2 py-1 text-sm border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="Add a note..."
+                  rows="1"
+                  onChange={(e) => setRecipientMessage(e.target.value)}
+                ></textarea>
+                <input type="hidden" name="requestSwapId" value={request._id} readOnly />
+                <div className="flex justify-end mt-2">
+                  <button
+                    type="submit"
+                    className={`bg-green-600 text-white text-xs px-3 py-1 rounded-md hover:bg-green-700 transition duration-200 mr-2 ${
+                      loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    disabled={loadingRequestId === request._id}
+                  >
+                    {loadingRequestId === request._id ? "Accepting..." : "Accept"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(event) => handleDecline(event, request._id)}
+                    className={`bg-red-500 text-white text-xs px-3 py-1 rounded-md hover:bg-red-600 transition duration-200 ${
+                      loadingRequestId === request._id ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    disabled={loadingRequestId === request._id}
+                  >
+                    {loadingRequestId === request._id ? "Declining..." : "Decline"}
+                  </button>
+                </div>
+              </form>
+            ) : request.status === "rejected" ? (
+              <p className="text-red-600 mb-1 font-semibold text-sm">Rejected</p>
+            ) : (
+              <p className="text-gray-600 mb-1">No status available.</p>
+            )}
+            <p className="text-gray-600 mb-1">
+              <span className="text-gray-900">Admin</span> -{" "}
+              {request.adminMessage || "No message available."}
+            </p>
+            <p className="text-gray-600 mb-1">
+              <span className="text-gray-900">{request.requestedBy?.firstname || "Unknown"}</span>{" "}
+              - {request.requesterMessage || "No message available."}
+            </p>
+            <span className="text-sm text-gray-500 block">
+              Requested on: {new Date(request.createdAt).toLocaleDateString()}
+            </span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p className="text-gray-500">No received requests.</p>
+    )}
+  </div>
+  )}
+</div>
+      
     </div>
   </div>
 </div>
