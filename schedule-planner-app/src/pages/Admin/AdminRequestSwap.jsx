@@ -46,9 +46,9 @@ const AdminRequestsSwap = () => {
   });
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex max-h-full bg-gray-100 overflow-hidden">
       <NavbarAdmin />
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 max-h-full overflow-auto">
         <h3 className="text-lg font-semibold mb-4">Requests for Swap Shifts</h3>
 
         {/* Search and Filter */}
@@ -72,73 +72,88 @@ const AdminRequestsSwap = () => {
           </select>
         </div>
 
-        {/* Cards for Requests */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {isLoading ? (
-            <p>Loading...</p>
-          ) : (
-            filteredRequests.map((request) => (
-              <div key={request._id} className="bg-white p-4 rounded-lg shadow-md">
-                <h4 className="font-semibold">Request from: {request.requestedBy.firstname} {request.requestedBy.lastname}</h4>
-                <p className="text-sm text-gray-600">Shift Type: {request.RequesterST}</p>
-                <p className="text-sm text-gray-600">Shift Date:
-                            {new Date(request.requesterShiftId.date).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })}</p>
-                <p className="text-sm text-gray-600">Message: {request.requesterMessage}</p>
-                <h4 className="font-semibold">Request To: {request.requestedTo.firstname} {request.requestedTo.lastname}</h4>
-                <p className="text-sm text-gray-600">Shift Type: {request.RecipientST}</p>
-                <p className="text-sm text-gray-600">Shift Date: 
-                            {new Date(request.requestingShiftId.date).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })}</p>
-                <p className="text-sm text-gray-800">Requested At: {new Date(request.createdAt).toLocaleDateString()}</p>
-                
-                
-                {/* Status Display */}
-                {request.status === "approved" ? (
-                  <p className="text-green-600 mb-1 font-semibold text-sm">Approved</p>
-                ) : request.status === "pending" && request.recipientStatus === "accepted" ? (
-                  <p className="text-yellow-600 mb-1 font-semibold text-sm">Pending - Admin Approval</p>
-                ) : request.status === "pending" && request.recipientStatus === "pending" ? (
-                  <p className="text-yellow-400 mb-1 font-semibold text-sm">
-                    Pending - Waiting for {request.requestedTo.firstname} to accept...
+        {/* Scrollable Container */}
+        <div
+          className={`${
+            filteredRequests.length > 6 ? "max-h-[650px] overflow-y-auto pr-2" : ""
+          }`}
+        >
+          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              filteredRequests.map((request) => (
+                <li key={request._id} className="bg-white p-4 rounded-lg shadow-md">
+                  <h4 className="font-semibold">
+                    Request from: {request.requestedBy.firstname} {request.requestedBy.lastname}
+                  </h4>
+                  <p className="text-sm text-gray-600">Shift Type: {request.RequesterST}</p>
+                  <p className="text-sm text-gray-600">
+                    Shift Date:{" "}
+                    {new Date(request.requesterShiftId.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </p>
-                ) : request.status === "rejected" ? (
-                  <p className="text-red-600 mb-1 font-semibold text-sm">Rejected</p>
-                ) : null}
+                  <p className="text-sm text-gray-600">Message: {request.requesterMessage}</p>
+                  <h4 className="font-semibold">
+                    Request To: {request.requestedTo.firstname} {request.requestedTo.lastname}
+                  </h4>
+                  <p className="text-sm text-gray-600">Shift Type: {request.RecipientST}</p>
+                  <p className="text-sm text-gray-600">
+                    Shift Date:{" "}
+                    {new Date(request.requestingShiftId.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                  <p className="text-sm text-gray-800">
+                    Requested At: {new Date(request.createdAt).toLocaleDateString()}
+                  </p>
 
-                {/* Actions */}
-                <div className="mt-2">
-                  {request.recipientStatus === "pending" ? (
-                    <button className="bg-gray-400 text-white px-3 py-1 rounded cursor-not-allowed" disabled>
-                      Waiting for Recipient
-                    </button>
-                  )  : request.recipientStatus === "rejected" || request.status ==="rejected" ? (
-                    <button className="bg-red-500 text-white px-3 py-1 rounded" disabled>
-                      Request Rejected
-                      <X size={16} />
-                    </button>
-                  ) : request.status === "approved" ? (
-                    <button className="bg-green-500 text-white px-3 py-1 rounded" disabled>
-                      Request Approved
-                      <Check size={15} />
-                    </button>
-                  ) : (
-                    <>
-                      <button onClick={() => openModal(request)} className="bg-green-500 text-white px-3 py-1 rounded mr-2">
-                        View
+                  {/* Status Display */}
+                  {request.status === "approved" ? (
+                    <p className="text-green-600 mb-1 font-semibold text-sm">Approved</p>
+                  ) : request.status === "pending" && request.recipientStatus === "accepted" ? (
+                    <p className="text-yellow-600 mb-1 font-semibold text-sm">Pending - Admin Approval</p>
+                  ) : request.status === "pending" && request.recipientStatus === "pending" ? (
+                    <p className="text-yellow-400 mb-1 font-semibold text-sm">
+                      Pending - Waiting for {request.requestedTo.firstname} to accept...
+                    </p>
+                  ) : request.status === "rejected" ? (
+                    <p className="text-red-600 mb-1 font-semibold text-sm">Rejected</p>
+                  ) : null}
+
+                  {/* Actions */}
+                  <div className="mt-2">
+                    {request.recipientStatus === "pending" ? (
+                      <button className="bg-gray-400 text-white px-3 py-1 rounded cursor-not-allowed" disabled>
+                        Waiting for Recipient
                       </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            ))
-          )}
+                    ) : request.recipientStatus === "rejected" || request.status === "rejected" ? (
+                      <button className="bg-red-500 text-white px-3 py-1 rounded" disabled>
+                        Request Rejected
+                        <X size={16} />
+                      </button>
+                    ) : request.status === "approved" ? (
+                      <button className="bg-green-500 text-white px-3 py-1 rounded" disabled>
+                        Request Approved
+                        <Check size={15} />
+                      </button>
+                    ) : (
+                      <>
+                        <button onClick={() => openModal(request)} className="bg-green-500 text-white px-3 py-1 rounded mr-2">
+                          View
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </li>
+              ))
+            )}
+          </ul>
         </div>
       </div>
 
