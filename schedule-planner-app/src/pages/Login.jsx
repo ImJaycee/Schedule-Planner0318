@@ -87,9 +87,9 @@ const Login = () => {
   return (
     <div className="flex min-h-screen bg-white relative">
       <img src={a2kLogo} alt="A2K Logo" className="absolute top-6 left-8 w-32" />
-      <div className="flex flex-col items-center justify-center w-full">
+      <div className="flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8">
         <img src={flexiSchedLogo} alt="FlexiSched Logo" className="w-24 mb-4" />
-        <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md border">
+        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md border">
           <h3 className="text-xl font-semibold text-center text-gray-700 mb-6">
             Employee Login
           </h3>
@@ -153,7 +153,7 @@ const Login = () => {
             {/* Login Button */}
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded flex justify-center items-center"
+              className="w-full bg-blue-500 text-white py-2 rounded-md flex justify-center items-center"
               disabled={loading}
             >
               {loading ? (
@@ -170,6 +170,7 @@ const Login = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Login;

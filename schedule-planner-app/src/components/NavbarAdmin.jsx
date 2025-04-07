@@ -34,7 +34,7 @@ const NavbarAdmin = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex md:h-screen bg-gray-100">
       {/* Sidebar */}
       <div
         className={` z-10 fixed md:relative top-0 left-0 w-64 h-full bg-white shadow-xl p-4 flex flex-col justify-between transform ${
@@ -98,9 +98,9 @@ const NavbarAdmin = () => {
       </div>
 
       {/* Main Content */}
-      <div className="md:hidden flex-1 p-6">
+      <div className="md:hidden">
         {/* Hamburger Menu Button (Mobile) */}
-        <button className="md:hidden mb-4 text-gray-600" onClick={() => setIsSidebarOpen(true)}>
+        <button className="md:hidden p-1 text-gray-600" onClick={() => setIsSidebarOpen(true)}>
           <FaBars size={24} />
         </button>
       </div>

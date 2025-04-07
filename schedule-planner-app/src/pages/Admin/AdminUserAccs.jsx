@@ -161,131 +161,100 @@ const UserAccs = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-100">
       <NavbarAdmin />
-      <div className="flex-1 p-6 flex flex-col md:flex-row gap-6">
+      <div className="flex-1 p-4 md:p-6 flex flex-col gap-6 md:flex-row flex-wrap">
         {/* Create/Update User Section */}
-<div className="md:w-1/3 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-  <h3 className="text-3xl font-bold text-blue-600 mb-6 flex items-center">
-    {formMode === 'create' ? (
-      <>
-        <span className="mr-2">➕</span> Create User
-      </>
-    ) : (
-      <>
-        <span className="mr-2">✏️</span> Update User
-      </>
-    )}
-  </h3>
-  <form onSubmit={handleFormSubmit} className="space-y-6">
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-    <input
-      type="text"
-      placeholder="Enter first name"
-      className={`input mb-2 p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
-        errors.firstname ? 'border-red-500' : 'border-gray-300'
-      }`}
-      value={formData.firstname}
-      onChange={(e) => {
-        setFormData({ ...formData, firstname: e.target.value });
-        if (errors.firstname) {
-          setErrors((prevErrors) => ({ ...prevErrors, firstname: null })); // Clear the error for "firstname"
-        }
-      }}
-    />
-    {errors.firstname && <p className="text-red-500 text-xs italic">{errors.firstname}</p>}
-  </div>
-
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-    <input
-      type="text"
-      placeholder="Enter last name"
-      className={`input mb-2 p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
-        errors.lastname ? 'border-red-500' : 'border-gray-300'
-      }`}
-      value={formData.lastname}
-      onChange={(e) => {
-        setFormData({ ...formData, lastname: e.target.value });
-        if (errors.lastname) {
-          setErrors((prevErrors) => ({ ...prevErrors, lastname: null })); // Clear the error for "lastname"
-        }
-      }}
-    />
-    {errors.lastname && <p className="text-red-500 text-xs italic">{errors.lastname}</p>}
-  </div>
-
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-    <input
-      type="email"
-      placeholder="Enter email"
-      className={`input mb-2 p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
-        errors.email ? 'border-red-500' : 'border-gray-300'
-      }`}
-      value={formData.email}
-      onChange={(e) => {
-        setFormData({ ...formData, email: e.target.value });
-        if (errors.email) {
-          setErrors((prevErrors) => ({ ...prevErrors, email: null })); // Clear the error for "email"
-        }
-      }}
-    />
-    {errors.email && <p className="text-red-500 text-xs italic">{errors.email}</p>}
-  </div>
-
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-    <div className="relative">
-      <input
-        type={showPassword ? 'text' : 'password'}
-        placeholder="Enter password"
-        className={`input p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
-          errors.password ? 'border-red-500' : 'border-gray-300'
-        }`}
-        value={formData.password}
-        onChange={(e) => {
-          setFormData({ ...formData, password: e.target.value });
-          if (errors.password) {
-            setErrors((prevErrors) => ({ ...prevErrors, password: null })); // Clear the error for "password"
-          }
-        }}
-      />
-      <button
-        type="button"
-        onClick={togglePasswordVisibility}
-        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
-      >
-        {showPassword ? <FaEyeSlash /> : <FaEye />}
-      </button>
-    </div>
-    {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
-  </div>
-
-  <div className="flex justify-between items-center">
-    <button
-      type="submit"
-      className="btn bg-gray-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
-    >
-      {formMode === 'create' ? 'Create' : 'Update'}
-    </button>
-    {formMode === 'update' && (
-      <button
-        type="button"
-        className="btn bg-red-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
-        onClick={handleCancel}
-      >
-        Cancel
-      </button>
-    )}
-  </div>
-</form>
-</div>
+        <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
+          <h3 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 flex items-center">
+            {formMode === 'create' ? (
+              <>
+                <span className="mr-2">➕</span> Create User
+              </>
+            ) : (
+              <>
+                <span className="mr-2">✏️</span> Update User
+              </>
+            )}
+          </h3>
+          <form onSubmit={handleFormSubmit} className="space-y-4">
+            {/* Form Fields */}
+            {['firstname', 'lastname', 'email'].map((field) => (
+              <div key={field}>
+                <label className="block text-sm font-medium text-gray-700 mb-1 capitalize">
+                  {field.replace(/name/, ' Name')}
+                </label>
+                <input
+                  type={field === 'email' ? 'email' : 'text'}
+                  placeholder={`Enter ${field}`}
+                  className={`input p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
+                    errors[field] ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  value={formData[field]}
+                  onChange={(e) => {
+                    setFormData({ ...formData, [field]: e.target.value });
+                    if (errors[field]) {
+                      setErrors((prev) => ({ ...prev, [field]: null }));
+                    }
+                  }}
+                />
+                {errors[field] && <p className="text-red-500 text-xs italic">{errors[field]}</p>}
+              </div>
+            ))}
+  
+            {/* Password */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Enter password"
+                  className={`input p-3 border rounded-lg w-full focus:ring-2 focus:ring-blue-500 ${
+                    errors.password ? 'border-red-500' : 'border-gray-300'
+                  }`}
+                  value={formData.password}
+                  onChange={(e) => {
+                    setFormData({ ...formData, password: e.target.value });
+                    if (errors.password) {
+                      setErrors((prev) => ({ ...prev, password: null }));
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+              {errors.password && <p className="text-red-500 text-xs italic">{errors.password}</p>}
+            </div>
+  
+            {/* Buttons */}
+            <div className="flex justify-between items-center pt-2">
+              <button
+                type="submit"
+                className="btn bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 w-full md:w-auto"
+              >
+                {formMode === 'create' ? 'Create' : 'Update'}
+              </button>
+              {formMode === 'update' && (
+                <button
+                  type="button"
+                  className="btn bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 mt-2 md:mt-0 w-full md:w-auto"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+          </form>
+        </div>
   
         {/* All Users Section */}
-        <div className="md:w-2/3 bg-white p-4 rounded shadow-md"> {/* Increased width */}
-          <h3 className="text-2xl font-bold mb-4">All Users</h3>
+        <div className="w-full md:w-2/3 bg-white p-4 rounded shadow-md">
+          <h3 className="text-xl md:text-2xl font-bold mb-4">All Users</h3>
           <input
             type="text"
             placeholder="Search by first name, last name, or email"
@@ -294,36 +263,54 @@ const UserAccs = () => {
             onChange={handleSearchChange}
           />
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white">
+            <table className="min-w-full bg-white text-sm">
               <thead>
                 <tr>
-                  <th className="py-2 px-4 border-b">First Name</th>
-                  <th className="py-2 px-4 border-b">Last Name</th>
-                  <th className="py-2 px-4 border-b">Email</th>
-                  <th className="py-2 px-4 border-b">Department</th>
-                  <th className="py-2 px-4 border-b">Status</th>
-                  <th className="py-2 px-4 border-b">Actions</th>
+                  {['First Name', 'Last Name', 'Email', 'Department', 'Status', 'Actions'].map((header) => (
+                    <th key={header} className="py-2 px-4 border-b text-left">{header}</th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {currentUsers.map(user => (
+                {currentUsers.map((user) => (
                   <tr key={user._id}>
                     <td className="py-2 px-4 border-b">{user.firstname}</td>
                     <td className="py-2 px-4 border-b">{user.lastname}</td>
                     <td className="py-2 px-4 border-b">{user.email}</td>
                     <td className="py-2 px-4 border-b">{user.department}</td>
-                    <td className="py-2 px-4 border-b">{user.isDeactivated ? "Deactivated" : "Active"}</td>
                     <td className="py-2 px-4 border-b">
+                      {user.isDeactivated ? 'Deactivated' : 'Active'}
+                    </td>
+                    <td className="py-2 px-4 border-b whitespace-nowrap">
                       {user.isDeactivated ? (
-                        <button className="btn bg-green-500 text-white text-sm h-8 w-20 rounded ml-2 mb-1" onClick={() => handleActivate(user._id)}>Activate</button>
+                        <button
+                          className="btn bg-green-500 text-white px-3 py-1 rounded mr-2"
+                          onClick={() => handleActivate(user._id)}
+                        >
+                          Activate
+                        </button>
                       ) : (
-                        <button className="btn bg-red-500 text-white text-sm h-8 w-20 rounded ml-2 mb-1" onClick={() => { handleDeactivate(user._id); setErrors({}); }}>Deactivate</button>
+                        <button
+                          className="btn bg-red-500 text-white px-3 py-1 rounded mr-2"
+                          onClick={() => {
+                            handleDeactivate(user._id);
+                            setErrors({});
+                          }}
+                        >
+                          Deactivate
+                        </button>
                       )}
-                      <button className="btn bg-blue-500 text-white text-sm h-8 w-20 rounded ml-2 mb-1" onClick={() => { 
-                        setFormMode('update'); 
-                        setFormData({ ...user, password: "" }); // Clear the password field when updating
-                        setErrors({});
-                      }}>Update</button>
+                      <button
+                        className="btn bg-yellow-500 text-white px-3 py-1 rounded"
+                        onClick={() => {
+                          setFormMode('update');
+                          setFormData({ ...user, password: '' });
+                          setErrors({});
+                        }}
+                      >
+                        Update
+                      </button>
+
                     </td>
                   </tr>
                 ))}
@@ -339,6 +326,7 @@ const UserAccs = () => {
       </div>
     </div>
   );
+  
 };
 
 export default UserAccs;

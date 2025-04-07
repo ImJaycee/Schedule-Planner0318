@@ -106,75 +106,87 @@ const ProfileEditPage = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
+      {/* Sidebar */}
       <NavbarEmployee />
-
-      <div className="flex-10 p-8 flex justify-center items-center">
-        <div className="max-w-sm w-3/4 bg-white shadow-lg p-4 rounded mt-4">
-          <h2 className="font-semibold text-lg mb-3 text-center">Edit Profile</h2>
+  
+      {/* Main Content */}
+      <div className="flex-1 p-4 sm:p-8 flex justify-center items-center">
+        <div className="w-full max-w-md bg-white shadow-lg p-4 sm:p-6 rounded-lg mt-4">
+          <h2 className="font-semibold text-lg sm:text-xl mb-4 text-center">Edit Profile</h2>
           {isLoading ? (
-            "Loading..."
+            <p className="text-center">Loading...</p>
           ) : (
             <form onSubmit={updateUser}>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="text-center">
                   {user.image && (
                     <img
                       src={user.image}
                       alt="Profile"
-                      className="w-20 h-20 rounded-full mx-auto mb-3 object-cover"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto mb-3 object-cover"
                     />
                   )}
                 </div>
+  
+                {/* Profile Image Input */}
                 <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Profile Image</label>
+                  <label className="block text-gray-600 mb-1 text-sm font-semibold">Profile Image</label>
                   <input
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
+                    className="w-full border p-2 text-sm text-gray-600 rounded focus:outline-none focus:border-blue-300"
                   />
                 </div>
+  
+                {/* Firstname */}
                 <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Firstname</label>
+                  <label className="block text-gray-600 mb-1 text-sm font-semibold">Firstname</label>
                   <input
                     type="text"
                     name="firstname"
                     value={user.firstname}
                     onChange={handleChange}
-                    className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
                     placeholder="Firstname"
+                    className="w-full border p-2 text-sm text-gray-600 rounded focus:outline-none focus:border-blue-300"
                   />
                 </div>
+  
+                {/* Lastname */}
                 <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Lastname</label>
+                  <label className="block text-gray-600 mb-1 text-sm font-semibold">Lastname</label>
                   <input
                     type="text"
                     name="lastname"
                     value={user.lastname}
                     onChange={handleChange}
-                    className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
                     placeholder="Lastname"
+                    className="w-full border p-2 text-sm text-gray-600 rounded focus:outline-none focus:border-blue-300"
                   />
                 </div>
+  
+                {/* Email */}
                 <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Email</label>
+                  <label className="block text-gray-600 mb-1 text-sm font-semibold">Email</label>
                   <input
                     type="email"
                     name="email"
                     value={user.email}
                     onChange={handleChange}
-                    className="w-full block border p-2 text-sm text-gray-600 rounded focus:outline-none focus:shadow-outline focus:border-blue-200 placeholder-gray-400"
                     placeholder="Email"
+                    className="w-full border p-2 text-sm text-gray-600 rounded focus:outline-none focus:border-blue-300"
                   />
                 </div>
+  
+                {/* Department */}
                 <div>
-                  <label className="text-gray-600 mb-1 block text-sm font-semibold">Department</label>
+                  <label className="block text-gray-600 mb-1 text-sm font-semibold">Department</label>
                   <select
                     name="department"
                     value={user.department}
                     onChange={handleChange}
-                    className="p-2 border rounded w-full text-sm text-gray-600 focus:outline-none focus:shadow-outline focus:border-blue-200"
+                    className="w-full border p-2 text-sm text-gray-600 rounded focus:outline-none focus:border-blue-300"
                   >
                     <option value="">Select Department</option>
                     <option value="Technical">Technical</option>
@@ -183,10 +195,13 @@ const ProfileEditPage = () => {
                     <option value="Research">Research</option>
                   </select>
                 </div>
+  
+                {/* Submit Button */}
                 <div>
                   <button
-                    className="block w-full mt-4 bg-blue-700 text-white rounded-sm px-3 py-1 text-sm font-bold hover:bg-blue-600 hover:cursor-pointer"
+                    type="submit"
                     disabled={isLoading}
+                    className="w-full bg-blue-700 text-white rounded px-4 py-2 text-sm font-bold hover:bg-blue-600 transition duration-200"
                   >
                     {isLoading ? "Updating..." : "Update"}
                   </button>
@@ -198,6 +213,7 @@ const ProfileEditPage = () => {
       </div>
     </div>
   );
+  
 };
 
 export default ProfileEditPage;

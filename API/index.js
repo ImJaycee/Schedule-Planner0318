@@ -1,9 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import logger from './utils/logger.js'; // Import the logger
+
+import { rateLimit } from 'express-rate-limit'
+
 import authRoute from './routes/auth.js';
 import userRoute from './routes/userRoute.js';
 import shiftRoute from './routes/scheduleRoute.js';
@@ -33,6 +37,16 @@ const connect = async () => {
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 50, // Limit each IP to 50 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+	// store: ... , // Redis, Memcached, etc. See below.
+})
+
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
 
 // Log all incoming requests
 app.use((req, res, next) => {
@@ -40,14 +54,15 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
-app.use("/api/auth", authRoute);
-app.use("/api/user", userRoute);
-app.use("/api/shift", shiftRoute);
-app.use('/api/announcements', announcementRoutes);
-app.use('/api/edit', profileEditRoute);
-app.use('/api/request-shift', requestShift);
-app.use('/api/user-manage', userManageRoute);
+
+//routes
+app.use("/api/auth", limiter,authRoute);//
+app.use("/api/user", limiter,userRoute);
+app.use("/api/shift", limiter,shiftRoute);
+app.use('/api/announcements', limiter,announcementRoutes);
+app.use('/api/edit', limiter,profileEditRoute);
+app.use('/api/request-shift', limiter,requestShift);
+app.use('/api/user-manage', limiter,userManageRoute);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
