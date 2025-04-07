@@ -82,3 +82,33 @@ Content-Type: application/json
     "lastname": "Castro"
 }
 >>>>>>> origin/cloudinary-profile
+
+
+###
+
+POST http://localhost:4000/api/auth/forgetPassword
+Content-Type: application/json
+
+{
+    "email": "castrosalmer0604@gmail.com"
+
+}
+
+###
+
+POST http://localhost:4000/api/auth/forgetPassword
+Content-Type: application/json
+
+{
+    "email": "castrosalmer0604@gmail.com"
+
+}
+
+###
+POST http://localhost:4000/api/auth/reset-password/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2Q3Y2MwY2IwOTBmZGM3ZGNkYjNjMDAiLCJpYXQiOjE3NDM5OTA5MDksImV4cCI6MTc0Mzk5MTUwOX0.Lal9BbVN6sOYs3-kCnR_f_Ngoy-CnawzWWmbtJUXfA0
+Content-Type: application/json
+
+{
+    "newPassword": "castro123"
+
+}
