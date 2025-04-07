@@ -101,17 +101,17 @@ const AdminAnnouncement = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
       <NavbarAdmin />
-      <div className="flex-1 p-6 flex flex-col lg:flex-row">
-        {/* Create/Update Announcement Form */}
-        <div className="w-full lg:w-1/2 p-6 bg-gray-100 rounded-lg shadow-lg mb-6 lg:mb-0 lg:mr-4">
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4">{isEditing ? 'Update Announcement' : 'Create Announcement'}</h2>
+      <div className="flex-1 p-4 sm:p-6 flex flex-col lg:flex-row gap-6">
+        {/* Form Section */}
+        <div className="w-full lg:w-1/2 bg-gray-100 rounded-lg shadow-lg">
+          <form onSubmit={handleSubmit} className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">{isEditing ? 'Update Announcement' : 'Create Announcement'}</h2>
+  
+            {/* Title */}
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="title">
-                Title
-              </label>
+              <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">Title</label>
               <input
                 type="text"
                 id="title"
@@ -122,10 +122,10 @@ const AdminAnnouncement = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
+  
+            {/* Content */}
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="content">
-                Content
-              </label>
+              <label htmlFor="content" className="block text-gray-700 text-sm font-bold mb-2">Content</label>
               <textarea
                 id="content"
                 placeholder="Content"
@@ -135,10 +135,10 @@ const AdminAnnouncement = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
+  
+            {/* Expires At */}
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="expiresAt">
-                Expires At
-              </label>
+              <label htmlFor="expiresAt" className="block text-gray-700 text-sm font-bold mb-2">Expires At</label>
               <input
                 type="date"
                 id="expiresAt"
@@ -148,81 +148,87 @@ const AdminAnnouncement = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
-            <div className="flex space-x-2">
-              <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+  
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-2">
+              <button type="submit" className="w-full sm:w-auto p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
                 {isEditing ? 'Update Announcement' : 'Create Announcement'}
               </button>
               {isEditing && (
-                <button type="button" onClick={handleCancel} className="w-full p-2 bg-red-500 text-white rounded hover:bg-gray-600">
+                <button type="button" onClick={handleCancel} className="w-full sm:w-auto p-2 bg-red-500 text-white rounded hover:bg-gray-600">
                   Cancel
                 </button>
               )}
             </div>
           </form>
         </div>
-
-        {/* Announcements List */}
-        <div className="w-full lg:w-1/2 p-6 bg-gray-100 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-4">Announcements</h2>
-          {currentAnnouncements.map((announcement) => {
-            const isExpired = new Date(announcement.expiresAt) < new Date();
-            return (
-              <div key={announcement._id} className="bg-white p-4 mb-4 border rounded-lg shadow-md">
-                <h3 className="text-xl font-bold">{announcement.title}</h3>
-                <p className="mb-2">{announcement.content}</p>
-                <p className="text-sm text-gray-500 mb-2">
-                  Expires at: {new Date(announcement.expiresAt).toLocaleDateString()}
-                  {isExpired && <span className="text-red-500 ml-2">(Expired)</span>}
-                </p>
-                <div className="flex space-x-2">
-                  {!isExpired && (
+  
+        {/* Announcements Section */}
+        <div className="w-full lg:w-1/2 bg-gray-100 rounded-lg shadow-lg">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md">
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">Announcements</h2>
+            {currentAnnouncements.map((announcement) => {
+              const isExpired = new Date(announcement.expiresAt) < new Date();
+              return (
+                <div key={announcement._id} className="bg-white p-4 mb-4 border rounded-lg shadow">
+                  <h3 className="text-lg sm:text-xl font-bold">{announcement.title}</h3>
+                  <p className="mb-2 text-sm sm:text-base">{announcement.content}</p>
+                  <p className="text-sm text-gray-500 mb-2">
+                    Expires at: {new Date(announcement.expiresAt).toLocaleDateString()}
+                    {isExpired && <span className="text-red-500 ml-2">(Expired)</span>}
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    {!isExpired && (
+                      <button
+                        onClick={() => handleEdit(announcement)}
+                        className="p-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                      >
+                        Edit
+                      </button>
+                    )}
                     <button
-                      onClick={() => handleEdit(announcement)}
-                      className="p-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                      onClick={() => handleDelete(announcement._id)}
+                      className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
                     >
-                      Edit
+                      Delete
                     </button>
-                  )}
-                  <button
-                    onClick={() => handleDelete(announcement._id)}
-                    className="p-2 bg-red-500 text-white rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          {/* Pagination */}
-          <div className="flex justify-center mt-4">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-              className="px-3 py-1 mx-1 bg-gray-300 rounded disabled:opacity-50"
-            >
-              Previous
-            </button>
-            {[...Array(totalPages)].map((_, index) => (
+              );
+            })}
+  
+            {/* Pagination */}
+            <div className="flex flex-wrap justify-center mt-4 gap-2">
               <button
-                key={index}
-                onClick={() => handlePageChange(index + 1)}
-                className={`px-3 py-1 mx-1 ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
               >
-                {index + 1}
+                Previous
               </button>
-            ))}
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1 mx-1 bg-gray-300 rounded disabled:opacity-50"
-            >
-              Next
-            </button>
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`px-3 py-1 rounded ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="px-3 py-1 bg-gray-300 rounded disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
+  
 };
 
 export default AdminAnnouncement;

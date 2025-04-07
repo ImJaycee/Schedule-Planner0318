@@ -52,27 +52,31 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+    <div className="flex flex-col lg:flex-row h-auto lg:h-screen bg-gray-100">
+      {/* Sidebar - Stays on top on mobile and side on large screens */}
       <NavbarEmployee />
-
+  
       {/* Main Content */}
-      <div className="flex-1 p-6 flex justify-center items-center">
-        <div className="max-w-md w-full bg-white shadow-lg p-6 rounded-lg">
-          <h2 className="text-2xl font-semibold mb-4">Welcome, {user.firstname || "User"}!</h2>
+      <div className="flex-1 p-4 sm:p-6 flex justify-center items-center min-h-screen">
+        <div className="w-full max-w-md bg-white shadow-lg p-4 sm:p-6 rounded-lg">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-center sm:text-left">
+            Welcome, {user.firstname || "User"}!
+          </h2>
+  
           {isLoading ? (
-            <p>Loading...</p>
+            <p className="text-center">Loading...</p>
           ) : (
             <div>
-              <h3 className="text-xl font-semibold mb-4">Profile Details</h3>
+              <h3 className="text-lg sm:text-xl font-semibold mb-4 text-center sm:text-left">Profile Details</h3>
               <div className="flex flex-col items-center">
                 {user.image && (
                   <img
                     src={user.image}
                     alt="Profile"
-                    className="w-32 h-32 rounded-full mb-4 object-cover"
+                    className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mb-4 object-cover"
                   />
                 )}
+  
                 <div className="space-y-4 text-left w-full max-w-xs">
                   <div>
                     <label className="block text-gray-600 font-semibold">Firstname:</label>
@@ -90,9 +94,10 @@ const Profile = () => {
                     <label className="block text-gray-600 font-semibold">Department:</label>
                     <p className="text-gray-800">{user.department}</p>
                   </div>
+  
                   <div className="text-center">
                     <button
-                      className="mt-4 bg-blue-700 text-white rounded-sm px-4 py-2 font-bold hover:bg-blue-600 hover:cursor-pointer"
+                      className="mt-4 bg-blue-700 text-white rounded px-4 py-2 font-bold hover:bg-blue-600 hover:cursor-pointer w-full"
                       onClick={handleEditProfile}
                     >
                       Edit Profile
@@ -106,6 +111,7 @@ const Profile = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Profile;

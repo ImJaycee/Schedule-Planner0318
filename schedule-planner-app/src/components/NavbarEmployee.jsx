@@ -30,12 +30,12 @@ const NavbarEmployee = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex md:h-screen bg-gray-100">
       {/* Sidebar */}
       <div
         className={`fixed md:relative top-0 left-0 w-64 h-full bg-white shadow-xl p-4 flex flex-col justify-between transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out`}
+        } md:translate-x-0 transition-transform duration-300 ease-in-out z-5`}
       >
         <div>
           {/* Close Button (Mobile) */}
@@ -91,9 +91,9 @@ const NavbarEmployee = () => {
       </div>
 
       {/* Main Content */}
-      <div className=" md:hidden flex-1 p-6">
+      <div className=" md:hidden">
         {/* Hamburger Menu Button (Mobile) */}
-        <button className="md:hidden mb-4 text-gray-600" onClick={() => setIsSidebarOpen(true)}>
+        <button className="md:hidden p-1 text-gray-600" onClick={() => setIsSidebarOpen(true)}>
           <FaBars size={24} />
         </button>
       </div>

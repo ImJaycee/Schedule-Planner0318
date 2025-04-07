@@ -112,7 +112,7 @@ const AdminManageShift = () => {
   }, [data]);
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
       <NavbarAdmin />
 
       <div className="flex-1 p-6">
@@ -120,8 +120,8 @@ const AdminManageShift = () => {
           Manage Schedule for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}
         </h3>
         {/* Calendar Container */}
-        <div className="flex justify-center">
-          <div className="w-full max-w-4xl bg-white shadow-lg p-4 rounded-lg">
+        <div className="flex justify-center mx-auto">
+          <div className="w-full max-w-6xl bg-white shadow-lg p-4 rounded-lg overflow-x-auto">
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
               initialView="dayGridMonth"
@@ -129,7 +129,7 @@ const AdminManageShift = () => {
               headerToolbar={{
                 left: "prev,next",
                 center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                right: "",
               }}
               height="600px"
               contentHeight="auto"

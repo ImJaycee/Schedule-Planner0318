@@ -97,19 +97,19 @@ const AdminLogin = () => {
     <div className="flex min-h-screen bg-white relative">
       {/* Top-left A2K logo */}
       <img src={a2kLogo} alt="A2K Logo" className="absolute top-6 left-8 w-32" />
-
+  
       {/* Centered Login Box */}
-      <div className="flex flex-col items-center justify-center w-full">
+      <div className="flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8">
         {/* FlexiSched Logo (above login form) */}
-        <img src={flexiSchedLogo} alt="FlexiSched Logo" className="w-32 mb-4 h-25" />
-
+        <img src={flexiSchedLogo} alt="FlexiSched Logo" className="w-32 mb-4 h-20 sm:h-24" />
+  
         <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow-md border">
           <h3 className="text-xl font-semibold text-center text-gray-700 mb-6">
             Admin Login
           </h3>
-
+  
           {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
+  
           <form onSubmit={handleSubmit}>
             {/* Email Input */}
             <div className="mb-4">
@@ -126,7 +126,7 @@ const AdminLogin = () => {
               />
               {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
-
+  
             {/* Password Input */}
             <div className="mb-4 relative">
               <label htmlFor="password" className="block text-gray-700 font-medium">
@@ -148,7 +148,7 @@ const AdminLogin = () => {
               </span>
               {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
             </div>
-
+  
             {/* Remember Me Checkbox */}
             <div className="flex justify-between items-center text-sm mb-4">
               <label className="flex items-center">
@@ -161,7 +161,7 @@ const AdminLogin = () => {
                 Remember Me
               </label>
             </div>
-
+  
             {/* Login Button */}
             <button
               type="submit"
@@ -179,6 +179,7 @@ const AdminLogin = () => {
       </div>
     </div>
   );
+  
 };
 
 export default AdminLogin;
