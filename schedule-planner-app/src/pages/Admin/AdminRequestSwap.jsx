@@ -75,7 +75,7 @@ const AdminRequestsSwap = () => {
         {/* Scrollable Container */}
         <div
           className={`${
-            filteredRequests.length > 6 ? "max-h-[650px] overflow-y-auto pr-2" : ""
+            filteredRequests.length > 6 ? "max-h-[570px] overflow-y-auto pr-2" : ""
           }`}
         >
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

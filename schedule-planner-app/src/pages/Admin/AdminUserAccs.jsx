@@ -266,14 +266,14 @@ const UserAccs = () => {
   <div className="flex justify-between items-center">
     <button
       type="submit"
-      className="btn bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
+      className="btn bg-gray-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
     >
       {formMode === 'create' ? 'Create' : 'Update'}
     </button>
     {formMode === 'update' && (
       <button
         type="button"
-        className="btn bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
+        className="btn bg-red-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200"
         onClick={handleCancel}
       >
         Cancel
@@ -315,11 +315,11 @@ const UserAccs = () => {
                     <td className="py-2 px-4 border-b">{user.isDeactivated ? "Deactivated" : "Active"}</td>
                     <td className="py-2 px-4 border-b">
                       {user.isDeactivated ? (
-                        <button className="btn bg-green-500 text-white p-2 rounded ml-2" onClick={() => handleActivate(user._id)}>Activate</button>
+                        <button className="btn bg-green-500 text-white text-sm h-8 w-20 rounded ml-2 mb-1" onClick={() => handleActivate(user._id)}>Activate</button>
                       ) : (
-                        <button className="btn bg-red-500 text-white p-2 rounded ml-2" onClick={() => { handleDeactivate(user._id); setErrors({}); }}>Deactivate</button>
+                        <button className="btn bg-red-500 text-white text-sm h-8 w-20 rounded ml-2 mb-1" onClick={() => { handleDeactivate(user._id); setErrors({}); }}>Deactivate</button>
                       )}
-                      <button className="btn bg-yellow-500 text-white p-2 rounded ml-2" onClick={() => { 
+                      <button className="btn bg-blue-500 text-white text-sm h-8 w-20 rounded ml-2 mb-1" onClick={() => { 
                         setFormMode('update'); 
                         setFormData({ ...user, password: "" }); // Clear the password field when updating
                         setErrors({});

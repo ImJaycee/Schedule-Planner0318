@@ -160,7 +160,7 @@ const RequestShift = () => {
               )}
             </div>
 
-            {/* Calendar Section (2/3 width) */}
+            {/* Calendar Section (2/3 width) */} 
             <div className="bg-white shadow-lg rounded-lg p-3 md:col-span-2">
               <h2 className="text-xl font-semibold text-gray-700 mb-2">Calendar</h2>
               <FullCalendar
