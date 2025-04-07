@@ -87,134 +87,134 @@ const AdminRegistrationForm = () => {
   return (
     <div className="relative flex flex-col items-center justify-center min-h-screen bg-gray-100">
       {/* Left Logo */}
-      <img src={logo} alt="Logo" className="absolute top-4 left-4 w-32 h-32" />
+      <img src={logo} alt="Logo" className="absolute top-4 left-4 w-24 h-24 " />
     
       {/* Right Logo */}
-      <img src={logoApp} alt="Logo" className="absolute top-4 right-4 w-32 h-32" />
+      <img src={logoApp} alt="Logo" className="absolute top-4 right-4 w-28 h-24 " />
     
-      <div className="w-full max-w-md">
-        <div className="w-full max-w-md">
-        
-          <h2 className="text-2xl font-bold mb-2 text-left">Create admin account</h2> 
-          <div className="p-8 bg-white rounded-lg shadow-md">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Firstname</label>
-                  <input
-                    type="text"
-                    name="firstname"
-                    placeholder="Firstname"
-                    value={formData.firstname}
-                    onChange={handleChange}
-                    className={getInputClasses("firstname")}
-                  />
-                  {errors.firstname && <p className="text-red-500 text-sm">{errors.firstname}</p>}
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium text-gray-700">Lastname</label>
-                  <input
-                    type="text"
-                    name="lastname"
-                    placeholder="Lastname"
-                    value={formData.lastname}
-                    onChange={handleChange}
-                    className={getInputClasses("lastname")}
-                  />
-                  {errors.lastname && <p className="text-red-500 text-sm">{errors.lastname}</p>}
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Enter Email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className={getInputClasses("email")}
-                />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-gray-700">Department</label>
-                <select
-                  name="department"
-                  value={formData.department}
-                  onChange={handleChange}
-                  className={getInputClasses("department")}
-                >
-                  <option value="">Select Department</option>
-                  <option value="Technical">Technical</option>
-                  <option value="IT Support">IT Support</option>
-                  <option value="Sales & Marketing">Sales & Marketing</option>
-                  <option value="Research">Research</option>
-                </select>
-                {errors.department && <p className="text-red-500 text-sm">{errors.department}</p>}
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="relative">
-                  <label className="text-sm font-medium text-gray-700">Password</label>
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className={getInputClasses("password")}
-                  />
-                  <span
-                    className="absolute right-3 top-10 cursor-pointer"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </span>
-                  {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
-                </div>
-
-                <div className="relative">
-                  <label className="text-sm font-medium text-gray-700">Confirm Password</label>
-                  <input
-                    type={showConfirmPassword ? "text" : "password"}
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className={getInputClasses("confirmPassword")}
-                  />
-                  <span
-                    className="absolute right-3 top-10 cursor-pointer"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                  </span>
-                  {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded flex justify-center items-center"
-                disabled={loading}
-              >
-                {loading ? (
-                  <span className="animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full"></span>
-                ) : (
-                  "Register"
-                )}
-              </button>
-            </form>
-            <p className="text-center text-sm mt-4">
-              Already have an <a href="/admin/login" className="text-blue-500">account?</a>
-            </p>
+      <div className="w-full max-w-md px-6 py-8 bg-white rounded-lg shadow-md mt-28 md:mt-5">
+        <h2 className="text-2xl font-bold mb-2 text-center">Create admin account</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+  
+          {/* Firstname and Lastname */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="text-sm font-medium text-gray-700">Firstname</label>
+              <input
+                type="text"
+                name="firstname"
+                placeholder="Firstname"
+                value={formData.firstname}
+                onChange={handleChange}
+                className={getInputClasses("firstname")}
+              />
+              {errors.firstname && <p className="text-red-500 text-sm">{errors.firstname}</p>}
+            </div>
+  
+            <div>
+              <label className="text-sm font-medium text-gray-700">Lastname</label>
+              <input
+                type="text"
+                name="lastname"
+                placeholder="Lastname"
+                value={formData.lastname}
+                onChange={handleChange}
+                className={getInputClasses("lastname")}
+              />
+              {errors.lastname && <p className="text-red-500 text-sm">{errors.lastname}</p>}
+            </div>
           </div>
-        </div>
+  
+          {/* Email */}
+          <div>
+            <label className="text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter Email"
+              value={formData.email}
+              onChange={handleChange}
+              className={getInputClasses("email")}
+            />
+            {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
+          </div>
+  
+          {/* Department */}
+          <div>
+            <label className="text-sm font-medium text-gray-700">Department</label>
+            <select
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              className={getInputClasses("department")}
+            >
+              <option value="">Select Department</option>
+              <option value="Technical">Technical</option>
+              <option value="IT Support">IT Support</option>
+              <option value="Sales & Marketing">Sales & Marketing</option>
+              <option value="Research">Research</option>
+            </select>
+            {errors.department && <p className="text-red-500 text-sm">{errors.department}</p>}
+          </div>
+  
+          {/* Password and Confirm Password */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="relative">
+              <label className="text-sm font-medium text-gray-700">Password</label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+                className={getInputClasses("password")}
+              />
+              <span
+                className="absolute right-3 top-10 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+              {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+            </div>
+  
+            <div className="relative">
+              <label className="text-sm font-medium text-gray-700">Confirm Password</label>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                placeholder="Confirm Password"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className={getInputClasses("confirmPassword")}
+              />
+              <span
+                className="absolute right-3 top-10 cursor-pointer"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+              {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
+            </div>
+          </div>
+  
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded flex justify-center items-center"
+            disabled={loading}
+          >
+            {loading ? (
+              <span className="animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full"></span>
+            ) : (
+              "Register"
+            )}
+          </button>
+        </form>
+  
+        <p className="text-center text-sm mt-4">
+          Already have an <a href="/admin/login" className="text-blue-500">account?</a>
+        </p>
       </div>
     </div>
   );
