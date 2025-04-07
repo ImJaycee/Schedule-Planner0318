@@ -52,28 +52,33 @@ const AdminProfile = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
       {/* Sidebar */}
       <NavbarAdmin />
-
+  
       {/* Main Content */}
-      <div className="flex-1 p-6 flex justify-center items-center">
-        <div className="max-w-md w-full bg-white shadow-lg p-6 rounded-lg">
-          <h2 className="text-2xl font-semibold mb-4">Welcome, {user.firstname || "User"}!</h2>
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md sm:max-w-lg md:max-w-xl bg-white shadow-lg p-6 sm:p-8 rounded-lg">
+          <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-center">
+            Welcome, {user.firstname || "User"}!
+          </h2>
+          
           {isLoading ? (
-            <p>Loading...</p>
+            <p className="text-center text-gray-600">Loading...</p>
           ) : (
             <div>
-              <h3 className="text-xl font-semibold mb-4">Profile Details</h3>
+              <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-center">
+                Profile Details
+              </h3>
               <div className="flex flex-col items-center">
                 {user.image && (
                   <img
                     src={user.image}
                     alt="Profile"
-                    className="w-32 h-32 rounded-full mb-4 object-cover"
+                    className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mb-4 object-cover border"
                   />
                 )}
-                <div className="space-y-4 text-left w-full max-w-xs">
+                <div className="space-y-4 text-left w-full">
                   <div>
                     <label className="block text-gray-600 font-semibold">Firstname:</label>
                     <p className="text-gray-800">{user.firstname}</p>
@@ -84,7 +89,7 @@ const AdminProfile = () => {
                   </div>
                   <div>
                     <label className="block text-gray-600 font-semibold">Email:</label>
-                    <p className="text-gray-800">{user.email}</p>
+                    <p className="text-gray-800 break-all">{user.email}</p>
                   </div>
                   <div>
                     <label className="block text-gray-600 font-semibold">Department:</label>
@@ -92,7 +97,7 @@ const AdminProfile = () => {
                   </div>
                   <div className="text-center">
                     <button
-                      className="mt-4 bg-blue-700 text-white rounded-sm px-4 py-2 font-bold hover:bg-blue-600 hover:cursor-pointer"
+                      className="mt-4 bg-blue-700 text-white rounded px-4 py-2 font-bold hover:bg-blue-600"
                       onClick={handleEditProfile}
                     >
                       Edit Profile
@@ -106,6 +111,7 @@ const AdminProfile = () => {
       </div>
     </div>
   );
+  
 };
 
 export default AdminProfile;

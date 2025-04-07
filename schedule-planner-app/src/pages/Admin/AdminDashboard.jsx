@@ -78,49 +78,49 @@ const AdminDashboard = () => {
 
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <NavbarAdmin isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
+  {/* Sidebar */}
+  <NavbarAdmin isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
-      {/* Main Content */}
-      <div className="flex flex-col p-4 mx-auto">
-        {/* Page Title */}
-        <h3 className="text-xl text-center font-semibold mb-4">
-          Schedule for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}
-        </h3>
+  {/* Main Content */}
+  <div className="flex-1 p-4">
+    {/* Page Title */}
+    <h3 className="text-xl text-center font-semibold mb-4">
+      Schedule for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}
+    </h3>
 
-        {/* Calendar Container */}
-        <div className="flex justify-center">
-          <div className="w-full max-w-4xl bg-white shadow-lg p-4 rounded-lg">
-            <FullCalendar
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
-              initialView="dayGridMonth"
-              headerToolbar={{
-                left: "prev,next",
-                center: "title",
-                right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
-              }}
-              height="600px"
-              contentHeight="auto"
-              handleWindowResize={true}
-              aspectRatio={1.5}
-              selectable={true}
-              editable={true}
-              slotMinTime="07:30:00"
-              slotMaxTime="20:00:00"
-              dateClick={handleDateClick}
-              events={events}
-              eventClick={false}
-            />
-             <Modal
-                    isOpen={isModalOpen} 
-                    onClose={() => setIsModalOpen(false)} 
-                    shifts={selectedShift} 
-                  />
-          </div>
-        </div>
+    {/* Calendar Container */}
+    <div className="flex justify-center mx-auto">
+      <div className="w-full max-w-6xl bg-white shadow-lg p-4 rounded-lg overflow-x-auto">
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
+          initialView="dayGridMonth"
+          headerToolbar={{
+            left: "prev,next",
+            center: "title",
+            right: "",
+          }}
+          height="auto"
+          contentHeight="auto"
+          handleWindowResize={true}
+          aspectRatio={1.5}
+          selectable={true}
+          editable={true}
+          slotMinTime="07:30:00"
+          slotMaxTime="20:00:00"
+          dateClick={handleDateClick}
+          events={events}
+          eventClick={false}
+        />
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          shifts={selectedShift}
+        />
       </div>
     </div>
+  </div>
+</div>
   );
 };
 

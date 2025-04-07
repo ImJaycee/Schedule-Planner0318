@@ -60,16 +60,17 @@ const ChangePwd = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex flex-col lg:flex-row h-screen bg-gray-100">
       {/* Sidebar */}
       <NavbarEmployee />
-
+  
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <div className="max-w-lg bg-white shadow-lg mx-auto p-7 rounded mt-6">
-          <h2 className="font-semibold text-2xl mb-4 block text-center">Change Password</h2>
+      <div className="flex-1 p-4 sm:p-6 lg:p-8 flex justify-center items-center">
+        <div className="w-full max-w-md bg-white shadow-lg p-6 sm:p-8 rounded-lg mt-6 mx-auto">
+          <h2 className="font-semibold text-2xl mb-4 text-center">Change Password</h2>
           <form onSubmit={updatePassword}>
-            <div className="space-y-4">
+            <div className="space-y-6">
+              {/* New Password */}
               <div className="relative">
                 <label className="text-gray-600 mb-2 block font-semibold">New Password</label>
                 <input
@@ -89,6 +90,8 @@ const ChangePwd = () => {
                 </div>
                 {errors.password && <p className="text-red-600 mt-1">{errors.password}</p>}
               </div>
+  
+              {/* Confirm Password */}
               <div className="relative">
                 <label className="text-gray-600 mb-2 block font-semibold">Confirm Password</label>
                 <input
@@ -108,10 +111,14 @@ const ChangePwd = () => {
                 </div>
                 {errors.confirmPassword && <p className="text-red-600 mt-1">{errors.confirmPassword}</p>}
               </div>
+  
+              {/* Error Message */}
               {errors.apiError && <p className="text-red-600 mt-1">{errors.apiError}</p>}
+  
+              {/* Submit Button */}
               <div>
                 <button
-                  className="block w-full mt-6 bg-blue-700 text-white rounded-sm px-4 py-2 font-bold hover:bg-blue-600 hover:cursor-pointer"
+                  className="w-full mt-6 bg-blue-700 text-white rounded-sm px-4 py-2 font-bold hover:bg-blue-600"
                   disabled={isLoading}
                 >
                   {isLoading ? "Updating..." : "Update Password"}
@@ -123,6 +130,7 @@ const ChangePwd = () => {
       </div>
     </div>
   );
+  
 };
 
 export default ChangePwd;

@@ -168,29 +168,25 @@ const Dashboard = () => {
     <div className="flex flex-col md:flex-row max-h-screen bg-gray-100">
       {/* Sidebar */}
       <NavbarEmployee isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-
+  
       {/* Main Content */}
-      <div className="flex-1 flex flex-col p-3 mt-5">
+      <div className=" flex flex-col px-1 pt-3 pb-10 md:pt-5 overflow-y-auto">
         {/* Announcements & Calendar Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Announcements Section */}
-          <div className="bg-white shadow-lg rounded-lg p-3 md:col-span-1">
-            <h2 className="text-xl font-semibold text-gray-700 flex flex-col items-center mb-4">Announcements</h2>
+          <div className="bg-white shadow-lg rounded-lg p-4 lg:col-span-1 order-2 lg:order-1">
+            <h2 className="text-xl font-semibold text-gray-700 text-center mb-4">Announcements</h2>
             {isLoading ? (
-              <p className="text-gray-500">Loading announcements...</p>
+              <p className="text-gray-500 text-center">Loading announcements...</p>
             ) : announcements.length > 0 ? (
-              <ul className="grid grid-cols-1 gap-6 max-h-140 overflow-y-auto">
+              <ul className="grid gap-4 max-h-[300px] overflow-y-auto">
                 {announcements.map((announcement, index) => (
                   <li
                     key={index}
-                    className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 shadow-sm hover:shadow-md transition-shadow"
+                    className="bg-gray-50 p-4 rounded-lg border-l-4 border-blue-500 shadow hover:shadow-md transition-shadow"
                   >
-                    <h3 className="text-lg font-bold text-gray-800 mb-1">
-                      {announcement.title || "Untitled"}
-                    </h3>
-                    <p className="text-gray-600 mb-2">
-                      {announcement.content || "No message available."}
-                    </p>
+                    <h3 className="text-lg font-bold text-gray-800 mb-1">{announcement.title || "Untitled"}</h3>
+                    <p className="text-gray-600 mb-2">{announcement.content || "No message available."}</p>
                     <span className="text-sm text-gray-500 block">
                       Posted on: {new Date(announcement.createdAt).toLocaleDateString()}
                     </span>
@@ -198,19 +194,19 @@ const Dashboard = () => {
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-500">No announcements available.</p>
+              <p className="text-gray-500 text-center">No announcements available.</p>
             )}
           </div>
-
-          {/* Calendar Section (2/3 width) */}
-          <div className="bg-white shadow-lg rounded-lg p-3 md:col-span-2 relative">
+  
+          {/* Calendar Section */}
+          <div className="bg-white shadow-lg rounded-lg p-4 lg:col-span-2 order-1 lg:order-2 relative">
             {/* Filter Dropdown */}
-            <div className="absolute top-3 right-3">
-              <label className="block text-sm font-medium text-gray-700">Filter</label>
+            <div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-2 sm:gap-4 mb-3">
+              <label className="text-sm font-medium text-gray-700">Filter by Department</label>
               <select
                 value={selectedDepartment}
                 onChange={(e) => setSelectedDepartment(e.target.value)}
-                className="p-2 border rounded"
+                className="p-2 border rounded w-full sm:w-auto"
               >
                 <option value="">All Departments</option>
                 <option value="Technical">Technical</option>
@@ -219,10 +215,11 @@ const Dashboard = () => {
                 <option value="Research">Research</option>
               </select>
             </div>
-
-            <h2 className="flex flex-col items-center text-xl font-semibold text-gray-700 mb-2">
+  
+            <h2 className="text-xl font-semibold text-center text-gray-700 mb-4">
               Schedule for {new Date().toLocaleString("default", { month: "long", year: "numeric" })}
             </h2>
+  
             <FullCalendar
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
               initialView="dayGridMonth"
@@ -230,18 +227,18 @@ const Dashboard = () => {
               height="auto"
               contentHeight="auto"
               handleWindowResize={true}
-              aspectRatio={2}
+              aspectRatio={1.5}
               selectable={true}
               editable={true}
               slotMinTime="07:30:00"
               slotMaxTime="20:00:00"
               dateClick={handleDateClick}
-              events={filteredEvents} // Use filtered events
+              events={filteredEvents}
               eventClick={false}
             />
           </div>
         </div>
-
+  
         {/* User Shift Modal */}
         <UserShiftModal
           isOpen={isModalOpen}
@@ -251,6 +248,8 @@ const Dashboard = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Dashboard;
+
