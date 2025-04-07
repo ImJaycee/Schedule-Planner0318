@@ -51,6 +51,7 @@ const AdminRequestsSwap = () => {
     <div className="flex-1 p-6 max-h-full overflow-auto">
       <h3 className="text-lg font-semibold mb-4">Requests for Swap Shifts</h3>
 
+
       {/* Search and Filter */}
       <div className="flex flex-wrap gap-4 mb-4">
         <input
@@ -121,10 +122,37 @@ const AdminRequestsSwap = () => {
                 ) : request.status === "pending" && request.recipientStatus === "pending" ? (
                   <p className="text-yellow-400 mb-1 font-semibold text-sm">
                     Pending - Waiting for {request.requestedTo.firstname} to accept...
+
                   </p>
-                ) : request.status === "rejected" ? (
-                  <p className="text-red-600 mb-1 font-semibold text-sm">Rejected</p>
-                ) : null}
+                  <p className="text-sm text-gray-600">Message: {request.requesterMessage}</p>
+                  <h4 className="font-semibold">
+                    Request To: {request.requestedTo.firstname} {request.requestedTo.lastname}
+                  </h4>
+                  <p className="text-sm text-gray-600">Shift Type: {request.RecipientST}</p>
+                  <p className="text-sm text-gray-600">
+                    Shift Date:{" "}
+                    {new Date(request.requestingShiftId.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                  <p className="text-sm text-gray-800">
+                    Requested At: {new Date(request.createdAt).toLocaleDateString()}
+                  </p>
+
+                  {/* Status Display */}
+                  {request.status === "approved" ? (
+                    <p className="text-green-600 mb-1 font-semibold text-sm">Approved</p>
+                  ) : request.status === "pending" && request.recipientStatus === "accepted" ? (
+                    <p className="text-yellow-600 mb-1 font-semibold text-sm">Pending - Admin Approval</p>
+                  ) : request.status === "pending" && request.recipientStatus === "pending" ? (
+                    <p className="text-yellow-400 mb-1 font-semibold text-sm">
+                      Pending - Waiting for {request.requestedTo.firstname} to accept...
+                    </p>
+                  ) : request.status === "rejected" ? (
+                    <p className="text-red-600 mb-1 font-semibold text-sm">Rejected</p>
+                  ) : null}
 
                 {/* Actions */}
                 <div className="mt-2">

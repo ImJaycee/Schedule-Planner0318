@@ -310,6 +310,7 @@ const UserAccs = () => {
                       >
                         Update
                       </button>
+
                     </td>
                   </tr>
                 ))}
