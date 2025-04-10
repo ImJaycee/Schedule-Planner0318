@@ -1,6 +1,5 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import logger from './utils/logger.js'; // Import the logger
@@ -11,29 +10,26 @@ import announcementRoutes from './routes/announcementRoute.js';
 import profileEditRoute from './routes/profileEditRoute.js';
 import requestShift from './routes/requestRoute.js';
 import userManageRoute from './routes/userManageRoute.js';
-import { limiter } from './utils/ratelimiter.js';
+
+import { limiter } from './utils/rateLimiter.js';
+import errorHandler from './utils/errorHandler.js'; // Import the error handler
+import { connect } from './db/db.js';
+import compression from 'compression';
+
 
 const app = express();
 dotenv.config();
 
 const PORT = process.env.PORT;
-console.log(PORT);
-const MONGO_URL = process.env.MONGO_URL;
 
-const connect = async () => {
-  try {
-    await mongoose.connect(MONGO_URL);
-    logger.info('Connected to MongoDB'); // Log successful connection
-  } catch (e) {
-    logger.error(`MongoDB connection error: ${e.message}`); // Log connection error
-    throw e;
-  }
-};
+
 
 // Middlewares
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
+app.use(compression()); // Enable Gzip compression
 
 
 // Apply the rate limiting middleware to all requests.
@@ -43,6 +39,7 @@ app.use((req, res, next) => {
   logger.info(`${req.method} ${req.url}`);
   next();
 });
+
 //routes
 app.use("/api/auth",authRoute);//
 app.use("/api/user",userRoute);
@@ -53,19 +50,13 @@ app.use('/api/request-shift',requestShift);
 app.use('/api/user-manage',userManageRoute);
 
 // Error handling middleware
-app.use((err, req, res, next) => {
-  const errorStatus = err.status || 500;
-  const errorMessage = err.message || "Something went wrong!";
-  logger.error(`${req.method} ${req.url} - ${errorMessage}`); // Log the error
-  return res.status(errorStatus).json({
-    success: false,
-    status: errorStatus,
-    message: errorMessage,
-    stack: err.stack,
-  });
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   connect();
   logger.info(`Server is running on port ${PORT}`); // Log server start
 });
+
+
+// logger.error('Test error log');
+
