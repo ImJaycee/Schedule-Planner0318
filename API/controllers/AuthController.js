@@ -5,6 +5,7 @@ import nodemailer from 'nodemailer';
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createError } from '../utils/error.js';
+import cookieParser from "cookie-parser";
 
 dotenv.config()
 

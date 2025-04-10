@@ -39,10 +39,15 @@ app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 50, // Limit each IP to 50 requests per `window` (here, per 15 minutes).
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
 	standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
-	// store: ... , // Redis, Memcached, etc. See below.
+	handler: (req, res) => {
+    return res.status(429).json({
+      message: "Too many requests. Try again later",
+      forceLogout: true
+    });
+  }
 })
 
 // Apply the rate limiting middleware to all requests.
@@ -56,13 +61,13 @@ app.use((req, res, next) => {
 
 
 //routes
-app.use("/api/auth", limiter,authRoute);//
-app.use("/api/user", limiter,userRoute);
-app.use("/api/shift", limiter,shiftRoute);
-app.use('/api/announcements', limiter,announcementRoutes);
-app.use('/api/edit', limiter,profileEditRoute);
-app.use('/api/request-shift', limiter,requestShift);
-app.use('/api/user-manage', limiter,userManageRoute);
+app.use("/api/auth",authRoute);//
+app.use("/api/user",userRoute);
+app.use("/api/shift",shiftRoute);
+app.use('/api/announcements',announcementRoutes);
+app.use('/api/edit',profileEditRoute);
+app.use('/api/request-shift',requestShift);
+app.use('/api/user-manage',userManageRoute);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
