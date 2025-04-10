@@ -67,6 +67,14 @@ const Login = () => {
       localStorage.setItem("userTemp", JSON.stringify(res.data.user)); 
       localStorage.setItem("accessToken", res.data.accessToken); // Save token
       localStorage.setItem("department", res.data.user.department); // Save department
+      axios.interceptors.request.use((config) => {
+        const userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
+        if (userId) {
+          config.headers["user-id"] = userId; // Add userId to the headers
+        }
+        return config;
+      });
+
       // Save credentials if "Remember Me" is checked
       if (rememberMe) {
         localStorage.setItem("rememberedEmail", formData.email);
