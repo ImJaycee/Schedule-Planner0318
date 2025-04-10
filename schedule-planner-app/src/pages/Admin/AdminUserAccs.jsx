@@ -163,7 +163,7 @@ const UserAccs = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-100">
       <NavbarAdmin />
-      <div className="flex-1 p-4 md:p-6 flex flex-col gap-6 md:flex-row flex-wrap">
+      <div className="flex-1 p-4 md:p-6 flex flex-col md:flex-row gap-6 md:gap-8">
         {/* Create/Update User Section */}
         <div className="w-full md:w-1/3 bg-white p-6 rounded-lg shadow-lg border border-gray-200">
           <h3 className="text-2xl md:text-3xl font-bold text-blue-600 mb-6 flex items-center">
@@ -235,14 +235,14 @@ const UserAccs = () => {
             <div className="flex justify-between items-center pt-2">
               <button
                 type="submit"
-                className="btn bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 w-full md:w-auto"
+                className="btn bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 w-full md:w-auto"
               >
                 {formMode === 'create' ? 'Create' : 'Update'}
               </button>
               {formMode === 'update' && (
                 <button
                   type="button"
-                  className="btn bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 mt-2 md:mt-0 w-full md:w-auto"
+                  className="btn bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 mt-2 md:mt-0 w-full md:w-auto"
                   onClick={handleCancel}
                 >
                   Cancel
@@ -284,14 +284,14 @@ const UserAccs = () => {
                     <td className="py-2 px-4 border-b whitespace-nowrap">
                       {user.isDeactivated ? (
                         <button
-                          className="btn bg-green-500 text-white px-3 py-1 rounded mr-2"
+                          className="btn bg-green-500 w-20 text-sm text-white px-3 py-1 rounded mr-2"
                           onClick={() => handleActivate(user._id)}
                         >
                           Activate
                         </button>
                       ) : (
                         <button
-                          className="btn bg-red-500 text-white px-3 py-1 rounded mr-2"
+                          className="btn bg-red-500 w-20 text-sm text-white px-3 py-1 rounded mr-2"
                           onClick={() => {
                             handleDeactivate(user._id);
                             setErrors({});
@@ -301,7 +301,7 @@ const UserAccs = () => {
                         </button>
                       )}
                       <button
-                        className="btn bg-yellow-500 text-white px-3 py-1 rounded"
+                        className="btn bg-blue-500 w-20 text-sm text-white px-3 py-1 rounded"
                         onClick={() => {
                           setFormMode('update');
                           setFormData({ ...user, password: '' });
@@ -310,7 +310,6 @@ const UserAccs = () => {
                       >
                         Update
                       </button>
-
                     </td>
                   </tr>
                 ))}

@@ -8,15 +8,15 @@ const router = express.Router();
 
 
 //User Router
-router.post('/create-request',verifyUser, CreateShiftRequest)
+router.post('/create-request',verifyUser, CreateShiftRequest) // Done
 router.put("/approved-request", verifyAdmin, ApprovedRequestShift) //approved request
 router.put("/rejected-request", verifyAdmin, RejectedRequestShift) //delete
-router.get("/:id", verifyUser, getRequestShift) //get
+router.get("/:id", verifyUser, getRequestShift) //getc//done
 router.get("/", verifyAdmin, getAllRequest) //get all
 
 
 //swap Router ---- EMPLOYEE
-router.post('/create-request/swap',verifyUser, CreateShiftSwapRequest)
+router.post('/create-request/swap',verifyUser, CreateShiftSwapRequest) // 
 router.get("/swap-shift/:id", verifyUser, getSendRequestShift) //get
 router.get("/swap-shift/to-me/:id", verifyUser, getReceivedRequestShift) //get
 router.put("/swap-shift/accept", verifyUser, AcceptSwapRequestShift) //approved request
