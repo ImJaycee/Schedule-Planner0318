@@ -10,10 +10,12 @@ import announcementRoutes from './routes/announcementRoute.js';
 import profileEditRoute from './routes/profileEditRoute.js';
 import requestShift from './routes/requestRoute.js';
 import userManageRoute from './routes/userManageRoute.js';
+
 import { limiter } from './utils/rateLimiter.js';
 import errorHandler from './utils/errorHandler.js'; // Import the error handler
 import { connect } from './db/db.js';
 import compression from 'compression';
+
 
 const app = express();
 dotenv.config();
@@ -26,7 +28,9 @@ const PORT = process.env.PORT;
 app.use(cookieParser());
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+
 app.use(compression()); // Enable Gzip compression
+
 
 // Apply the rate limiting middleware to all requests.
 app.use(limiter)
@@ -53,4 +57,6 @@ app.listen(PORT, () => {
   logger.info(`Server is running on port ${PORT}`); // Log server start
 });
 
+
 // logger.error('Test error log');
+
