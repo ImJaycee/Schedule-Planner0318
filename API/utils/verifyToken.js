@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { createError } from "../utils/error.js";
-
+import { createUserLogger } from "./createLoggerforUser.js";
 // Verify JWT token
 export const verifyToken = (req, res, next) => {
     
@@ -35,3 +35,21 @@ export const verifyAdmin = (req, res, next) => {
         return next(createError(403, "You are not authorized!"));
     });
 };
+
+
+
+
+// Middleware to log all incoming requests
+export const logTokenRequest = ((req, res, next) => {
+    // Extract userId from the Authorization header
+    const userId = req.headers["user-id"] || "anonymous"; // Default to 'anonymous' if no userId is provided
+
+  // Create a logger for the user
+  const userLogger = createUserLogger(userId);
+
+  // Log the request
+  userLogger.info(`${req.method} ${req.url} - Request received`);
+
+  // Proceed to the next middleware
+  next();
+  }); 

@@ -15,7 +15,7 @@ import { limiter } from './utils/rateLimiter.js';
 import errorHandler from './utils/errorHandler.js'; // Import the error handler
 import { connect } from './db/db.js';
 import compression from 'compression';
-
+import { logTokenRequest } from './utils/verifyToken.js'; // Import the logTokenRequest middleware
 
 const app = express();
 dotenv.config();
@@ -29,16 +29,18 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
+
+app.use(logTokenRequest); // Log all incoming requests
 app.use(compression()); // Enable Gzip compression
 
 
 // Apply the rate limiting middleware to all requests.
 app.use(limiter)
 // Log all incoming requests
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.url}`);
-  next();
-});
+// app.use((req, res, next) => {
+//   logger.info(`${req.method} ${req.url}`);
+//   next();
+// });
 
 //routes
 app.use("/api/auth",authRoute);//

@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer';
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createError } from '../utils/error.js';
-import cookieParser from "cookie-parser";
+import  {createUserLogger} from '../utils/createLoggerforUser.js';
 
 dotenv.config()
 
@@ -189,6 +189,11 @@ const sendVerificationEmail = async (email, token) => {
   
           const { password, isAdmin, ...otherDetails } = userDetails; 
   
+
+          // Create a logger for the user
+          const userLogger = createUserLogger(user._id.toString());
+          userLogger.info(`User ${user._id} logged in successfully.`);
+
           console.log(otherDetails);
   
           res.cookie("access_token", token, {
