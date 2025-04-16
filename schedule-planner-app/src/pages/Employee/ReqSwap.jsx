@@ -18,6 +18,9 @@ const RequestShiftSwap = () => {
   const [wfhEmployees, setWfhEmployees] = useState([]);
   const [selectedShiftType, setSelectedShiftType] = useState("");
   const [OfferDateErr, setOfferError] = useState("");
+  const [ReqDateErr, setReqError] = useState("");
+  const [EmployeeOnSite, setEmployeeOnsite] = useState("");
+  const [EmployeeWFH, setEmployeeWFH] = useState("");
   const [userAssignedShift, setAssignedShift] = useState("");
   const [shiftID, setShiftId] = useState("");
   const [RequesterMessage, setReqMessage] = useState("");
@@ -97,8 +100,58 @@ const RequestShiftSwap = () => {
     );
     
 
-    setOnSiteEmployees(employees.filter((emp) => assignedEmployeeIds.has(emp._id)));
-    setWfhEmployees(employees.filter((emp) => !assignedEmployeeIds.has(emp._id)));
+    const currentDepartment = localStorage.getItem("department");
+    const currentUserId = localStorage.getItem("userId");
+    
+    // Filter assigned employees (on-site) by department
+    let filteredOnSite = employees.filter(
+      (emp) =>
+        assignedEmployeeIds.has(emp._id) &&
+        emp.department === currentDepartment
+    );
+    
+    // Filter WFH employees by department
+    let filteredWfh = employees.filter(
+      (emp) =>
+        !assignedEmployeeIds.has(emp._id) &&
+        emp.department === currentDepartment
+    );
+
+    setReqError("");
+    setEmployeeOnsite("");
+    setEmployeeWFH("");
+    // If current user is in WFH, exclude them from the WFH list
+    if (filteredWfh.some(emp => emp._id === currentUserId)) {
+      filteredWfh = [];
+    }
+    if (filteredOnSite.some(emp => emp._id === currentUserId)) {
+      filteredOnSite = [];
+    }
+    
+
+    if (filteredWfh.length === 0) {
+      setEmployeeWFH("You are assigned to WFH. You cannot select anyone from this list.");
+    }
+    
+    if (filteredOnSite.length === 0) {
+      setEmployeeOnsite("You are assigned to on-site. You cannot select anyone from this list.");
+    }
+    
+
+    if (filteredWfh.length === 0 && filteredOnSite.length === 0) {
+      setReqError("No schedule for selected Date");
+      setEmployeeOnsite("");
+      setEmployeeWFH("");
+    }
+
+    
+    
+    
+    
+    // Set state
+    setOnSiteEmployees(filteredOnSite);
+    setWfhEmployees(filteredWfh);
+    
   }, [searchDate, shifts, employees]);
   
   useEffect(() => {
@@ -296,14 +349,16 @@ const RequestShiftSwap = () => {
           <label className="block font-semibold text-gray-800">Select Date</label>
           <input
             type="date"
-            className="p-2 border rounded w-full mb-4"
+            className="p-2 border rounded w-full mb-2"
             value={searchDate}
             onChange={(e) => setSearchDate(e.target.value)}
           />
+          <label className="block font-semibold text-red-800">{ReqDateErr} </label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">On-site Employees</h3>
+              <label className="block font-semibold text-green-800">{EmployeeOnSite} </label>
               {onSiteEmployees.map((emp) => (
                 <label key={emp._id} className="flex items-center space-x-3 p-2 border rounded mb-1 bg-white shadow">
                   <input
@@ -325,6 +380,7 @@ const RequestShiftSwap = () => {
 
             <div>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">Work From Home Employees</h3>
+              <label className="block font-semibold text-green-800">{EmployeeWFH} </label>
               {wfhEmployees.map((emp) => (
                 <label key={emp._id} className="flex items-center space-x-3 p-2 border rounded mb-1 bg-white shadow">
                   <input

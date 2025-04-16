@@ -51,19 +51,6 @@ const Dashboard = () => {
     }
   };
 
-  const handleAnnouncement = async (e) => {
-    e.preventDefault();
-
-    try {
-      setIsLoading(true);
-      const announcement = await GetAnnouncement();
-      console.log("Fetched Announcement:", announcement);
-    } catch (error) {
-      console.log("Error:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const convertTo24Hour = (time12h) => {
     const [time, modifier] = time12h.split(" ");
@@ -78,7 +65,7 @@ const Dashboard = () => {
     return `${hours}:${minutes}:00`; // Ensure seconds are included
   };
 
-  const { data, loading, error } = useFetch(`http://localhost:4000/api/shift/`);
+  const { data } = useFetch(`http://localhost:4000/api/shift/`);
 
   // Transform fetched data to FullCalendar format
   useEffect(() => {
@@ -152,7 +139,7 @@ const Dashboard = () => {
       setIsLoading(true);
       try {
         const announcement = await GetAnnouncement();
-        console.log("Fetched Announcement:", announcement);
+         console.log("Fetched Announcement:", announcement);
         setAnnouncements(announcement); // Limit to 4 announcements
       } catch (error) {
         console.log("Error fetching announcement:", error);
