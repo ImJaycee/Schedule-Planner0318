@@ -16,7 +16,7 @@ const GetAnnouncement = async () => {
     });
 
     if (response.status === 200) {
-      console.log("Announcement:", response.data);
+     
       return response.data;
     }
   } catch (error) {

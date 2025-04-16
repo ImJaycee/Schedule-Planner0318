@@ -12,10 +12,10 @@ import requestShift from './routes/requestRoute.js';
 import userManageRoute from './routes/userManageRoute.js';
 
 import { limiter } from './utils/rateLimiter.js';
-import errorHandler from './utils/errorHandler.js'; // Import the error handler
+import errorHandler from './utils/errorHandler.js'; 
 import { connect } from './db/db.js';
 import compression from 'compression';
-import { logTokenRequest } from './utils/verifyToken.js'; // Import the logTokenRequest middleware
+import { logTokenRequest } from './utils/verifyToken.js'; 
 
 const app = express();
 dotenv.config();
