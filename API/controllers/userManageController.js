@@ -4,10 +4,12 @@ import bcrypt from "bcryptjs";
 // Create a new user (Admin only)
 export const createUser = async (req, res) => {
   try {
-    const { firstname, lastname, email, department, password, isAdmin } = req.body;
+    const { firstname, lastname, email, department, password, isAdmin } =
+      req.body;
 
     const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ message: "User already exists" });
+    if (userExists)
+      return res.status(400).json({ message: "User already exists" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -37,8 +39,11 @@ export const updateUser = async (req, res) => {
       updates.password = await bcrypt.hash(updates.password, 10);
     }
 
-    const updatedUser = await User.findByIdAndUpdate(id, updates, { new: true });
-    if (!updatedUser) return res.status(404).json({ message: "User not found" });
+    const updatedUser = await User.findByIdAndUpdate(id, updates, {
+      new: true,
+    });
+    if (!updatedUser)
+      return res.status(404).json({ message: "User not found" });
 
     res.json(updatedUser);
   } catch (error) {
@@ -50,7 +55,11 @@ export const updateUser = async (req, res) => {
 export const deactivateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByIdAndUpdate(id, { isDeactivated: true }, { new: true });
+    const user = await User.findByIdAndUpdate(
+      id,
+      { isDeactivated: true },
+      { new: true }
+    );
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -64,7 +73,11 @@ export const deactivateUser = async (req, res) => {
 export const activateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const user = await User.findByIdAndUpdate(id, { isDeactivated: false }, { new: true });
+    const user = await User.findByIdAndUpdate(
+      id,
+      { isDeactivated: false },
+      { new: true }
+    );
 
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -73,7 +86,6 @@ export const activateUser = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
 // Get all users with same department(Admin only)
 export const getUsers = async (req, res) => {
@@ -93,4 +105,3 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-

@@ -1,4 +1,4 @@
-import NavbarAdmin from '../../components/NavbarAdmin';
+import NavbarAdmin from "../../components/NavbarAdmin";
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +24,9 @@ const AdminProfile = () => {
   const getUser = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`http://localhost:4000/api/edit/${userId}`);
+      const response = await axios.get(
+        `http://localhost:4000/api/edit/${userId}`
+      );
       setUser({
         firstname: response.data.firstname,
         lastname: response.data.lastname,
@@ -52,52 +54,60 @@ const AdminProfile = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-gray-100">
+    <div className='flex flex-col lg:flex-row min-h-screen bg-gray-100'>
       {/* Sidebar */}
       <NavbarAdmin />
-  
+
       {/* Main Content */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6">
-        <div className="w-full max-w-md sm:max-w-lg md:max-w-xl bg-white shadow-lg p-6 sm:p-8 rounded-lg">
-          <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-center">
+      <div className='flex-1 flex items-center justify-center p-4 sm:p-6'>
+        <div className='w-full max-w-md sm:max-w-lg md:max-w-xl bg-white shadow-lg p-6 sm:p-8 rounded-lg'>
+          <h2 className='text-2xl sm:text-3xl font-semibold mb-4 text-center'>
             Welcome, {user.firstname || "User"}!
           </h2>
-          
+
           {isLoading ? (
-            <p className="text-center text-gray-600">Loading...</p>
+            <p className='text-center text-gray-600'>Loading...</p>
           ) : (
             <div>
-              <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-center">
+              <h3 className='text-xl sm:text-2xl font-semibold mb-4 text-center'>
                 Profile Details
               </h3>
-              <div className="flex flex-col items-center">
+              <div className='flex flex-col items-center'>
                 {user.image && (
                   <img
                     src={user.image}
-                    alt="Profile"
-                    className="w-24 h-24 sm:w-32 sm:h-32 rounded-full mb-4 object-cover border"
+                    alt='Profile'
+                    className='w-24 h-24 sm:w-32 sm:h-32 rounded-full mb-4 object-cover border'
                   />
                 )}
-                <div className="space-y-4 text-left w-full">
+                <div className='space-y-4 text-left w-full'>
                   <div>
-                    <label className="block text-gray-600 font-semibold">Firstname:</label>
-                    <p className="text-gray-800">{user.firstname}</p>
+                    <label className='block text-gray-600 font-semibold'>
+                      Firstname:
+                    </label>
+                    <p className='text-gray-800'>{user.firstname}</p>
                   </div>
                   <div>
-                    <label className="block text-gray-600 font-semibold">Lastname:</label>
-                    <p className="text-gray-800">{user.lastname}</p>
+                    <label className='block text-gray-600 font-semibold'>
+                      Lastname:
+                    </label>
+                    <p className='text-gray-800'>{user.lastname}</p>
                   </div>
                   <div>
-                    <label className="block text-gray-600 font-semibold">Email:</label>
-                    <p className="text-gray-800 break-all">{user.email}</p>
+                    <label className='block text-gray-600 font-semibold'>
+                      Email:
+                    </label>
+                    <p className='text-gray-800 break-all'>{user.email}</p>
                   </div>
                   <div>
-                    <label className="block text-gray-600 font-semibold">Department:</label>
-                    <p className="text-gray-800">{user.department}</p>
+                    <label className='block text-gray-600 font-semibold'>
+                      Department:
+                    </label>
+                    <p className='text-gray-800'>{user.department}</p>
                   </div>
-                  <div className="text-center">
+                  <div className='text-center'>
                     <button
-                      className="mt-4 bg-blue-700 text-white rounded px-4 py-2 font-bold hover:bg-blue-600"
+                      className='mt-4 bg-blue-700 text-white rounded px-4 py-2 font-bold hover:bg-blue-600'
                       onClick={handleEditProfile}
                     >
                       Edit Profile
@@ -111,7 +121,6 @@ const AdminProfile = () => {
       </div>
     </div>
   );
-  
 };
 
 export default AdminProfile;

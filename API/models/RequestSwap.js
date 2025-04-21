@@ -11,54 +11,55 @@ const RequestsShiftSwapSchema = new mongoose.Schema(
       enum: ["wfh", "on-site"],
       required: true,
     },
-    RequesterST: { // Requester's original shift
+    RequesterST: {
+      // Requester's original shift
       type: String,
       enum: ["wfh", "on-site"],
       required: true,
     },
-    recipientStatus: { 
+    recipientStatus: {
       type: String,
       enum: ["pending", "accepted", "rejected"],
       default: "pending",
     },
-    status: { 
+    status: {
       type: String,
       enum: ["pending", "accepted", "rejected"], // Changed "approved" to "accepted" for consistency
       default: "pending",
     },
-    requestedTo: { 
-      type: mongoose.Schema.Types.ObjectId, 
+    requestedTo: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    requestedBy: { 
-      type: mongoose.Schema.Types.ObjectId, 
+    requestedBy: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    requesterName: { 
+    requesterName: {
       type: String,
       required: true,
     },
     requestingShiftId: {
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "Shift", 
-      required: true,
-    },
-    requesterShiftId: {
-      type: mongoose.Schema.Types.ObjectId, 
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Shift",
       required: true,
     },
-    requesterMessage: { 
+    requesterShiftId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Shift",
+      required: true,
+    },
+    requesterMessage: {
       type: String,
       default: "",
     },
-    recipientMessage: { 
+    recipientMessage: {
       type: String,
       default: "",
     },
-    adminMessage: { 
+    adminMessage: {
       type: String,
       default: "",
     },

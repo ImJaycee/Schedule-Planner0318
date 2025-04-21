@@ -8,19 +8,24 @@ const GetAnnouncement = async () => {
       return null;
     }
 
-    const response = await axios.get("http://localhost:4000/api/announcements/active/announcement", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      "http://localhost:4000/api/announcements/active/announcement",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (response.status === 200) {
-     
       return response.data;
     }
   } catch (error) {
-    console.error("Error fetching announcements:", error.response?.data?.message || error.message);
+    console.error(
+      "Error fetching announcements:",
+      error.response?.data?.message || error.message
+    );
   }
   return null;
 };

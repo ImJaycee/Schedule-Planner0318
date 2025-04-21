@@ -1,11 +1,16 @@
-import Announcement from '../models/Announcement.js';
+import Announcement from "../models/Announcement.js";
 
 // Create an announcement
 export const createAnnouncement = async (req, res) => {
   const { title, content, expiresAt } = req.body;
   const AdminId = req.user.id; // Assuming req.user contains the authenticated user's info
   try {
-    const newAnnouncement = new Announcement({ title, content, expiresAt, AdminId });
+    const newAnnouncement = new Announcement({
+      title,
+      content,
+      expiresAt,
+      AdminId,
+    });
     await newAnnouncement.save();
     res.status(201).json(newAnnouncement);
   } catch (error) {
@@ -26,24 +31,24 @@ export const getAnnouncements = async (req, res) => {
 
 // Get all announcements
 export const getActiveAnnouncements = async (req, res) => {
-
   try {
     const currentDate = new Date(); // Get the current date
-  
-    const announcements = await Announcement.find({ expiresAt: { $gt: currentDate } }); // Find active announcements
-    
+
+    const announcements = await Announcement.find({
+      expiresAt: { $gt: currentDate },
+    }); // Find active announcements
+
     // Convert each document to a plain object and remove AdminId
-    const announcementDetails = announcements.map(announcement => {
+    const announcementDetails = announcements.map((announcement) => {
       const announcementObj = announcement.toObject(); // Convert to plain object
       const { AdminId, ...otherDetails } = announcementObj; // Remove AdminId
       return otherDetails;
     });
-  
+
     res.status(200).json(announcementDetails);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
-  
 };
 
 // Update an announcement
@@ -67,7 +72,7 @@ export const deleteAnnouncement = async (req, res) => {
   const { id } = req.params;
   try {
     await Announcement.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Announcement deleted successfully' });
+    res.status(200).json({ message: "Announcement deleted successfully" });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
