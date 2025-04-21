@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 export const createUserLogger = (userId) => {
-  const userLogDir = path.join('logs', userId);
+  const userLogDir = path.join('logs/employee/', userId);
   if (!fs.existsSync(userLogDir)) {
     fs.mkdirSync(userLogDir, { recursive: true });
   }
