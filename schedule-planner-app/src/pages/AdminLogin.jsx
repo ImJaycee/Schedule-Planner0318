@@ -67,6 +67,22 @@ const AdminLogin = () => {
       localStorage.setItem("accessToken", res.data.accessToken); // Save token
       localStorage.setItem("department", res.data.user.department); 
       localStorage.setItem("userId", res.data.user._id);
+      axios.interceptors.request.use((config) => {
+        const userId = localStorage.getItem("userId"); // Retrieve userId from localStorage
+        const isAdmin = localStorage.getItem("isAdmin"); // Retrieve isAdmin flag from localStorage
+      
+        if (userId) {
+          if (isAdmin === "true") {
+            config.headers["admin-id"] = userId; // Add admin-id to the headers for admins
+          } else {
+            config.headers["user-id"] = userId; // Add user-id to the headers for employees
+          }
+        }
+      
+        return config;
+      });
+
+
 
       // Save credentials if "Remember Me" is checked
       if (rememberMe) {

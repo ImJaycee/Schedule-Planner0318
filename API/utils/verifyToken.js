@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { createError } from "../utils/error.js";
-import { createUserLogger } from "./createLoggerforUser.js";
+import { createUserLogger } from "./createLogger.js";
 // Verify JWT token
 export const verifyToken = (req, res, next) => {
     
@@ -39,17 +39,22 @@ export const verifyAdmin = (req, res, next) => {
 
 
 
-// Middleware to log all incoming requests
-export const logTokenRequest = ((req, res, next) => {
-    // Extract userId from the Authorization header
-    const userId = req.headers["user-id"] || "anonymous"; // Default to 'anonymous' if no userId is provided
+export const logTokenRequest = (req, res, next) => {
+    // Extract userId or adminId from the Authorization header
+    const userId = req.headers["user-id"] || req.headers["admin-id"] || "anonymous"; // Default to 'anonymous' if no ID is provided
+  
+    // Determine if the user is an admin
+    const isAdmin = req.headers["admin-id"] ? true : false;
+  
+    // Create the appropriate logger
+    const userLogger = isAdmin ? createAdminLogger(userId) : createUserLogger(userId);
+  
+    // Log the request
+    userLogger.info(`${req.method} ${req.url} - Request received`);
+  
+    // Proceed to the next middleware
+    next();
+  };
 
-  // Create a logger for the user
-  const userLogger = createUserLogger(userId);
 
-  // Log the request
-  userLogger.info(`${req.method} ${req.url} - Request received`);
-
-  // Proceed to the next middleware
-  next();
-  }); 
+  

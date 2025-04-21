@@ -1,0 +1,5 @@
+2025-04-21 09:05:01 [INFO]: User 67d7cc0cb090fdc7dcdb3c00 logged in successfully.
+2025-04-21 09:05:01 [INFO]: GET /api/shift/ - Request received
+2025-04-21 09:05:01 [INFO]: GET /api/announcements/active/announcement - Request received
+2025-04-21 09:05:02 [INFO]: GET /api/announcements/active/announcement - Request received
+2025-04-21 09:05:02 [INFO]: GET /api/shift/ - Request received
