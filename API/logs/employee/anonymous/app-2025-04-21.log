@@ -1,0 +1,5 @@
+2025-04-21 09:05:01 [INFO]: POST /api/auth/login - Request received
+2025-04-21 09:05:18 [INFO]: GET /api/announcements/active/announcement - Request received
+2025-04-21 09:05:18 [INFO]: GET /api/shift/ - Request received
+2025-04-21 09:05:21 [INFO]: GET /api/announcements/active/announcement - Request received
+2025-04-21 09:05:24 [INFO]: GET /api/shift/ - Request received

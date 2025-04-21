@@ -166,7 +166,7 @@ const Dashboard = () => {
             {isLoading ? (
               <p className="text-gray-500 text-center">Loading announcements...</p>
             ) : announcements.length > 0 ? (
-              <ul className="grid gap-4 max-h-[300px] overflow-y-auto">
+              <ul className="grid gap-4 max-h-[550px] overflow-y-auto">
                 {announcements.map((announcement, index) => (
                   <li
                     key={index}

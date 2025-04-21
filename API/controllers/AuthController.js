@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer';
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { createError } from '../utils/error.js';
-import  {createUserLogger} from '../utils/createLoggerforUser.js';
+import  {createAdminLogger, createUserLogger} from '../utils/createLogger.js';
 
 dotenv.config()
 
@@ -236,7 +236,11 @@ const sendVerificationEmail = async (email, token) => {
           const { password, ...otherDetails } = userDetails; 
   
           console.log(otherDetails);
-  
+          
+          // Create a logger for the Admin
+          const userLogger = createAdminLogger(user._id.toString());
+          userLogger.info(`Admin ${user._id} logged in successfully.`);
+
           res.cookie("access_token", token, {
               httpOnly: true,
             })
