@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import a2kLogo from "../assets/a2klogo.png"; 
-import flexiSchedLogo from "../assets/logo.png"; 
+import a2kLogo from "../assets/a2klogo.png";
+import flexiSchedLogo from "../assets/logo.png";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import eye icons
@@ -55,16 +55,19 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return; // Stop if validation fails
 
     dispatch({ type: "LOGIN_START" });
 
     try {
-      const res = await axios.post("http://localhost:4000/api/auth/login", formData);
+      const res = await axios.post(
+        "http://localhost:4000/api/auth/login",
+        formData
+      );
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
       localStorage.setItem("userId", res.data.user._id);
-      localStorage.setItem("userTemp", JSON.stringify(res.data.user)); 
+      localStorage.setItem("userTemp", JSON.stringify(res.data.user));
       localStorage.setItem("accessToken", res.data.accessToken); // Save token
       localStorage.setItem("department", res.data.user.department); // Save department
       axios.interceptors.request.use((config) => {
@@ -86,99 +89,122 @@ const Login = () => {
 
       navigate("/homepage");
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Invalid credentials";
+      const errorMessage =
+        error.response?.data?.message || "Invalid credentials";
       dispatch({ type: "LOGIN_FAILURE", payload: errorMessage });
       setFormData({ email: "", password: "" });
     }
   };
 
   return (
-    <div className="flex min-h-screen bg-white relative">
-      <img src={a2kLogo} alt="A2K Logo" className="absolute top-6 left-8 w-32" />
-      <div className="flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8">
-        <img src={flexiSchedLogo} alt="FlexiSched Logo" className="w-24 mb-4" />
-        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md border">
-          <h3 className="text-xl font-semibold text-center text-gray-700 mb-6">
+    <div className='flex min-h-screen bg-white relative'>
+      <img
+        src={a2kLogo}
+        alt='A2K Logo'
+        className='absolute top-6 left-8 w-32'
+      />
+      <div className='flex flex-col items-center justify-center w-full px-4 sm:px-6 lg:px-8'>
+        <img src={flexiSchedLogo} alt='FlexiSched Logo' className='w-24 mb-4' />
+        <div className='w-full max-w-md bg-white p-6 rounded-lg shadow-md border'>
+          <h3 className='text-xl font-semibold text-center text-gray-700 mb-6'>
             Employee Login
           </h3>
-          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+          {error && <p className='text-red-500 text-center mb-4'>{error}</p>}
           <form onSubmit={handleSubmit}>
             {/* Email Input */}
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-gray-700 font-medium">
+            <div className='mb-4'>
+              <label
+                htmlFor='email'
+                className='block text-gray-700 font-medium'
+              >
                 Email
               </label>
               <input
-                type="email"
-                name="email"
-                placeholder="Enter Email"
+                type='email'
+                name='email'
+                placeholder='Enter Email'
                 className={`w-full px-4 py-2 mt-2 border rounded-md focus:ring ${
-                  errors.email ? "border-red-500 focus:ring-red-300" : "focus:ring-blue-300"
+                  errors.email
+                    ? "border-red-500 focus:ring-red-300"
+                    : "focus:ring-blue-300"
                 } focus:outline-none`}
                 value={formData.email}
                 onChange={handleChange}
               />
-              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+              {errors.email && (
+                <p className='text-red-500 text-sm mt-1'>{errors.email}</p>
+              )}
             </div>
             {/* Password Input */}
-            <div className="mb-4 relative">
-              <label htmlFor="password" className="block text-gray-700 font-medium">
+            <div className='mb-4 relative'>
+              <label
+                htmlFor='password'
+                className='block text-gray-700 font-medium'
+              >
                 Password
               </label>
               <input
                 type={showPassword ? "text" : "password"}
-                name="password"
-                placeholder="***********"
+                name='password'
+                placeholder='***********'
                 className={`w-full px-4 py-2 mt-2 border rounded-md focus:ring ${
-                  errors.password ? "border-red-500 focus:ring-red-300" : "focus:ring-blue-300"
+                  errors.password
+                    ? "border-red-500 focus:ring-red-300"
+                    : "focus:ring-blue-300"
                 } focus:outline-none`}
                 value={formData.password}
                 onChange={handleChange}
               />
               <span
-                className="absolute right-3 top-10 cursor-pointer"
+                className='absolute right-3 top-10 cursor-pointer'
                 onClick={() => setShowPassword(!showPassword)}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
-              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+              {errors.password && (
+                <p className='text-red-500 text-sm mt-1'>{errors.password}</p>
+              )}
             </div>
             {/* Remember Me & Forgot Password */}
-            <div className="flex justify-between items-center text-sm mb-4">
-              <label className="flex items-center">
-                <input 
-                  type="checkbox" 
-                  className="mr-2"
+            <div className='flex justify-between items-center text-sm mb-4'>
+              <label className='flex items-center'>
+                <input
+                  type='checkbox'
+                  className='mr-2'
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
                 />
                 Remember Me
               </label>
-              <a href="/forgot-password" className="text-blue-500 hover:underline">
+              <a
+                href='/forgot-password'
+                className='text-blue-500 hover:underline'
+              >
                 Forgot Password?
               </a>
             </div>
             {/* Login Button */}
             <button
-              type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded-md flex justify-center items-center"
+              type='submit'
+              className='w-full bg-blue-500 text-white py-2 rounded-md flex justify-center items-center'
               disabled={loading}
             >
               {loading ? (
-                <span className="animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full"></span>
+                <span className='animate-spin h-5 w-5 border-4 border-white border-t-transparent rounded-full'></span>
               ) : (
                 "Login"
               )}
             </button>
           </form>
-          <p className="text-center text-sm mt-4">
-            <a href="/register" className="text-blue-500">Register</a>
+          <p className='text-center text-sm mt-4'>
+            <a href='/register' className='text-blue-500'>
+              Register
+            </a>
           </p>
         </div>
       </div>
     </div>
   );
-  
 };
 
 export default Login;

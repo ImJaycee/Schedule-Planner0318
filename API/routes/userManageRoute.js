@@ -1,5 +1,11 @@
 import express from "express";
-import { createUser, updateUser, deactivateUser, activateUser, getUsers } from "../controllers/userManageController.js";
+import {
+  createUser,
+  updateUser,
+  deactivateUser,
+  activateUser,
+  getUsers,
+} from "../controllers/userManageController.js";
 import { protect, adminOnly } from "../utils/userManageUtils.js";
 
 const router = express.Router();

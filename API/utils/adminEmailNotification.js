@@ -1,22 +1,22 @@
-import nodemailer from 'nodemailer'; 
+import nodemailer from "nodemailer";
 
 export const sendNotificationNewShift = async (email, shiftType, date) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-        const Redirect = `http://localhost:5173/`;
+    const Redirect = `http://localhost:5173/`;
 
-        const mailOptions = {
-            from: `"Schedule App" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: 'New Shift Assigned',
-            html: `
+    const mailOptions = {
+      from: `"Schedule App" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "New Shift Assigned",
+      html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
                     <h2 style="color: #333; text-align: center;">New Shift Assigned</h2>
                     <p style="font-size: 16px; color: #555; text-align: center;">
@@ -40,32 +40,35 @@ export const sendNotificationNewShift = async (email, shiftType, date) => {
                     </p>
                 </div>
             `,
-        };
+    };
 
-        await transporter.sendMail(mailOptions);
-        console.log(`New shift email sent to ${email}`);
-    } catch (error) {
-        console.error("Error sending new shift email:", error.message);
-    }
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending new shift email:", error.message);
+  }
 };
 
-export const sendNotificationRemovedToShift = async (email, shiftType, date) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+export const sendNotificationRemovedToShift = async (
+  email,
+  shiftType,
+  date
+) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-        const Redirect = `http://localhost:5173/`;
+    const Redirect = `http://localhost:5173/`;
 
-        const mailOptions = {
-            from: `"Schedule App" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: "Shift Removed",
-            html: `
+    const mailOptions = {
+      from: `"Schedule App" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Shift Removed",
+      html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
                     <h2 style="color: #333; text-align: center;">Shift Removed</h2>
                     <p style="font-size: 16px; color: #555; text-align: center;">
@@ -85,34 +88,36 @@ export const sendNotificationRemovedToShift = async (email, shiftType, date) => 
                     </p>
                 </div>
             `,
-        };
+    };
 
-        await transporter.sendMail(mailOptions);
-        console.log(`New shift email sent to ${email}`);
-    } catch (error) {
-        console.error("Error sending new shift email:", error.message);
-    }
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending new shift email:", error.message);
+  }
 };
 
+export const sendNotificationEmailAdmin = async (
+  email,
+  status,
+  shiftType,
+  date
+) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-  
-export const sendNotificationEmailAdmin = async (email, status, shiftType, date) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+    const Redirect = `http://localhost:5173/`;
 
-        const Redirect = `http://localhost:5173/`;
-
-        const mailOptions = {
-            from: `"Schedule App" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: 'Shift Request Update',
-            html: `
+    const mailOptions = {
+      from: `"Schedule App" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Shift Request Update",
+      html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
                     <h2 style="color: #333; text-align: center;">Request ${status}</h2>
                     <p style="font-size: 16px; color: #555; text-align: center;">Your request for a ${shiftType} shift on ${date} was ${status}.</p>
@@ -121,32 +126,39 @@ export const sendNotificationEmailAdmin = async (email, status, shiftType, date)
                     </p>
                  </div>
             `,
-        };
+    };
 
-        await transporter.sendMail(mailOptions);
-        console.log(`Email sent to ${email}`);
-    } catch (error) {
-        console.error("Error sending email:", error.message);
-    }
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending email:", error.message);
+  }
 };
 
-export const sendNotificationSwapSender = async (email, status, recipientName, requesterST, recipientST, RequestshiftDate, OffershiftDate) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+export const sendNotificationSwapSender = async (
+  email,
+  status,
+  recipientName,
+  requesterST,
+  recipientST,
+  RequestshiftDate,
+  OffershiftDate
+) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-        const Redirect = `http://localhost:5173/`;
+    const Redirect = `http://localhost:5173/`;
 
-        const mailOptions = {
-            from: `"Schedule App" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: 'Shift Swap Request Update',
-            html: `
+    const mailOptions = {
+      from: `"Schedule App" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Shift Swap Request Update",
+      html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
                     <h2 style="color: #333; text-align: center;">Shift Swap Request ${status}</h2>
                     
@@ -158,13 +170,17 @@ export const sendNotificationSwapSender = async (email, status, recipientName, r
                         <strong>Swap Details:</strong><br>
                         <strong>Recipient:</strong> ${recipientName}<br>
 
-                        ${status === "approved" ? `
+                        ${
+                          status === "approved"
+                            ? `
                             <strong>Your New Shift:</strong> ${recipientST} on ${RequestshiftDate}<br>
                             <strong>New Shift for ${recipientName}:</strong> ${requesterST} on ${OffershiftDate}
-                        ` : `
+                        `
+                            : `
                             <strong>Your Shift:</strong> ${requesterST} on ${OffershiftDate}<br>
                             <strong>Request Shift:</strong> ${recipientST} on ${RequestshiftDate}
-                        `}
+                        `
+                        }
                     </p>
 
 
@@ -177,32 +193,39 @@ export const sendNotificationSwapSender = async (email, status, recipientName, r
                     </p>
                 </div>
             `,
-        };
+    };
 
-        await transporter.sendMail(mailOptions);
-        console.log(`Email sent to ${email}`);
-    } catch (error) {
-        console.error("Error sending email:", error.message);
-    }
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending email:", error.message);
+  }
 };
 
-export const sendNotificationSwapRecipient = async (email, status, requesterName, requesterST, recipientST, RequestshiftDate, OffershiftDate) => {
-    try {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS,
-            },
-        });
+export const sendNotificationSwapRecipient = async (
+  email,
+  status,
+  requesterName,
+  requesterST,
+  recipientST,
+  RequestshiftDate,
+  OffershiftDate
+) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-        const Redirect = `http://localhost:5173/`;
+    const Redirect = `http://localhost:5173/`;
 
-        const mailOptions = {
-            from: `"Schedule App" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: 'Shift Swap Request Update',
-            html: `
+    const mailOptions = {
+      from: `"Schedule App" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: "Shift Swap Request Update",
+      html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #f9f9f9;">
                     <h2 style="color: #333; text-align: center;">Shift Swap Request ${status}</h2>
                     
@@ -214,13 +237,17 @@ export const sendNotificationSwapRecipient = async (email, status, requesterName
                         <strong>Swap Details:</strong><br>
                         <strong>Request From:</strong> ${requesterName}<br>
 
-                        ${status === "approved" ? `
+                        ${
+                          status === "approved"
+                            ? `
                             <strong>Your New Shift:</strong> ${recipientST} on ${OffershiftDate}<br>
                             <strong>New Shift for ${requesterName}:</strong> ${requesterST} on ${RequestshiftDate}
-                        ` : `
+                        `
+                            : `
                             <strong>Offered Shift:</strong> ${requesterST} on ${OffershiftDate}<br>
                             <strong>Your Shift:</strong> ${recipientST} on ${RequestshiftDate}
-                        `}
+                        `
+                        }
                     </p>
 
                     <p style="text-align: center;">
@@ -232,13 +259,10 @@ export const sendNotificationSwapRecipient = async (email, status, requesterName
                     </p>
                 </div>
             `,
-        };
+    };
 
-        await transporter.sendMail(mailOptions);
-        console.log(`Email sent to ${email}`);
-    } catch (error) {
-        console.error("Error sending email:", error.message);
-    }
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending email:", error.message);
+  }
 };
-
-

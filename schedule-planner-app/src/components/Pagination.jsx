@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const pageNumbers = [];
@@ -8,25 +8,27 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   }
 
   return (
-    <div className="flex justify-center mt-4">
+    <div className='flex justify-center mt-4'>
       <button
-        className="px-3 py-1 mx-1 bg-gray-200 rounded"
+        className='px-3 py-1 mx-1 bg-gray-200 rounded'
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
       >
         Prev
       </button>
-      {pageNumbers.map(number => (
+      {pageNumbers.map((number) => (
         <button
           key={number}
-          className={`px-3 py-1 mx-1 rounded ${currentPage === number ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-3 py-1 mx-1 rounded ${
+            currentPage === number ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
           onClick={() => onPageChange(number)}
         >
           {number}
         </button>
       ))}
       <button
-        className="px-3 py-1 mx-1 bg-gray-200 rounded"
+        className='px-3 py-1 mx-1 bg-gray-200 rounded'
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
       >

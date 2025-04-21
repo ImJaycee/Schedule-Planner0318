@@ -18,7 +18,7 @@ const AdminChangePwd = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Retrieve user ID from local storage
-  const userId = localStorage.getItem('userId');
+  const userId = localStorage.getItem("userId");
 
   const validate = () => {
     const newErrors = {};
@@ -45,13 +45,20 @@ const AdminChangePwd = () => {
     }
 
     try {
-      await axios.put(`http://localhost:4000/api/edit/${userId}/password`, { password, confirmPassword });
+      await axios.put(`http://localhost:4000/api/edit/${userId}/password`, {
+        password,
+        confirmPassword,
+      });
       toast.success("Password updated successfully");
       setPassword("");
       setConfirmPassword("");
       navigate("/admin/homepage");
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
         setErrors({ apiError: error.response.data.message });
       } else {
         setErrors({ apiError: error.message });
@@ -60,18 +67,22 @@ const AdminChangePwd = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className='flex h-screen bg-gray-100'>
       {/* Sidebar */}
       <NavbarAdmin />
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <div className="max-w-lg bg-white shadow-lg mx-auto p-7 rounded mt-6">
-          <h2 className="font-semibold text-2xl mb-4 block text-center">Change Password</h2>
+      <div className='flex-1 p-6'>
+        <div className='max-w-lg bg-white shadow-lg mx-auto p-7 rounded mt-6'>
+          <h2 className='font-semibold text-2xl mb-4 block text-center'>
+            Change Password
+          </h2>
           <form onSubmit={updatePassword}>
-            <div className="space-y-4">
-              <div className="relative">
-                <label className="text-gray-600 mb-2 block font-semibold">New Password</label>
+            <div className='space-y-4'>
+              <div className='relative'>
+                <label className='text-gray-600 mb-2 block font-semibold'>
+                  New Password
+                </label>
                 <input
                   type={showPassword ? "text" : "password"}
                   value={password}
@@ -79,39 +90,49 @@ const AdminChangePwd = () => {
                   className={`w-full block border p-3 rounded focus:outline-none focus:shadow-outline placeholder-gray-400 ${
                     errors.password ? "border-red-500" : "border-gray-300"
                   }`}
-                  placeholder="New Password"
+                  placeholder='New Password'
                 />
                 <div
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  className='absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer'
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </div>
-                {errors.password && <p className="text-red-600 mt-1">{errors.password}</p>}
+                {errors.password && (
+                  <p className='text-red-600 mt-1'>{errors.password}</p>
+                )}
               </div>
-              <div className="relative">
-                <label className="text-gray-600 mb-2 block font-semibold">Confirm Password</label>
+              <div className='relative'>
+                <label className='text-gray-600 mb-2 block font-semibold'>
+                  Confirm Password
+                </label>
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className={`w-full block border p-3 rounded focus:outline-none focus:shadow-outline placeholder-gray-400 ${
-                    errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                    errors.confirmPassword
+                      ? "border-red-500"
+                      : "border-gray-300"
                   }`}
-                  placeholder="Confirm Password"
+                  placeholder='Confirm Password'
                 />
                 <div
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  className='absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer'
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </div>
-                {errors.confirmPassword && <p className="text-red-600 mt-1">{errors.confirmPassword}</p>}
+                {errors.confirmPassword && (
+                  <p className='text-red-600 mt-1'>{errors.confirmPassword}</p>
+                )}
               </div>
-              {errors.apiError && <p className="text-red-600 mt-1">{errors.apiError}</p>}
+              {errors.apiError && (
+                <p className='text-red-600 mt-1'>{errors.apiError}</p>
+              )}
               <div>
                 <button
-                  className="block w-full mt-6 bg-blue-700 text-white rounded-sm px-4 py-2 font-bold hover:bg-blue-600 hover:cursor-pointer"
+                  className='block w-full mt-6 bg-blue-700 text-white rounded-sm px-4 py-2 font-bold hover:bg-blue-600 hover:cursor-pointer'
                   disabled={isLoading}
                 >
                   {isLoading ? "Updating..." : "Update Password"}
