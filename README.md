@@ -12,6 +12,7 @@ This project is a **FlexiSched** application that allows employees to manage the
 - [API Endpoints](#api-endpoints)
 - [Frontend Pages](#frontend-pages)
 - [Troubleshooting](#troubleshooting)
+- [Authors](#Authors)
 
 ---
 
@@ -488,5 +489,17 @@ This section now provides a comprehensive overview of all your API endpoints. Le
     - **Solution**: 
       - Ensure Tailwind CSS is properly configured in your project.
       - Verify that the `postcss.config.js` and `tailwind.config.js` files are correctly set up.
+
+---
+
+## Authors
+
+- **[Jaycee Cruz]**  
+  Email: [your-email@example.com]  
+  Role: [Back-end Developer and Front-end Developer]
+
+- **[Salmer S. Castro]**  
+  Email: [castrosalmer0604@gmail.com]  
+  Role: [Back-end Developer and Front-end Developer]
 
 ---
