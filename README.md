@@ -135,7 +135,7 @@ The backend API is built with **Node.js** and **Express**, offering robust funct
 
    #### Frontend
    ```bash
-   cd ../schedule-planner-app
+   cd schedule-planner-app
    npm start
    ```
 
