@@ -390,10 +390,6 @@ This section now provides a comprehensive overview of all your API endpoints. Le
 
 ---
 
-
-
-
-
 ## Frontend Pages
 
 ### Authentication Pages
@@ -426,5 +422,71 @@ This section now provides a comprehensive overview of all your API endpoints. Le
 - **User List Page**: Displays a list of all users, filtered by department.
 - **Create User Page**: Allows administrators to add new users.
 - **Edit User Page**: Enables administrators to update user details.
+
+---
+
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+1. **MongoDB Connection Error**
+   - **Error**: `MongooseServerSelectionError: Could not connect to any servers in your MongoDB Atlas cluster.`
+   - **Solution**: 
+     - Ensure your MongoDB connection string in the `.env` file is correct.
+     - Verify that your IP address is whitelisted in the MongoDB Atlas network settings.
+     - Check if your MongoDB Atlas cluster is running.
+
+2. **Environment Variables Not Loaded**
+   - **Error**: `Error: Missing required environment variables.`
+   - **Solution**: 
+     - Ensure you have created a `.env` file in the `API` directory with all required variables.
+     - Verify that the `dotenv` package is installed and properly configured in your project.
+
+3. **Port Already in Use**
+   - **Error**: `Error: listen EADDRINUSE: address already in use :::4000`
+   - **Solution**: 
+     - Check if another application is using the same port (e.g., `4000`) and stop it.
+     - Change the `PORT` value in your `.env` file to a different port and restart the server.
+
+4. **Frontend Not Loading**
+   - **Error**: `Failed to load resource: the server responded with a status of 404 (Not Found)`
+   - **Solution**: 
+     - Ensure the backend server is running and accessible at the correct URL.
+     - Verify that the frontend is configured to use the correct API base URL.
+
+5. **CORS Issues**
+   - **Error**: `Access to fetch at 'http://localhost:4000/api/...' from origin 'http://localhost:5173' has been blocked by CORS policy.`
+   - **Solution**: 
+     - Ensure the `cors` middleware is properly configured in the backend to allow requests from the frontend's origin.
+
+6. **Cloudinary Upload Issues**
+   - **Error**: `Error: Invalid Cloudinary credentials.`
+   - **Solution**: 
+     - Verify that your Cloudinary credentials (`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`) are correct in the `.env` file.
+
+7. **Email Sending Issues**
+   - **Error**: `Error: Invalid login: 535-5.7.8 Username and Password not accepted.`
+   - **Solution**: 
+     - Ensure you are using the correct Gmail credentials in the `.env` file (`EMAIL_USER` and `EMAIL_PASS`).
+     - If using Gmail, ensure you have enabled "App Passwords" and are using the generated app password.
+
+8. **Build or Deployment Issues**
+   - **Error**: `Module not found: Error: Can't resolve '...'`
+   - **Solution**: 
+     - Run `npm install` in both the backend and frontend directories to ensure all dependencies are installed.
+     - Check for typos or incorrect imports in your code.
+
+9. **API Authentication Errors**
+   - **Error**: `401 Unauthorized`
+   - **Solution**: 
+     - Ensure you are including the correct Bearer token in the `Authorization` header for protected API endpoints.
+     - Verify that the token is not expired and is generated using the correct secret.
+
+10. **Frontend Styling Issues**
+    - **Error**: Styles not applied correctly.
+    - **Solution**: 
+      - Ensure Tailwind CSS is properly configured in your project.
+      - Verify that the `postcss.config.js` and `tailwind.config.js` files are correctly set up.
 
 ---
