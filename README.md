@@ -1,6 +1,8 @@
 # FlexiSched API and Frontend
 
-This project is a **FlexiSched** application that allows employees to manage their profiles, schedules, and other related tasks. It includes a backend API built with **Node.js** and **Express**, and a frontend built with **React**.
+This project is a **FlexiSched** application designed to streamline employee management and scheduling processes for organizations. It provides a comprehensive solution for managing employee profiles, schedules, and shift requests, while also enabling administrators to oversee announcements, user management, and schedule creation. 
+
+The backend API is built with **Node.js** and **Express**, offering robust functionality for authentication, data management, and task automation. The frontend, developed using **React**, provides an intuitive and user-friendly interface for both administrators and employees, ensuring seamless interaction with the system.
 
 ---
 
