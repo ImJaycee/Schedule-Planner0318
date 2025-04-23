@@ -158,9 +158,6 @@ The following environment variables are required for the project:
 | `CLOUDINARY_API_SECRET`   | Cloudinary API secret               |
 
 
-
-
-
 ## API Endpoints
 
 ### Admin Endpoints
@@ -390,5 +387,44 @@ This section now provides a comprehensive overview of all your API endpoints. Le
 - **Change Password**  
   `POST /api/edit/{{userId}}/password`  
   Requires `application/json` body with `password` and `confirmPassword`.
+
+---
+
+
+
+
+
+## Frontend Pages
+
+### Authentication Pages
+- **Login Page**: Allows users to log in to their accounts.
+- **Register Page**: Enables new users to create an account.
+- **Forgot Password Page**: Allows users to reset their password via email.
+
+### Dashboard
+- **Admin Dashboard**: Displays an overview of announcements, schedules, and user management tools for administrators.
+- **Employee Dashboard**: Provides employees with access to their schedules, announcements, and profile management.
+
+### Profile Management
+- **Profile Page**: Allows users to view and update their profile information, including uploading profile pictures.
+
+### Announcements
+- **Announcements Page**: Displays all announcements for employees.
+- **Create Announcement Page**: Allows administrators to create new announcements.
+- **Edit Announcement Page**: Enables administrators to update existing announcements.
+
+### Schedule Management
+- **Schedule Page**: Displays the user's schedule in a calendar view.
+- **Create Schedule Page**: Allows administrators to create new schedules.
+- **Edit Schedule Page**: Enables administrators to update existing schedules.
+
+### Shift Requests
+- **Request Shift Page**: Allows employees to request shift changes.
+- **Swap Shift Page**: Enables employees to request shift swaps with other employees.
+
+### User Management (Admin Only)
+- **User List Page**: Displays a list of all users, filtered by department.
+- **Create User Page**: Allows administrators to add new users.
+- **Edit User Page**: Enables administrators to update user details.
 
 ---
