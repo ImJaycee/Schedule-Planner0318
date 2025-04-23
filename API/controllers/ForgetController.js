@@ -1,9 +1,7 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";  // ✅ FIX: Correct import name
+import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import User from "../models/User.js";
-
-
 
 // Forget Password (Generate Reset Token and Send Email)
 export const forgetPassword = async (req, res) => {
@@ -11,12 +9,14 @@ export const forgetPassword = async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).json({ message: "Email is required" });
 
-    const user = await User.findOne({ email });  //
+    const user = await User.findOne({ email }); //
     if (!user) return res.status(404).json({ message: "User not found" });
-    
+
     // Generate Reset Token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "10m" });
-    console.log(token)
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "10m",
+    });
+
     // Email Transporter
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -45,8 +45,7 @@ export const forgetPassword = async (req, res) => {
       if (err) {
         return res.status(500).json({ message: err.message });
       }
-      res.status(200).json({ message: "Email sent successfully = " + token
-      });
+      res.status(200).json({ message: "Email sent successfully = " + token });
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -60,7 +59,9 @@ export const resetPassword = async (req, res) => {
     const { newPassword } = req.body;
 
     if (!token || !newPassword) {
-      return res.status(400).json({ message: "Token and new password are required" });
+      return res
+        .status(400)
+        .json({ message: "Token and new password are required" });
     }
 
     // Verify Token
@@ -76,7 +77,7 @@ export const resetPassword = async (req, res) => {
     }
 
     // Hash New Password
-    const salt = await bcrypt.genSalt(10);  // 
+    const salt = await bcrypt.genSalt(10); //
     user.password = await bcrypt.hash(newPassword, salt);
     await user.save();
 
