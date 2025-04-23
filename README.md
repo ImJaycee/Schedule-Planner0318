@@ -19,11 +19,13 @@ The backend API is built with **Node.js** and **Express**, offering robust funct
 ---
 
 ## Features
-- **User Authentication**: Login and manage user sessions.
-- **Profile Management**: Employees can update their profile details and upload profile pictures.
-- **Cloudinary Integration**: Images are uploaded and stored using Cloudinary.
-- **Email Notifications**: Email functionality using Gmail SMTP.
-- **Schedule Management**: Manage employee schedules and shifts.
+- **User Authentication**: Secure login and session management for both employees and administrators.
+- **Profile Management**: Employees can update their personal details and upload profile pictures.
+- **Schedule Management**: Administrators can create, update, and manage employee schedules, while employees can view their schedules in a calendar format.
+- **Shift Requests**: Employees can request shift changes or swaps, with approval workflows.
+- **Announcements**: Administrators can create and manage announcements visible to employees.
+- **Cloudinary Integration**: Efficient image storage and management for profile pictures and other assets.
+- **Email Notifications**: Automated email notifications for important updates, powered by Gmail SMTP.
 
 ---
 
