@@ -156,3 +156,239 @@ The following environment variables are required for the project:
 | `CLOUDINARY_CLOUD_NAME`   | Cloudinary cloud name               |
 | `CLOUDINARY_API_KEY`      | Cloudinary API key                  |
 | `CLOUDINARY_API_SECRET`   | Cloudinary API secret               |
+
+
+
+
+
+## API Endpoints
+
+### Admin Endpoints
+- **Admin Profile Edit API**
+  - **Get Specific User**  
+    `GET /api/edit/{{userId}}`  
+    Requires `Authorization` header with Bearer token.
+  - **Update User Details**  
+    `PUT /api/edit/{{userId}}`  
+    Requires `Authorization` header with Bearer token and `multipart/form-data` body.
+
+- **Announcements API**
+  - **Create Announcement**  
+    `POST /api/announcements`  
+    Requires `Authorization` header with Bearer token and `application/json` body.
+  - **Get All Announcements**  
+    `GET /api/announcements`  
+    Requires `Authorization` header with Bearer token.
+  - **Get Active Announcements**  
+    `GET /api/announcements/active/announcement`  
+    Requires `Authorization` header with Bearer token.
+  - **Update Announcement**  
+    `PUT /api/announcements/{{announcementId}}`  
+    Requires `Authorization` header with Bearer token and `application/json` body.
+  - **Delete Announcement**  
+    `DELETE /api/announcements/{{announcementId}}`  
+    Requires `Authorization` header with Bearer token.
+
+- **User Management API**
+  - **Get All Users by Department**  
+    `GET /api/user-manage/users?department={{department}}`  
+    Requires `Authorization` header with Bearer token.
+  - **Create User**  
+    `POST /api/user-manage/create`  
+    Requires `Authorization` header with Bearer token and `application/json` body.
+  - **Update User**  
+    `PUT /api/user-manage/update/{{userId}}`  
+    Requires `Authorization` header with Bearer token and `application/json` body.
+  - **Deactivate User**  
+    `PUT /api/user-manage/deactivate/{{userId}}`  
+    Requires `Authorization` header with Bearer token.
+  - **Activate User**  
+    `PUT /api/user-manage/activate/{{userId}}`  
+    Requires `Authorization` header with Bearer token.
+
+### Employee Endpoints
+- **Employee Profile Edit API**
+  - **Get Specific User**  
+    `GET /api/edit/{{userId}}`  
+    Requires `Authorization` header with Bearer token.
+  - **Update User Details**  
+    `PUT /api/edit/{{userId}}`  
+    Requires `Authorization` header with Bearer token and `multipart/form-data` body.
+
+- **Request Shift**
+  - **Create Request**  
+    `POST /api/request-shift/create-request`  
+    Requires `application/json` body.
+  - **Get User Requests**  
+    `GET /api/request-shift/{{userId}}`
+
+- **Request Swap**
+  - **Create Swap Request**  
+    `POST /api/request-shift/create-request/swap`  
+    Requires `application/json` body.
+  - **Get Sent Requests**  
+    `GET /api/request-shift/swap-shift/{{userId}}`
+  - **Accept Request**  
+    `PUT /api/request-shift/swap-shift/accept`  
+    Requires `application/json` body.
+  - **Decline Request**  
+    `PUT /api/request-shift/swap-shift/decline`  
+    Requires `application/json` body.
+  - **Get Received Requests**  
+    `GET /api/request-shift/swap-shift/to-me/{{userId}}`
+  - **Get Users by Department**  
+    `GET /api/request-shift/get-user/all/{{department}}`
+
+### Schedule Management
+- **Create Schedule**  
+  `POST /api/shift/create`  
+  Requires `application/json` body.
+- **Delete Schedule**  
+  `DELETE /api/shift/{{scheduleId}}`
+- **Update Schedule**  
+  `PUT /api/shift/{{scheduleId}}`  
+  Requires `application/json` body.
+- **Get Schedule by Department**  
+  `GET /api/shift/manage/{{department}}`
+- **View All Schedules**  
+  `GET /api/shift/`
+- **View Specific Schedule**  
+  `GET /api/shift/{{scheduleId}}`
+
+### Authentication
+- **Login**  
+  `POST /api/auth/login`  
+  Requires `application/json` body with `email` and `password`.
+- **Admin Login**  
+  `POST /api/auth/admin/login`  
+  Requires `application/json` body with `email` and `password`.
+- **Register User**  
+  `POST /api/auth/register`  
+  Requires `application/json` body with user details.
+- **Register Admin**  
+  `POST /api/auth/admin/register`  
+  Requires `application/json` body with admin details.
+- **Forgot Password**  
+  `POST /api/auth/forgetPassword`  
+  Requires `application/json` body with `email`.
+- **Change Password**  
+  `POST /api/edit/{{userId}}/password`  
+  Requires `application/json` body with `password` and `confirmPassword`.
+
+---
+
+This section now provides a comprehensive overview of all your API endpoints. Let me know if you need further adjustments!## API Endpoints
+
+### Admin Endpoints
+- **Admin Profile Edit API**
+  - **Get Specific User**  
+    `GET /api/edit/{{userId}}`  
+    Requires `Authorization` header with Bearer token.
+  - **Update User Details**  
+    `PUT /api/edit/{{userId}}`  
+    Requires `` header with Bearer token and `multipart/form-data` body.
+
+- **Announcements API**
+  - **Create Announcement**  
+    `POST /api/announcements`  
+    Requires `Authorization` header with Bearer token and `application/json` body.
+  - **Get All Announcements**  
+    `GET /api/announcements`  
+    Requires `Authorization` header with Bearer token.
+  - **Get Active Announcements**  
+    `GET /api/announcements/active/announcement`  
+    Requires `Authorization` header with Bearer token.
+  - **Update Announcement**  
+    `PUT /api/announcements/{{announcementId}}`  
+    Requires `Authorization` header with Bearer token and `application/json` body.
+  - **Delete Announcement**  
+    `DELETE /api/announcements/{{announcementId}}`  
+    Requires `Authorization` header with Bearer token.
+
+- **User Management API**
+  - **Get All Users by Department**  
+    `GET /api/user-manage/users?department={{department}}`  
+    Requires `Authorization` header with Bearer token.
+  - **Create User**  
+    `POST /api/user-manage/create`  
+    Requires `Authorization` header with Bearer token and `application/json` body.
+  - **Update User**  
+    `PUT /api/user-manage/update/{{userId}}`  
+    Requires `Authorization` header with Bearer token and `application/json` body.
+  - **Deactivate User**  
+    `PUT /api/user-manage/deactivate/{{userId}}`  
+    Requires `Authorization` header with Bearer token.
+  - **Activate User**  
+    `PUT /api/user-manage/activate/{{userId}}`  
+    Requires `Authorization` header with Bearer token.
+
+### Employee Endpoints
+- **Employee Profile Edit API**
+  - **Get Specific User**  
+    `GET /api/edit/{{userId}}`  
+    Requires `Authorization` header with Bearer token.
+  - **Update User Details**  
+    `PUT /api/edit/{{userId}}`  
+    Requires `Authorization` header with Bearer token and `multipart/form-data` body.
+
+- **Request Shift**
+  - **Create Request**  
+    `POST /api/request-shift/create-request`  
+    Requires `application/json` body.
+  - **Get User Requests**  
+    `GET /api/request-shift/{{userId}}`
+
+- **Request Swap**
+  - **Create Swap Request**  
+    `POST /api/request-shift/create-request/swap`  
+    Requires `application/json` body.
+  - **Get Sent Requests**  
+    `GET /api/request-shift/swap-shift/{{userId}}`
+  - **Accept Request**  
+    `PUT /api/request-shift/swap-shift/accept`  
+    Requires `application/json` body.
+  - **Decline Request**  
+    `PUT /api/request-shift/swap-shift/decline`  
+    Requires `application/json` body.
+  - **Get Received Requests**  
+    `GET /api/request-shift/swap-shift/to-me/{{userId}}`
+  - **Get Users by Department**  
+    `GET /api/request-shift/get-user/all/{{department}}`
+
+### Schedule Management
+- **Create Schedule**  
+  `POST /api/shift/create`  
+  Requires `application/json` body.
+- **Delete Schedule**  
+  `DELETE /api/shift/{{scheduleId}}`
+- **Update Schedule**  
+  `PUT /api/shift/{{scheduleId}}`  
+  Requires `application/json` body.
+- **Get Schedule by Department**  
+  `GET /api/shift/manage/{{department}}`
+- **View All Schedules**  
+  `GET /api/shift/`
+- **View Specific Schedule**  
+  `GET /api/shift/{{scheduleId}}`
+
+### Authentication
+- **Login**  
+  `POST /api/auth/login`  
+  Requires `application/json` body with `email` and `password`.
+- **Admin Login**  
+  `POST /api/auth/admin/login`  
+  Requires `application/json` body with `email` and `password`.
+- **Register User**  
+  `POST /api/auth/register`  
+  Requires `application/json` body with user details.
+- **Register Admin**  
+  `POST /api/auth/admin/register`  
+  Requires `application/json` body with admin details.
+- **Forgot Password**  
+  `POST /api/auth/forgetPassword`  
+  Requires `application/json` body with `email`.
+- **Change Password**  
+  `POST /api/edit/{{userId}}/password`  
+  Requires `application/json` body with `password` and `confirmPassword`.
+
+---
