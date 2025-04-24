@@ -384,8 +384,8 @@ The following environment variables are required for the project:
 
 ## Authors
 
-- **[Jaycee Cruz]**  
-  Email: [your-email@example.com]  
+- **[Jay Cee R. Cruz]**  
+  Email: [jayceecruz131@gmail.com]  
   Role: [Back-end Developer and Front-end Developer]
 
 - **[Salmer S. Castro]**  
