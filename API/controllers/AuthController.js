@@ -16,14 +16,14 @@ const generateVerificationCode = () =>
   Math.floor(100000 + Math.random() * 900000).toString();
 
 // Generate a secure token
-const generateVerificationToken = () => crypto.randomBytes(32).toString("hex");
+// const generateVerificationToken = () => crypto.randomBytes(32).toString("hex");
 
 export const Register = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.password, salt);
 
-    const verificationCode = generateVerificationCode();
+    // const verificationCode = generateVerificationCode();
     const verificationToken = generateVerificationToken();
     const verificationExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
     const hashedToken = bcrypt.hashSync(verificationToken, 10);

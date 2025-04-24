@@ -19,7 +19,6 @@ export const createUserLogger = (userId) => {
       )
     ),
     transports: [
-      new transports.Console(),
       new DailyRotateFile({
         filename: path.join(userLogDir, "app-%DATE%.log"),
         datePattern: "YYYY-MM-DD",
@@ -52,7 +51,6 @@ export const createAdminLogger = (AdminId) => {
       )
     ),
     transports: [
-      new transports.Console(),
       new DailyRotateFile({
         filename: path.join(adminLogDir, "app-%DATE%.log"),
         datePattern: "YYYY-MM-DD",

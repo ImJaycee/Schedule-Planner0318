@@ -15,12 +15,3 @@ export const connect = async () => {
   }
 };
 
-// // Optional: Add a disconnect function for graceful shutdown
-// export const disconnect = async () => {
-//   try {
-//     await mongoose.disconnect();
-//     logger.info('Disconnected from MongoDB'); // Log successful disconnection
-//   } catch (error) {
-//     logger.error(`Error disconnecting from MongoDB: ${error.message}`);
-//   }
-// };
