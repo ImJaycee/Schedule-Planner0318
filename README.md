@@ -257,25 +257,9 @@ The following environment variables are required for the project:
 - **View Specific Schedule**  
   `GET /api/shift/{{scheduleId}}`
 
-### Authentication
-- **Login**  
-  `POST /api/auth/login`  
-  Requires `application/json` body with `email` and `password`.
-- **Admin Login**  
-  `POST /api/auth/admin/login`  
-  Requires `application/json` body with `email` and `password`.
-- **Register User**  
-  `POST /api/auth/register`  
-  Requires `application/json` body with user details.
-- **Register Admin**  
-  `POST /api/auth/admin/register`  
-  Requires `application/json` body with admin details.
-- **Forgot Password**  
-  `POST /api/auth/forgetPassword`  
-  Requires `application/json` body with `email`.
-- **Change Password**  
-  `POST /api/edit/{{userId}}/password`  
-  Requires `application/json` body with `password` and `confirmPassword`.
+  **Link for API Endpoints**:
+* [API Reference](/API_REFERENCE.md)
+--for more extended info
 
 ---
 
