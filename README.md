@@ -362,7 +362,7 @@ The following environment variables are required for the project:
     - **Error**: Styles not applied correctly.
     - **Solution**: 
       - Ensure Tailwind CSS is properly configured in your project.
-      - Verify that the `postcss.config.js` and `tailwind.config.js` files are correctly set up.
+      - Verify that the `vite.config.js` files is correctly set up.
 
 ---
 
