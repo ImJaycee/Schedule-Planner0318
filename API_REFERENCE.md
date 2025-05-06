@@ -54,7 +54,7 @@ The following table outlines common HTTP status codes used in the **FlexiSched/S
 ### Employee Endpoints
 - [Employee Profile Edit API](#employee-profile-edit-api)
   - [Get Specific User for Employee](#get-specific-user-for-employee)
-  - [Update User Details for Employee](#update-user-details-employee)
+  - [Update User Details for Employee](#update-user-details-for-employee)
 
 ### Request Shift
 - [Create Request](#create-request)
