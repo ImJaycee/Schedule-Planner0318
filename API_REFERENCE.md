@@ -337,8 +337,15 @@ Updates the details of a specific user.
     "__v": 0
 }
 ```
-
-
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 401,
+    "message": "Authentication required",
+    "stack": "Error: Authentication required\n    at createError (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/error.js:2:15)\n    at verifyToken (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/verifyToken.js:9:17)\n    at verifyAdmin (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/verifyToken.js:32:3)\n    at Layer.handle [as handle_request] (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:280:10)"
+}
+```
   - **Get Active Announcements**  
     `GET /api/announcements/active/announcement`  
     Requires `Authorization` header with Bearer token.
