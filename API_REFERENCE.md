@@ -66,7 +66,7 @@ The following table outlines common HTTP status codes used in the **FlexiSched/S
 - [Accept Request](#accept-request)
 - [Decline Request](#decline-request)
 - [Get Received Requests](#get-received-requests)
-- [Get Users by Department](#get-users-by-department-for-swap)
+- [Get Users by Department](#get-users-by-department)
 
 ### Schedule Management
 - [Create Schedule](#create-schedule)
@@ -1222,7 +1222,7 @@ Fetches all users belonging to a specific department.
   }
   ```
 
-- **View Specific Schedule**  
+### View Specific Schedule
   **Endpoint**:  
   `GET /api/shift/{{scheduleId}}`  
   **Description**:  
