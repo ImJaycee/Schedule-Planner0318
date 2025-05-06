@@ -315,6 +315,30 @@ Updates the details of a specific user.
     `GET /api/announcements`  
     Requires `Authorization` header with Bearer token.
 
+  **Response Body**:  
+  ```json
+  {
+    "title": "New Announcement",
+    "content": "This is the content of the announcement.",
+    "expiresAt": "2025-04-30"
+  }
+  ```
+
+  **Response Example**:  
+  **Success**:
+```json
+  {
+    "title": "New Announcement",
+    "content": "This is the content of the announcement.",
+    "expiresAt": "2025-04-30T00:00:00.000Z",
+    "AdminId": "67d7cc0cb090fdc7dcdb3c00",
+    "_id": "6819aa98f3204de01b559ebb",
+    "createdAt": "2025-05-06T06:22:16.929Z",
+    "__v": 0
+}
+```
+
+
   - **Get Active Announcements**  
     `GET /api/announcements/active/announcement`  
     Requires `Authorization` header with Bearer token.
