@@ -729,7 +729,7 @@ Activates a previously deactivated user account.
 
 #### Request Shift
 
-- **Create Request**  
+### Create Request 
   **Endpoint**:  
   `POST /api/request-shift/create-request`  
   **Description**:  
