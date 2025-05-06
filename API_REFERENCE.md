@@ -349,6 +349,35 @@ Updates the details of a specific user.
   - **Get Active Announcements**  
     `GET /api/announcements/active/announcement`  
     Requires `Authorization` header with Bearer token.
+  **Response Example**:  
+  **Success**:
+```json
+  [
+    {
+        "_id": "67d9790f13794e3b36f0a220",
+        "title": "12321",
+        "content": "gyjhgjh",
+        "expiresAt": "2025-03-19T00:00:00.000Z",
+        "AdminId": "67d7cc0cb090fdc7dcdb3c00",
+        "createdAt": "2025-03-18T13:45:51.913Z",
+        "__v": 0
+    },
+    {
+        "_id": "67db6defa93db2b270c370b5",
+        "title": "12312",
+        "content": "12312",
+        "expiresAt": "2025-03-08T00:00:00.000Z",
+        "AdminId": "67d7cc0cb090fdc7dcdb3c00",
+        "createdAt": "2025-03-20T01:22:55.805Z",
+        "__v": 0
+    },
+    {
+      etc.
+    }
+]
+```
+**Failure**:
+
 
   - **Update Announcement**  
     `PUT /api/announcements/{{announcementId}}`  
