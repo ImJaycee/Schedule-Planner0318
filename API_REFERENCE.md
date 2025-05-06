@@ -347,7 +347,7 @@ Updates the details of a specific user.
     "stack": "Error: Authentication required\n    at createError (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/error.js:2:15)\n    at verifyToken (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/verifyToken.js:9:17)\n    at verifyAdmin (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/verifyToken.js:32:3)\n    at Layer.handle [as handle_request] (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:280:10)"
 }
 ```
-  - **Get All Announcements**  
+  ### Get All Announcements
     `GET /api/announcements`  
     Requires `Authorization` header with Bearer token.
   **Response Example**:  
@@ -389,7 +389,7 @@ Updates the details of a specific user.
 
 
 
-  - **Get Active Announcements** 
+  ### Get Active Announcements
   `GET /api/announcements/active/announcement`  
   
 ```json
@@ -417,39 +417,237 @@ Updates the details of a specific user.
 
 
 
-
-  - **Update Announcement**  
-    `PUT /api/announcements/{{announcementId}}`  
-    Requires `Authorization` header with Bearer token and `application/json` body.
-
-  - **Delete Announcement**  
-    `DELETE /api/announcements/{{announcementId}}`  
-    Requires `Authorization` header with Bearer token.
+### Update Announcement
+**Endpoint**:  
+`PUT /api/announcements/{{announcementId}}`  
+**Description**:  
+Updates an existing announcement.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Request Body**:
+```json
+{
+  "title": "Updated Announcement Title",
+  "content": "Updated content of the announcement.",
+  "expiresAt": "2025-05-15"
+}
+```
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "message": "Announcement updated successfully",
+  "data": {
+    "_id": "6819aa98f3204de01b559ebb",
+    "title": "Updated Announcement Title",
+    "content": "Updated content of the announcement.",
+    "expiresAt": "2025-05-15T00:00:00.000Z",
+    "updatedAt": "2025-05-06T08:00:00.000Z"
+  }
+}
+```
+**Failure**:
+```json
+{
+  "success": false,
+  "status": 404,
+  "message": "Announcement not found"
+}
+```
 
 ---
 
-- **User Management API**
-  - **Get All Users by Department**  
-    `GET /api/user-manage/users?department={{department}}`  
-    Requires `Authorization` header with Bearer token.
-
-  - **Create User**  
-    `POST /api/user-manage/create`  
-    Requires `Authorization` header with Bearer token and `application/json` body.
-
-  - **Update User**  
-    `PUT /api/user-manage/update/{{userId}}`  
-    Requires `Authorization` header with Bearer token and `application/json` body.
-
-  - **Deactivate User**  
-    `PUT /api/user-manage/deactivate/{{userId}}`  
-    Requires `Authorization` header with Bearer token.
-
-  - **Activate User**  
-    `PUT /api/user-manage/activate/{{userId}}`  
-    Requires `Authorization` header with Bearer token.
+### Delete Announcement
+**Endpoint**:  
+`DELETE /api/announcements/{{announcementId}}`  
+**Description**:  
+Deletes an existing announcement.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "message": "Announcement deleted successfully"
+}
+```
+**Failure**:
+```json
+{
+  "success": false,
+  "status": 404,
+  "message": "Announcement not found"
+}
+```
 
 ---
+
+### User Management API
+
+#### Get All Users by Department
+**Endpoint**:  
+`GET /api/user-manage/users?department={{department}}`  
+**Description**:  
+Fetches all users belonging to a specific department.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Response Example**:  
+**Success**:
+```json
+[
+  {
+    "_id": "60d5f9e813b5c70017e6e5b1",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "johndoe@example.com",
+    "department": "IT",
+    "isAdmin": false,
+    "isVerified": true,
+    "isDeactivated": false
+  },
+  {
+    "_id": "60d5f9e813b5c70017e6e5b2",
+    "firstname": "Jane",
+    "lastname": "Smith",
+    "email": "janesmith@example.com",
+    "department": "IT",
+    "isAdmin": false,
+    "isVerified": true,
+    "isDeactivated": false
+  }
+]
+```
+
+---
+
+#### Create User
+**Endpoint**:  
+`POST /api/user-manage/create`  
+**Description**:  
+Creates a new user.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Request Body**:
+```json
+{
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "johndoe@example.com",
+  "password": "securePassword123",
+  "department": "IT"
+}
+```
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "message": "User created successfully",
+  "data": {
+    "_id": "60d5f9e813b5c70017e6e5b1",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "johndoe@example.com",
+    "department": "IT",
+    "isAdmin": false,
+    "isVerified": false,
+    "isDeactivated": false,
+    "createdAt": "2025-05-06T08:00:00.000Z"
+  }
+}
+```
+
+---
+
+#### Update User
+**Endpoint**:  
+`PUT /api/user-manage/update/{{userId}}`  
+**Description**:  
+Updates the details of an existing user.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Request Body**:
+```json
+{
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "johndoe@example.com",
+  "department": "IT"
+}
+```
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "message": "User updated successfully",
+  "data": {
+    "_id": "60d5f9e813b5c70017e6e5b1",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "johndoe@example.com",
+    "department": "IT",
+    "isAdmin": false,
+    "isVerified": true,
+    "isDeactivated": false,
+    "updatedAt": "2025-05-06T08:00:00.000Z"
+  }
+}
+```
+
+---
+
+#### Deactivate User
+**Endpoint**:  
+`PUT /api/user-manage/deactivate/{{userId}}`  
+**Description**:  
+Deactivates a user account.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "message": "User deactivated successfully"
+}
+```
+**Failure**:
+```json
+{
+  "success": false,
+  "status": 404,
+  "message": "User not found"
+}
+```
+
+---
+
+#### Activate User
+**Endpoint**:  
+`PUT /api/user-manage/activate/{{userId}}`  
+**Description**:  
+Activates a previously deactivated user account.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "message": "User activated successfully"
+}
+```
+**Failure**:
+```json
+{
+  "success": false,
+  "status": 404,
+  "message": "User not found"
+}
+```
 
 ### Employee Endpoints
 
