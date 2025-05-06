@@ -311,7 +311,7 @@ Updates the details of a specific user.
 }
 ```
 
-  - **Get All Announcements**  
+  - **Create Announcements**  
     `GET /api/announcements`  
     Requires `Authorization` header with Bearer token.
 
@@ -346,8 +346,8 @@ Updates the details of a specific user.
     "stack": "Error: Authentication required\n    at createError (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/error.js:2:15)\n    at verifyToken (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/verifyToken.js:9:17)\n    at verifyAdmin (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/verifyToken.js:32:3)\n    at Layer.handle [as handle_request] (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:280:10)"
 }
 ```
-  - **Get Active Announcements**  
-    `GET /api/announcements/active/announcement`  
+  - **Get All Announcements**  
+    `GET /api/announcements`  
     Requires `Authorization` header with Bearer token.
   **Response Example**:  
   **Success**:
@@ -385,6 +385,37 @@ Updates the details of a specific user.
     "stack": "Error: Authentication required\n    at createError (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/error.js:2:15)\n    at verifyToken (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/verifyToken.js:9:17)\n    at verifyAdmin (file:///C:/Users/castr/OneDrive/Desktop/4-23-25/API/utils/verifyToken.js:32:3)\n    at Layer.handle [as handle_request] (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at next (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\route.js:149:13)\n    at Route.dispatch (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\route.js:119:3)\n    at Layer.handle [as handle_request] (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:284:15\n    at Function.process_params (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (C:\\Users\\castr\\OneDrive\\Desktop\\4-23-25\\API\\node_modules\\express\\lib\\router\\index.js:280:10)"
 }
 ```
+
+
+
+  - **Get Active Announcements** 
+  `GET /api/announcements/active/announcement`  
+  
+```json
+ [
+    {
+        "_id": "67f892373399f3059d0fde94",
+        "title": "i897867",
+        "content": "876867jh",
+        "expiresAt": "2025-05-10T00:00:00.000Z",
+        "createdAt": "2025-04-11T03:53:27.055Z",
+        "__v": 0
+    },
+    {
+        "_id": "67f892463399f3059d0fde9d",
+        "title": "popiopio",
+        "content": "oipiopio",
+        "expiresAt": "2025-05-10T00:00:00.000Z",
+        "createdAt": "2025-04-11T03:53:42.939Z",
+        "__v": 0
+    }
+  ]
+```
+
+
+
+
+
 
   - **Update Announcement**  
     `PUT /api/announcements/{{announcementId}}`  
