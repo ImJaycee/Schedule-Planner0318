@@ -651,74 +651,447 @@ Activates a previously deactivated user account.
 
 ### Employee Endpoints
 
-- **Employee Profile Edit API**
-  - **Get Specific User**  
-    `GET /api/edit/{{userId}}`  
-    Requires `Authorization` header with Bearer token.
+#### Employee Profile Edit API
 
-  - **Update User Details**  
-    `PUT /api/edit/{{userId}}`  
-    Requires `Authorization` header with Bearer token and `multipart/form-data` body.
+- **Get Specific User**  
+  **Endpoint**:  
+  `GET /api/edit/{{userId}}`  
+  **Description**:  
+  Fetches the details of a specific employee.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "_id": "60d5f9e813b5c70017e6e5b1",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "johndoe@example.com",
+      "department": "IT",
+      "isAdmin": false,
+      "isVerified": true,
+      "isDeactivated": false,
+      "createdAt": "2025-05-06T08:00:00.000Z",
+      "updatedAt": "2025-05-06T08:00:00.000Z"
+    }
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 404,
+    "message": "User not found"
+  }
+  ```
+
+- **Update User Details**  
+  **Endpoint**:  
+  `PUT /api/edit/{{userId}}`  
+  **Description**:  
+  Updates the details of a specific employee.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+  **Request Body**:  
+  Requires `multipart/form-data` body with fields such as `firstname`, `lastname`, `email`, and optionally `image`.  
+
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "message": "User updated successfully",
+    "data": {
+      "_id": "60d5f9e813b5c70017e6e5b1",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "johndoe@example.com",
+      "department": "IT",
+      "image": "https://example.com/profile.jpg",
+      "updatedAt": "2025-05-06T08:00:00.000Z"
+    }
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 400,
+    "message": "Invalid request data"
+  }
+  ```
 
 ---
 
-- **Request Shift**
-  - **Create Request**  
-    `POST /api/request-shift/create-request`  
-    Requires `application/json` body.
+#### Request Shift
 
-  - **Get User Requests**  
-    `GET /api/request-shift/{{userId}}`
+- **Create Request**  
+  **Endpoint**:  
+  `POST /api/request-shift/create-request`  
+  **Description**:  
+  Creates a new shift request.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+  **Request Body**:
+  ```json
+  {
+    "shiftDate": "2025-05-10",
+    "shiftTime": "09:00-17:00",
+    "reason": "Personal reasons"
+  }
+  ```
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "message": "Shift request created successfully",
+    "data": {
+      "_id": "60d5f9e813b5c70017e6e5b1",
+      "shiftDate": "2025-05-10",
+      "shiftTime": "09:00-17:00",
+      "reason": "Personal reasons",
+      "status": "Pending",
+      "createdAt": "2025-05-06T08:00:00.000Z"
+    }
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 400,
+    "message": "Invalid request data"
+  }
+  ```
+
+- **Get User Requests**  
+  **Endpoint**:  
+  `GET /api/request-shift/{{userId}}`  
+  **Description**:  
+  Fetches all shift requests for a specific user.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "_id": "60d5f9e813b5c70017e6e5b1",
+        "shiftDate": "2025-05-10",
+        "shiftTime": "09:00-17:00",
+        "reason": "Personal reasons",
+        "status": "Pending",
+        "createdAt": "2025-05-06T08:00:00.000Z"
+      },
+      {
+        "_id": "60d5f9e813b5c70017e6e5b2",
+        "shiftDate": "2025-05-12",
+        "shiftTime": "13:00-21:00",
+        "reason": "Medical appointment",
+        "status": "Approved",
+        "createdAt": "2025-05-06T08:00:00.000Z"
+      }
+    ]
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 404,
+    "message": "No shift requests found"
+  }
+  ```
 
 ---
 
-- **Request Swap**
-  - **Create Swap Request**  
-    `POST /api/request-shift/create-request/swap`  
-    Requires `application/json` body.
+#### Request Swap
 
-  - **Get Sent Requests**  
-    `GET /api/request-shift/swap-shift/{{userId}}`
+- **Create Swap Request**  
+  **Endpoint**:  
+  `POST /api/request-shift/create-request/swap`  
+  **Description**:  
+  Creates a new shift swap request.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+  **Request Body**:
+  ```json
+  {
+    "currentShiftId": "60d5f9e813b5c70017e6e5b1",
+    "requestedShiftId": "60d5f9e813b5c70017e6e5b2",
+    "reason": "Need to swap due to personal reasons"
+  }
+  ```
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "message": "Swap request created successfully",
+    "data": {
+      "_id": "60d5f9e813b5c70017e6e5b3",
+      "currentShiftId": "60d5f9e813b5c70017e6e5b1",
+      "requestedShiftId": "60d5f9e813b5c70017e6e5b2",
+      "reason": "Need to swap due to personal reasons",
+      "status": "Pending",
+      "createdAt": "2025-05-06T08:00:00.000Z"
+    }
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 400,
+    "message": "Invalid request data"
+  }
+  ```
 
-  - **Accept Request**  
-    `PUT /api/request-shift/swap-shift/accept`  
-    Requires `application/json` body.
+- **Get Sent Requests**  
+  **Endpoint**:  
+  `GET /api/request-shift/swap-shift/{{userId}}`  
+  **Description**:  
+  Fetches all swap requests sent by a specific user.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
 
-  - **Decline Request**  
-    `PUT /api/request-shift/swap-shift/decline`  
-    Requires `application/json` body.
-
-  - **Get Received Requests**  
-    `GET /api/request-shift/swap-shift/to-me/{{userId}}`
-
-  - **Get Users by Department**  
-    `GET /api/request-shift/get-user/all/{{department}}`
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "_id": "60d5f9e813b5c70017e6e5b3",
+        "currentShiftId": "60d5f9e813b5c70017e6e5b1",
+        "requestedShiftId": "60d5f9e813b5c70017e6e5b2",
+        "reason": "Need to swap due to personal reasons",
+        "status": "Pending",
+        "createdAt": "2025-05-06T08:00:00.000Z"
+      }
+    ]
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 404,
+    "message": "No swap requests found"
+  }
+  ```
 
 ---
 
-### Schedule Management
+#### Schedule Management
 
 - **Create Schedule**  
+  **Endpoint**:  
   `POST /api/shift/create`  
-  Requires `application/json` body.
+  **Description**:  
+  Creates a new schedule.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+  **Request Body**:
+  ```json
+  {
+    "shiftDate": "2025-05-10",
+    "shiftTime": "09:00-17:00",
+    "department": "IT"
+  }
+  ```
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "message": "Schedule created successfully",
+    "data": {
+      "_id": "60d5f9e813b5c70017e6e5b1",
+      "shiftDate": "2025-05-10",
+      "shiftTime": "09:00-17:00",
+      "department": "IT",
+      "createdAt": "2025-05-06T08:00:00.000Z"
+    }
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 400,
+    "message": "Invalid request data"
+  }
+  ```
 
 - **Delete Schedule**  
-  `DELETE /api/shift/{{scheduleId}}`
+  **Endpoint**:  
+  `DELETE /api/shift/{{scheduleId}}`  
+  **Description**:  
+  Deletes an existing schedule.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "message": "Schedule deleted successfully"
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 404,
+    "message": "Schedule not found"
+  }
+  ```
 
 - **Update Schedule**  
+  **Endpoint**:  
   `PUT /api/shift/{{scheduleId}}`  
-  Requires `application/json` body.
+  **Description**:  
+  Updates an existing schedule.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+  **Request Body**:
+  ```json
+  {
+    "shiftDate": "2025-05-12",
+    "shiftTime": "13:00-21:00",
+    "department": "IT"
+  }
+  ```
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "message": "Schedule updated successfully",
+    "data": {
+      "_id": "60d5f9e813b5c70017e6e5b1",
+      "shiftDate": "2025-05-12",
+      "shiftTime": "13:00-21:00",
+      "department": "IT",
+      "updatedAt": "2025-05-06T08:00:00.000Z"
+    }
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 404,
+    "message": "Schedule not found"
+  }
+  ```
 
 - **Get Schedule by Department**  
-  `GET /api/shift/manage/{{department}}`
+  **Endpoint**:  
+  `GET /api/shift/manage/{{department}}`  
+  **Description**:  
+  Fetches all schedules for a specific department.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "_id": "60d5f9e813b5c70017e6e5b1",
+        "shiftDate": "2025-05-10",
+        "shiftTime": "09:00-17:00",
+        "department": "IT",
+        "createdAt": "2025-05-06T08:00:00.000Z"
+      }
+    ]
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 404,
+    "message": "No schedules found"
+  }
+  ```
 
 - **View All Schedules**  
-  `GET /api/shift/`
+  **Endpoint**:  
+  `GET /api/shift/`  
+  **Description**:  
+  Fetches all schedules.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
+
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "data": [
+      {
+        "_id": "60d5f9e813b5c70017e6e5b1",
+        "shiftDate": "2025-05-10",
+        "shiftTime": "09:00-17:00",
+        "department": "IT",
+        "createdAt": "2025-05-06T08:00:00.000Z"
+      }
+    ]
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 404,
+    "message": "No schedules found"
+  }
+  ```
 
 - **View Specific Schedule**  
-  `GET /api/shift/{{scheduleId}}`
+  **Endpoint**:  
+  `GET /api/shift/{{scheduleId}}`  
+  **Description**:  
+  Fetches details of a specific schedule.  
+  **Headers**:  
+  - `Authorization`: Bearer token  
 
----
+  **Response Example**:  
+  **Success**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "_id": "60d5f9e813b5c70017e6e5b1",
+      "shiftDate": "2025-05-10",
+      "shiftTime": "09:00-17:00",
+      "department": "IT",
+      "createdAt": "2025-05-06T08:00:00.000Z"
+    }
+  }
+  ```
+  **Failure**:
+  ```json
+  {
+    "success": false,
+    "status": 404,
+    "message": "Schedule not found"
+  }
+  ```
 
 
 
