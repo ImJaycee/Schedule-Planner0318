@@ -54,7 +54,7 @@ The following table outlines common HTTP status codes used in the **FlexiSched/S
 ### Employee Endpoints
 - [Employee Profile Edit API](#employee-profile-edit-api)
   - [Get Specific User for Employee](#get-specific-user-employee)
-  - [Update User Details](#update-user-details-employee)
+  - [Update User Details for Employee](#update-user-details-employee)
 
 ### Request Shift
 - [Create Request](#create-request)
@@ -245,7 +245,7 @@ Allows users to change their password.
 
 ### Admin Profile Edit API
 
-### Get Specific User for Employee
+### Get Specific User 
 **Endpoint**:  
 `GET /api/edit/{{userId}}`  
 **Description**:  
@@ -653,7 +653,7 @@ Activates a previously deactivated user account.
 
 ### Employee Profile Edit API
 
-### Get Specific User 
+### Get Specific User for Employee
   **Endpoint**:  
   `GET /api/edit/{{userId}}`  
   **Description**:  
@@ -689,7 +689,7 @@ Activates a previously deactivated user account.
   }
   ```
 
-### Update User Details  
+### Update User Details for Employee
   **Endpoint**:  
   `PUT /api/edit/{{userId}}`  
   **Description**:  
