@@ -250,60 +250,27 @@ Allows users to change their password.
 `GET /api/edit/{{userId}}`  
 **Description**:  
 Fetches the details of a specific user.  
-
 **Response Example**:
-**Response Sucess**:
 ```json
 {
-    "_id": "67d7cc0cb090fdc7dcdb3c00",
-    "firstname": "tralalero",
-    "lastname": "tralalala",
-    "email": "castrosalmer0604@gmail.com",
-    "department": "IT Support",
-    "password": "$2b$10$/OoCrmdzWdRiVDJdg7y0/.2L0o5EalVr/D0J48RfuzQcmDRw1qa3u",
+  "success": true,
+  "data": {
+    "_id": "60d5f9e813b5c70017e6e5b1",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "johndoe@example.com",
+    "department": "IT",
     "isAdmin": true,
     "isVerified": true,
-    "verificationToken": "$2b$10$/cKg42.X48dNdJmiKKtERusg0Ws965ZCuAvEG5jzOLPYtZCk7TIpC",
-    "verificationExpires": "2025-03-17T07:25:24.217Z",
-    "createdAt": "2025-03-17T07:15:24.353Z",
-    "updatedAt": "2025-04-29T02:38:02.241Z",
-    "__v": 0,
-    "image": "https://res.cloudinary.com/dxofaxn5o/image/upload/v1745214285/user_profiles/guxcsixezglvrpus6bb1.jpg",
-    "isDeactivated": false
+    "isDeactivated": false,
+    "image": "https://cloudinary.com/johndoe.jpg",
+    "createdAt": "2025-03-31T08:00:00.000Z",
+    "updatedAt": "2025-04-01T12:00:00.000Z"
+  }
 }
 ```
 
 **Response false**:
-```json
-{
-    "message": "User not found"
-}
-```
-
-#### Update User Details
-**Endpoint**:  
-`PUT api/edit/{{userId}}`  
-**Description**:  
-Update the details of a specific user.  
-
-
-**Response Example**:
-
-
-
-
-
-**Response false**:
-**Response Example**:
-**Response Sucess**:
-```json
-{
-    "message": "User updated successfully",
-    "imageUrl": "https://res.cloudinary.com/dxofaxn5o/image/upload/v1745214285/user_profiles/guxcsixezglvrpus6bb1.jpg"
-}
-```
-
-
 **if no user**
 ```json
 {
