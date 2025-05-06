@@ -311,7 +311,7 @@ Updates the details of a specific user.
 }
 ```
 
-  #### Create Announcements
+  #### Create Announcement
   **Endpoint**:  
     `GET /api/announcements`  
     Requires `Authorization` header with Bearer token.
