@@ -689,7 +689,7 @@ Activates a previously deactivated user account.
   }
   ```
 
-- **Update User Details**  
+### Update User Details  
   **Endpoint**:  
   `PUT /api/edit/{{userId}}`  
   **Description**:  
@@ -769,7 +769,7 @@ Activates a previously deactivated user account.
   }
   ```
 
-- **Get User Requests**  
+### Get User Requests 
   **Endpoint**:  
   `GET /api/request-shift/{{userId}}`  
   **Description**:  
@@ -815,7 +815,7 @@ Activates a previously deactivated user account.
 
 #### Request Swap
 
-- **Create Swap Request**  
+### Create Swap Request  
   **Endpoint**:  
   `POST /api/request-shift/create-request/swap`  
   **Description**:  
@@ -855,7 +855,7 @@ Activates a previously deactivated user account.
   }
   ```
 
-- **Get Sent Requests**  
+### Get Sent Requests  
   **Endpoint**:  
   `GET /api/request-shift/swap-shift/{{userId}}`  
   **Description**:  
@@ -957,7 +957,7 @@ Activates a previously deactivated user account.
   }
   ```
 
-- **Update Schedule**  
+### Update Schedule 
   **Endpoint**:  
   `PUT /api/shift/{{scheduleId}}`  
   **Description**:  
@@ -996,7 +996,7 @@ Activates a previously deactivated user account.
   }
   ```
 
-- **Get Schedule by Department**  
+### Get Schedule by Department  
   **Endpoint**:  
   `GET /api/shift/manage/{{department}}`  
   **Description**:  
@@ -1029,7 +1029,7 @@ Activates a previously deactivated user account.
   }
   ```
 
-- **View All Schedules**  
+### View All Schedules 
   **Endpoint**:  
   `GET /api/shift/`  
   **Description**:  
