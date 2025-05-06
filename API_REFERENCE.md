@@ -888,6 +888,166 @@ Activates a previously deactivated user account.
     "message": "No swap requests found"
   }
   ```
+#### Accept Request
+**Endpoint**:  
+`PUT /api/request-shift/swap-shift/accept`  
+**Description**:  
+Accepts a shift swap request.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Request Body**:
+```json
+{
+  "requestId": "60d5f9e813b5c70017e6e5b3",
+  "adminMessage": "Request approved"
+}
+```
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "message": "Swap request accepted successfully",
+  "data": {
+    "_id": "60d5f9e813b5c70017e6e5b3",
+    "status": "Approved",
+    "adminMessage": "Request approved",
+    "updatedAt": "2025-05-06T08:00:00.000Z"
+  }
+}
+```
+**Failure**:
+```json
+{
+  "success": false,
+  "status": 404,
+  "message": "Swap request not found"
+}
+```
+
+---
+
+#### Decline Request
+**Endpoint**:  
+`PUT /api/request-shift/swap-shift/decline`  
+**Description**:  
+Declines a shift swap request.  
+**Headers**:  
+- `Authorization`: Bearer token  
+**Request Body**:
+```json
+{
+  "requestId": "60d5f9e813b5c70017e6e5b3",
+  "adminMessage": "Request declined due to scheduling conflict"
+}
+```
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "message": "Swap request declined successfully",
+  "data": {
+    "_id": "60d5f9e813b5c70017e6e5b3",
+    "status": "Rejected",
+    "adminMessage": "Request declined due to scheduling conflict",
+    "updatedAt": "2025-05-06T08:00:00.000Z"
+  }
+}
+```
+**Failure**:
+```json
+{
+  "success": false,
+  "status": 404,
+  "message": "Swap request not found"
+}
+```
+
+---
+
+#### Get Received Requests
+**Endpoint**:  
+`GET /api/request-shift/swap-shift/to-me/{{userId}}`  
+**Description**:  
+Fetches all swap requests received by a specific user.  
+**Headers**:  
+- `Authorization`: Bearer token  
+
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "60d5f9e813b5c70017e6e5b3",
+      "currentShiftId": "60d5f9e813b5c70017e6e5b1",
+      "requestedShiftId": "60d5f9e813b5c70017e6e5b2",
+      "reason": "Need to swap due to personal reasons",
+      "status": "Pending",
+      "requestedBy": "60d5f9e813b5c70017e6e5b4",
+      "createdAt": "2025-05-06T08:00:00.000Z"
+    }
+  ]
+}
+```
+**Failure**:
+```json
+{
+  "success": false,
+  "status": 404,
+  "message": "No received swap requests found"
+}
+```
+
+---
+
+#### Get Users by Department
+**Endpoint**:  
+`GET /api/request-shift/get-user/all/{{department}}`  
+**Description**:  
+Fetches all users belonging to a specific department.  
+**Headers**:  
+- `Authorization`: Bearer token  
+
+**Response Example**:  
+**Success**:
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "_id": "60d5f9e813b5c70017e6e5b1",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "johndoe@example.com",
+      "department": "IT",
+      "isAdmin": false,
+      "isVerified": true,
+      "isDeactivated": false
+    },
+    {
+      "_id": "60d5f9e813b5c70017e6e5b2",
+      "firstname": "Jane",
+      "lastname": "Smith",
+      "email": "janesmith@example.com",
+      "department": "IT",
+      "isAdmin": false,
+      "isVerified": true,
+      "isDeactivated": false
+    }
+  ]
+}
+```
+**Failure**:
+```json
+{
+  "success": false,
+  "status": 404,
+  "message": "No users found in the specified department"
+}
+```
 
 ---
 
