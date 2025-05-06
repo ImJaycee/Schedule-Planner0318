@@ -245,7 +245,7 @@ Allows users to change their password.
 
 ### Admin Profile Edit API
 
-#### Get Specific User
+### Get Specific User
 **Endpoint**:  
 `GET /api/edit/{{userId}}`  
 **Description**:  
