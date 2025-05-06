@@ -651,9 +651,9 @@ Activates a previously deactivated user account.
 
 ### Employee Endpoints
 
-#### Employee Profile Edit API
+### Employee Profile Edit API
 
-- **Get Specific User**  
+### Get Specific User 
   **Endpoint**:  
   `GET /api/edit/{{userId}}`  
   **Description**:  
@@ -893,7 +893,7 @@ Activates a previously deactivated user account.
 
 #### Schedule Management
 
-- **Create Schedule**  
+### Create Schedule  
   **Endpoint**:  
   `POST /api/shift/create`  
   **Description**:  
@@ -932,7 +932,7 @@ Activates a previously deactivated user account.
   }
   ```
 
-- **Delete Schedule**  
+### Delete Schedule 
   **Endpoint**:  
   `DELETE /api/shift/{{scheduleId}}`  
   **Description**:  
