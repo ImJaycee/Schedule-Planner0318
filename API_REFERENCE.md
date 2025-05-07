@@ -7,7 +7,7 @@ FlexiSched offers a robust set of APIs to simplify and enhance internship manage
 ### Base URL
 
 ```text
-http://localhost:5173
+http://localhost:4000
 ```
 
 ### HTTP Status Codes
